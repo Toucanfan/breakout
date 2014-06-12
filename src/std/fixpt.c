@@ -81,7 +81,7 @@ long std_fixpt_sin(int dgr512)
 }
 
 
-void rotate(struct std_fixpt_point *point, int dgr512)_
+void std_fixpt_rotate(struct std_fixpt_point *point, int dgr512)_
 {
 	long x = point->x;
 	long y = point->y;

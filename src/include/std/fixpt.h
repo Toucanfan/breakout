@@ -13,7 +13,7 @@ struct std_fixpt_point {
 
 /* function prototypes */
 extern long std_fixpt_sin(int dgr512);
-extern void rotate(struct std_fixpt_point *point, int dgr512);
+extern void std_fixpt_rotate(struct std_fixpt_point *point, int dgr512);
 
 
 #endif /* std/fixpt.h */
