@@ -9,8 +9,8 @@
 #define STD_BUTTON_RIGHT HAL_BUTTON_B3
 
 /* macro functions */
-#define std_button_new_press() hal_button_new_press()
 #define std_button_pressed() hal_button_pressed()
+#define std_button_new_press() hal_button_new_press()
 
 
 #endif /* std/button.h */

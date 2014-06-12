@@ -8,8 +8,8 @@
 
 
 /* function prototypes */
-extern char hal_button_pressed(void);
-extern char hal_button_new_press(void);
+extern char hal_button_pressed(void); /* currently pressed button */
+extern char hal_button_new_press(void); /* button pressed since last call */
 
 
 #endif /* hal/button.h */
