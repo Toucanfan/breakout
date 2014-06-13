@@ -5,7 +5,7 @@
 void app_draw_splash(void) 
 {
 	std_tty_clrscr();
-	std_tty_gotoxy(1,1);
+	std_tty_gotoxy(3,3);
 	std_tty_printf("Splash motherfucker");
 }
 

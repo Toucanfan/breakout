@@ -29,8 +29,9 @@ void main(void)
 {
 	unsigned char cur_diff;
 
+	std_tty_init();
+	std_tty_clrscr();
 	init_splash();
-
 	while (1) {
 		switch(game_state){
 			case IN_SPLASH:
@@ -58,7 +59,7 @@ void main(void)
 
 void init_menu(void)
 {
-	app_draw_difficulties(GAME);
+	app_draw_menu(GAME);
 	game_state = IN_MENU;
 }
 	
