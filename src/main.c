@@ -9,8 +9,8 @@
 #define IN_MENU 4
 #define IN_DIFFICULTY_SELECT 5
 
-static char State game_state;
 static char difficulty;
+static char game_state;
 
 void main(void);
 void init_splash(void);
@@ -27,40 +27,39 @@ void splash_screen(void);
 
 void main(void)
 {
-enum State game_state;
-unsigned char cur_diff;
+	unsigned char cur_diff;
 
-init_splash();
+	init_splash();
 
-while (true) {
-	switch(game_state){
-		case IN_SPLASH:
-			splash_screen();
-			break;
-		case IN_GAME:
-			break;
-		case IN_MENU:
-			menu_screen();
-			break;
-		case IN_HELP_SCREEN:
-			help_screen();
-			break;
-		case IN_HIGHSCORE_SCREEN:
-			highscores_screen();
-			break;
-		case IN_DIFFICULTY_SELECT:
-			dif_select_screen();
-			break:
-		default:
-			init_splash();
+	while (1) {
+		switch(game_state){
+			case IN_SPLASH:
+				splash_screen();
+				break;
+			case IN_GAME:
+				break;
+			case IN_MENU:
+				menu_screen();
+				break;
+			case IN_HELP_SCREEN:
+				help_screen();
+				break;
+			case IN_HIGHSCORE_SCREEN:
+				highscores_screen();
+				break;
+			case IN_DIFFICULTY_SELECT:
+				dif_select_screen();
+				break;
+			default:
+				init_splash();
+		}
 	}
-}
 }
 
 void init_menu(void)
 {
 	app_draw_difficulties(GAME);
-	State = IN_MENU;
+	game_state = IN_MENU;
 }
 	
 void menu_screen(void)
@@ -68,7 +67,7 @@ void menu_screen(void)
 	static unsigned char menu_selection = GAME;
 	
 	while (std_button_new_press() == STD_BUTTON_NONE) {}	
-	switch(std_button_press)()) {
+	switch(std_button_pressed()) {
 		case STD_BUTTON_LEFT:
 			menu_selection = --menu_selection & 0x03;
 			app_draw_menu(menu_selection);
@@ -79,13 +78,17 @@ void menu_screen(void)
 			break;
 		case STD_BUTTON_MIDDLE:
 			switch (menu_selection) {
-				case GAME: init_dif_select(); 
+				case GAME: 
+					init_diff_select(); 
 					break;
-				case HELP: init_help();
+				case HELP:
+					init_help();
 					break;
-				case HIGHSCORES: init_highscores();
+				case HIGHSCORES:
+					init_highscores();
 					break;
-				case EXIT: init_splash(); 
+				case EXIT:
+					init_splash(); 
 					break;
 				default:
 			}
