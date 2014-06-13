@@ -36,3 +36,18 @@ void std_tty_blink(char on) {
 		std_tty_printf(ESC"[25m");
 	}
 }
+
+void std_tty_set_fcolor(char fcolor)
+{
+	int type = 22;
+	if (fcolor > 7) {
+		type = 1;
+		fcolor -= 8;
+	}
+	std_tty_printf(ESC"[%d;%dm", type, fcolor+30);
+}
+
+void std_tty_set_bcolor(char bcolor)
+{
+	std_tty_printf(ESC"[%dm", bcolor+40);
+}
