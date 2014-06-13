@@ -1,10 +1,11 @@
 #ifndef STD_TTY_H
 #define STD_TTY_H
 
-#include <sio.h>
+#include "hal/uart.h"
 
 /* macro functions */
 #define std_tty_printf printf
+#define std_tty_init() hal_uart_init()
 
 /* function prototypes */
 void std_tty_clrscr(void);

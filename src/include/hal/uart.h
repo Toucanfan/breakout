@@ -3,11 +3,9 @@
 
 #include <sio.h>
 
+#define BAUD 115200
+
 /* macro functions */
-#define hal_uart_init() init_uart(_UART0, _DEFFREQ, _DEFBAUD)
-
-/* function prototypes */
-extern void hal_uart_init(void);
-
+#define hal_uart_init() init_uart(_UART0, _DEFFREQ, BAUD)
 
 #endif /* hal/uart.h */
