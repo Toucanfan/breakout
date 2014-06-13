@@ -11,7 +11,7 @@ void std_draw_window(struct std_draw_window *window)
 
 	int headerExtra;
 
- 	for(i = 0; title[i] != '\0'; i++) {
+ 	for(i = 0; window->title[i] != '\0'; i++) {
 		textLength++;
 	}
 
@@ -27,7 +27,7 @@ void std_draw_window(struct std_draw_window *window)
 			std_tty_printf(" ");
 		}
 	}
-	reverse(0);
+	std_tty_reverse(0);
 	std_tty_printf("%c", window->style.hend);
 	if(!window->style.fill) {
 		for(i = 0; i < headerExtra; i++) {
@@ -54,4 +54,4 @@ void std_draw_window(struct std_draw_window *window)
 
 	window->cursor.x = window->tl.x + 1;
 	window->cursor.y = window->tl.y + 1;
-	
+}	

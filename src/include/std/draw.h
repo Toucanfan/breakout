@@ -13,6 +13,7 @@ struct std_draw_window_style {
 	char tr;
 	char tl;
 	char bl;
+	char br;
 	char hstart;
 	char hend;
 	char fill;

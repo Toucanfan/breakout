@@ -14,14 +14,14 @@ void std_tty_gotoxy(int x, int y) {
 	std_tty_printf(ESC"[%d;%dH", y, x);
 }
 
-void std_tty_underline(int on) {
+void std_tty_underline(char on) {
 	if (on)
 		std_tty_printf(ESC"[4m");
 	else
 		std_tty_printf(ESC"[24m");
 }
 
-void std_tty_reverse(int on) {
+void std_tty_reverse(char on) {
 	if (on) {
 		std_tty_printf(ESC"[7m");
 	} else {
@@ -29,7 +29,7 @@ void std_tty_reverse(int on) {
 	}
 }
 
-void std_tty_blink(int on) {
+void std_tty_blink(char on) {
 	if (on) {
 		std_tty_printf(ESC"[5m");
 	} else {
