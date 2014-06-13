@@ -7,6 +7,21 @@
 <file filter-key="">src\main.c</file>
 <file filter-key="">src\include\hal\led.h</file>
 <file filter-key="">src\hal\led.c</file>
+<file filter-key="">src\app\draw.c</file>
+<file filter-key="">src\hal\button.c</file>
+<file filter-key="">src\std\draw.c</file>
+<file filter-key="">src\std\display.c</file>
+<file filter-key="">src\std\fixpt.c</file>
+<file filter-key="">src\std\tty.c</file>
+<file filter-key="">src\include\app\draw.h</file>
+<file filter-key="">src\include\hal\button.h</file>
+<file filter-key="">src\include\hal\timer.h</file>
+<file filter-key="">src\include\hal\uart.h</file>
+<file filter-key="">src\include\std\button.h</file>
+<file filter-key="">src\include\std\display.h</file>
+<file filter-key="">src\include\std\draw.h</file>
+<file filter-key="">src\include\std\fixpt.h</file>
+<file filter-key="">src\include\std\tty.h</file>
 </files>
 
 <!-- configuration information -->
