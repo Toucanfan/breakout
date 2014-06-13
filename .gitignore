@@ -24,3 +24,14 @@
 
 # vim swp files
 *.swp
+
+# Z-encore files
+*.lod
+*.map
+*.wsp
+*.asmsw
+*.ccsw
+*.linkcmd
+*.mak
+*.lst
+*.asm
