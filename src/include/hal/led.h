@@ -1,16 +1,15 @@
 #ifndef HAL_LED_H
 #define HAL_LED_H
 
-#include <ez8.h>
-
-/* macro functions */
-#define hal_irq_disable() DI()
-#define hal_irq_enable() EI()
+/* led mode flags */
+#define HAL_LED_ON 0x1
+#define HAL_LED_BLINK 0x2
+#define HAL_LED_SCROLL 0x4
 
 /* function prototypes */
 extern void hal_led_init(void);
 extern void hal_led_refresh(void);
-
-extern void hal_timer_init(void);
+extern void hal_led_set_string(char *str);
+extern void hal_led_set_mode(char mode);
 
 #endif /* hal/led.h */
