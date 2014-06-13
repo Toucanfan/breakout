@@ -5,8 +5,17 @@
 static enum State game_state;
 static char difficulty;
 
-void initialization(void);
-void menu_screen(void);
+void main(void);
+void init_splash(void);
+void init_menu(void);
+void init_dif_select;
+void dif_select_screen(void);
+void init_highscores(void);
+void highscore_screen(void);
+void init_help(void);
+void help_screen(void);
+void init_splash(void);
+void splash_screen(void);
 
 enum State {
    IN_SPLASH,
@@ -17,7 +26,7 @@ enum State {
    IN_DIFFICULTY_SELECT,
 };
 
-void main()
+void main(void)
 {
 enum State game_state;
 unsigned char cur_diff;
@@ -30,7 +39,6 @@ while (true) {
 			splash_screen();
 			break;
 		case IN_GAME:
-			...
 			break;
 		case IN_MENU:
 			menu_screen();
@@ -48,12 +56,9 @@ while (true) {
 			init_splash();
 	}
 }
-		
-		
-		
 }
 
-void init_menu ()
+void init_menu(void)
 {
 	app_draw_difficulties(GAME);
 	State = IN_MENU;
@@ -89,7 +94,7 @@ void menu_screen(void)
 	}
 }	
 	
-void init_dif_select 
+void init_dif_select(void)
 {
 app_draw_difficulties(NORMAL);
 State = IN_DIFFICULTY_SELECT;
