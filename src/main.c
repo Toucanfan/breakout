@@ -15,8 +15,8 @@ static char game_state;
 void main(void);
 void init_splash(void);
 void init_menu(void);
-void init_dif_select;
-void dif_select_screen(void);
+void init_diff_select(void);
+void diff_select_screen(void);
 void init_highscores(void);
 void menu_screen(void);
 void highscores_screen(void);
@@ -48,7 +48,7 @@ void main(void)
 				highscores_screen();
 				break;
 			case IN_DIFFICULTY_SELECT:
-				dif_select_screen();
+				diff_select_screen();
 				break;
 			default:
 				init_splash();
@@ -91,46 +91,50 @@ void menu_screen(void)
 					init_splash(); 
 					break;
 				default:
+					break;
 			}
-		default:
+	    	break;
+	 	default:
+			break;
 	}
 }	
 	
-void init_dif_select(void)
+void init_diff_select(void)
 {
-app_draw_difficulties(NORMAL);
-State = IN_DIFFICULTY_SELECT;
+app_draw_difficulties(MEDIUM);
+game_state = IN_DIFFICULTY_SELECT;
 }
 
-void dif_select_screen(void)
+void diff_select_screen(void)
 {
-	static char cur_diff_selection = NORMAL;
+	static char cur_diff_selection = MEDIUM;
 	
 	while (std_button_new_press() == STD_BUTTON_NONE) {}
-	switch(std_button_press()) {
+	switch(std_button_pressed()) {
 		case STD_BUTTON_LEFT:
-			cur_diff = --cur_diff_selection & 0x03;
+			cur_diff_selection = --cur_diff_selection & 0x03;
 			app_draw_difficulties(cur_diff_selection);
 			break;
 		case STD_BUTTON_RIGHT:
-			cur_diff = ++cur_diff_selection & 0x03;
+			cur_diff_selection = ++cur_diff_selection & 0x03;
 			app_draw_difficulties(cur_diff_selection);
 			break;
 		case STD_BUTTON_MIDDLE:
 			difficulty = cur_diff_selection;
-			init_game();
-			break:
+			//init_game();
+			break;
 		default:
+			break;
 	}	
 }
 
 void init_highscores(void) 
 {
 	app_draw_highscores();
-	State = IN_HIGHSCORE_SCREEN;
+	game_state = IN_HIGHSCORE_SCREEN;
 }
 	
-void highscore_screen(void) 
+void highscores_screen(void) 
 {
 	while (std_button_new_press() == STD_BUTTON_NONE) {}
 	init_menu();
@@ -140,7 +144,7 @@ void highscore_screen(void)
 void init_help(void) 
 {
 	app_draw_help();
-	State = IN_HELP_SCREEN;
+	game_state = IN_HELP_SCREEN;
 }
 	
 void help_screen(void) 
@@ -153,7 +157,7 @@ void help_screen(void)
 void init_splash(void) 
 {
 	app_draw_splash();
-	State = IN_SPLASH;
+	game_state = IN_SPLASH;
 }
 
 void splash_screen(void)
