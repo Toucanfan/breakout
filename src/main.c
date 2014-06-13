@@ -2,7 +2,14 @@
 #include "std/draw.h"
 #include "std/button.h"
 
-static enum State game_state;
+#define IN_SPLASH 0
+#define IN_GAME 1
+#define IN_HELP_SCREEN 2
+#define IN_HIGHSCORE_SCREEN 3
+#define IN_MENU 4
+#define IN_DIFFICULTY_SELECT 5
+
+static char State game_state;
 static char difficulty;
 
 void main(void);
@@ -11,20 +18,12 @@ void init_menu(void);
 void init_dif_select;
 void dif_select_screen(void);
 void init_highscores(void);
-void highscore_screen(void);
+void menu_screen(void);
+void highscores_screen(void);
 void init_help(void);
 void help_screen(void);
 void init_splash(void);
 void splash_screen(void);
-
-enum State {
-   IN_SPLASH,
-   IN_MENU,
-   IN_GAME,
-   IN_HIGHSCORE_SCREEN,
-   IN_HELP_SCREEN,
-   IN_DIFFICULTY_SELECT,
-};
 
 void main(void)
 {
