@@ -6,13 +6,6 @@
 <file filter-key="">.\zsldevinit.asm</file>
 <file filter-key="">src\main.c</file>
 <file filter-key="">src\include\hal\led.h</file>
-<file filter-key="">src\hal\led.c</file>
-<file filter-key="">src\app\draw.c</file>
-<file filter-key="">src\hal\button.c</file>
-<file filter-key="">src\std\draw.c</file>
-<file filter-key="">src\std\display.c</file>
-<file filter-key="">src\std\fixpt.c</file>
-<file filter-key="">src\std\tty.c</file>
 <file filter-key="">src\include\app\draw.h</file>
 <file filter-key="">src\include\hal\button.h</file>
 <file filter-key="">src\include\hal\timer.h</file>
@@ -22,6 +15,13 @@
 <file filter-key="">src\include\std\draw.h</file>
 <file filter-key="">src\include\std\fixpt.h</file>
 <file filter-key="">src\include\std\tty.h</file>
+<file filter-key="">src\app\app_draw.c</file>
+<file filter-key="">src\hal\hal_button.c</file>
+<file filter-key="">src\hal\hal_led.c</file>
+<file filter-key="">src\std\std_display.c</file>
+<file filter-key="">src\std\std_draw.c</file>
+<file filter-key="">src\std\std_fixpt.c</file>
+<file filter-key="">src\std\std_tty.c</file>
 </files>
 
 <!-- configuration information -->
@@ -323,6 +323,13 @@
 
 <!-- breakpoint information -->
 <breakpoints>
+<breakpoint temporary="false" enabled="true" >
+<line-number>123</line-number>
+<pathname>C:\Users\Daniel\Documents\GitHub\breakout\src\main.c</pathname>
+<address>0</address>
+<command></command>
+<preserve-type>0</preserve-type>
+</breakpoint>
 </breakpoints>
 
 <!-- ice event information -->
