@@ -14,6 +14,21 @@ void app_highscore_clr()
 	}
 }
 
+// Adds a score struct to the highscore at the correct position. If it is
+// lower than all other items on the list, it is discarded
+void app_add_highscore(struct app_highscore score)
+{
+	struct app_highscore tmp;
+	int i;
+	for(i = 0; i < HIGHSCORE_COUNT; i++) {
+		if(highscores[i].score < score.score) {
+			tmp = highscores[i];
+			highscores[i] = score;
+			score = tmp;
+		}
+	}
+}
+
 // Renders highscore list
 void app_render_highscore()
 {
