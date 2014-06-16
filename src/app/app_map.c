@@ -143,7 +143,7 @@ void main(void)
 	}
 	*/
 	i = std_fixpt_i2f(1);
-	j = std_fixpt_i2f(2);
+	j = std_fixpt_i2f(1);
 	std_tty_gotoxy(0,0);
 	std_tty_printf("%d", std_fixpt_f2i(i+j));
 }
