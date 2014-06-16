@@ -29,7 +29,7 @@ long *app_map_draw_blocks(void)
 	
 	int block_start_x = WIDTH / 2 - BLOCK_COLUMNS * (BLOCK_LENGTH+BLOCK_INTERDIST_X) / 2;
 	
-	cur_block.tl.x = block_start_x
+	cur_block.tl.x = block_start_x;
 	cur_block.tl.y = BLOCK_PADDING_TOP;
 	cur_block.br.x = cur_block.tl.x + (BLOCK_LENGTH - 1);
 	cur_block.br.y = cur_block.tl.y + (BLOCK_HEIGHT -1);
