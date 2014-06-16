@@ -33,7 +33,7 @@ struct std_draw_box {
 	struct std_draw_point tl;
 	struct std_draw_point br;
 	char color;
-}
+};
 
 
 

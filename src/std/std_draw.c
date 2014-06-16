@@ -5,7 +5,7 @@ void std_draw_box(struct std_draw_box *box)
 {
 	int i, j;
 	std_tty_set_bcolor(box->color);
-	for (i = box->tl.x; i <= br.x; i++) {
+	for (i = box->tl.x; i <= box->br.x; i++) {
 		for (j = box->tl.y; j <= box->br.y; j++) {
 			std_tty_gotoxy(i, j);
 			std_tty_printf(" ");

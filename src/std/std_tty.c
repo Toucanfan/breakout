@@ -2,9 +2,6 @@
 
 #define ESC "\x1B"
 
-void std_tty_clrscr(void) {
-	std_tty_printf(ESC"[2J"ESC"[1;1H");
-}
 
 void std_tty_clreol(void) {
 	std_tty_printf(ESC"[K");
@@ -50,4 +47,9 @@ void std_tty_set_fcolor(char fcolor)
 void std_tty_set_bcolor(char bcolor)
 {
 	std_tty_printf(ESC"[%dm", bcolor+40);
+}
+
+void std_tty_clrscr(void) {
+	std_tty_set_bcolor(STD_TTY_BCOLOR_BLACK);
+	std_tty_printf(ESC"[2J"ESC"[1;1H");
 }

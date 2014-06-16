@@ -10,6 +10,8 @@ struct std_fixpt_point {
 #define std_fixpt_cos(dgr512) std_fixpt_sin(dgr512 + 128)
 #define std_fixpt_mul(a, b) ((a >> 14) * b)
 #define std_fixpt_div(a, b) ((a << 14) / b)
+#define std_fixpt_i2f(i) ((long)i << 14)
+#define std_fixpt_f2i(f) ((int)(f >> 14))
 
 /* function prototypes */
 extern long std_fixpt_sin(int dgr512);
