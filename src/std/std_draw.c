@@ -11,7 +11,7 @@ void std_draw_box(struct std_draw_box *box)
 			std_tty_printf(" ");
 		}
 	}
-	std_tty_gotoxy(0, 0);
+	std_tty_set_bcolor(STD_TTY_BCOLOR_BLACK);
 }
 
 void std_draw_window(struct std_draw_window *window)

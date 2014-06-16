@@ -52,4 +52,5 @@ void std_tty_set_bcolor(char bcolor)
 void std_tty_clrscr(void) {
 	std_tty_set_bcolor(STD_TTY_BCOLOR_BLACK);
 	std_tty_printf(ESC"[2J"ESC"[1;1H");
+	std_tty_printf(ESC"[?25l");
 }
