@@ -7,10 +7,10 @@ extern void app_map_draw_blocks(void);
 
 #define WIDTH 170
 #define HEIGHT 60
-#define FIXPT_WIDTH std_fixpt_i2f(WIDTH-4)
-#define FIXPT_HEIGHT std_fixpt_i2f(HEIGHT-2)
-#define FIXPT_ORIGIN_Y std_fixpt_i2f(3)
-#define FIXPT_ORIGIN_X std_fixpt_i2f(4)
+#define RBORDER std_fixpt_i2f(WIDTH-4)
+#define BBORDER std_fixpt_i2f(HEIGHT-2)
+#define TBORDER std_fixpt_i2f(3)
+#define LBORDER std_fixpt_i2f(4)
 
 #define COLLISION_NONE 0x0
 #define COLLISION_LBORDER 0x1
@@ -79,16 +79,16 @@ static void draw_ball(struct ball *ball)
 
 static char test_collision(struct ball *ball)
 {
-	if (ball->pos.x < FIXPT_ORIGIN_X)
+	if (ball->pos.x < LBORDER)
 		return COLLISION_LBORDER;
 
-	else if (ball->pos.x > FIXPT_WIDTH)
+	else if (ball->pos.x > RBORDER)
 		return COLLISION_RBORDER;
 
-	else if (ball->pos.y < FIXPT_ORIGIN_Y)
+	else if (ball->pos.y < TBORDER)
 		return COLLISION_TBORDER;
 
-	else if (ball->pos.y > FIXPT_HEIGHT)
+	else if (ball->pos.y > BBORDER)
 		return COLLISION_PADDLE;
 
 	else 
@@ -116,25 +116,25 @@ static void handle_collision(struct ball *ball, char coll_type)
 	}
 }
 
-void app_map_refresh(void)
+void app_map_refresh(char should_reset)
 {
 	static int times_called = 0;
 	static struct ball ball;
 	char collision;
-	if (!times_called) {
+	if (should_reset) {
 		ball.pos.x = std_fixpt_i2f(WIDTH/2);
 		ball.pos.y = std_fixpt_i2f(HEIGHT-3);
 		ball.vel.x = std_fixpt_div(std_fixpt_i2f(-1), std_fixpt_i2f(50));
 		ball.vel.y = std_fixpt_div(std_fixpt_i2f(-1), std_fixpt_i2f(50));
 		std_tty_clrscr();
 		draw_borders();
+		return;
 	}
 	draw_ball(&ball);
 	collision = test_collision(&ball);
 	handle_collision(&ball, collision);
 	ball.pos.x += ball.vel.x;
 	ball.pos.y += ball.vel.y;
-	times_called++;
 }
 
 void main(void)
@@ -142,8 +142,11 @@ void main(void)
 	std_tty_init();
 	std_tty_clrscr();
 	std_timer_init();
+	app_map_refresh(1);
 	while (1) {
 		if (std_timer_read(STD_TIMER_0))
-			app_map_refresh();
+			app_map_refresh(0);
 	}
+
+	//app_map_draw_blocks();
 }
