@@ -1,6 +1,7 @@
 #include "std/draw.h"
 #include "std/tty.h"
 #include "std/fixpt.h"
+#include "std/timer.h"
 
 extern void app_map_draw_blocks(void);
 
@@ -140,12 +141,9 @@ void main(void)
 {
 	std_tty_init();
 	std_tty_clrscr();
-	/*
+	std_timer_init();
 	while (1) {
-		app_map_refresh();
+		if (std_timer_read(STD_TIMER_0))
+			app_map_refresh();
 	}
-	*/
-	draw_borders();
-	app_map_draw_blocks();
-	while (1);
 }
