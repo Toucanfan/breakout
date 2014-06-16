@@ -54,3 +54,8 @@ char app_highscore_test(int score)
 
 	return 0;
 }
+
+struct app_highscore *app_get_top_score()
+{
+	return &highscores[0];
+}
