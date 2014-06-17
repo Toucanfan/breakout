@@ -97,13 +97,8 @@ char test_block_collision(struct ball *ball, long *blocks)
 					temp_posx = std_fixpt_f2i(temp_fpos.x) + 1;
 					temp_posy = std_fixpt_f2i(temp_fpos.y) + 1;
 					while ((cur_block.tl.x <= temp_posx && temp_posx <= cur_block.br.x) && (cur_block.tl.y <= temp_posy && temp_posy <= cur_block.br.y)) {
-<<<<<<< HEAD
-						temp_fpos.x -= ball->vel.x / 32;
-						temp_fpos.y -= ball->vel.y / 32;
-=======
 						temp_fpos.x -= ball->vel.x / PRECISION;
 						temp_fpos.y -= ball->vel.y / PRECISION;
->>>>>>> origin/master
 						temp_posx = std_fixpt_f2i(temp_fpos.x) + 1;
 						temp_posy = std_fixpt_f2i(temp_fpos.y) + 1;
 					}
@@ -111,16 +106,12 @@ char test_block_collision(struct ball *ball, long *blocks)
 					std_draw_box(&cur_block); // delete block
 					std_tty_gotoxy(10,10);
 					std_tty_printf("success");
-<<<<<<< HEAD
-					if (!(cur_block.tl.x <= temp_posx && temp_posx <= cur_block.br.x))
-=======
 					if (!(cur_block.tl.y <= temp_posy && temp_posy <= cur_block.br.y))
-						//return COLLISION_HORIZONTAL;
->>>>>>> origin/master
-						return COLLISION_VERTICAL;
-					else 
-						//return COLLISION_VERTICAL;
 						return COLLISION_HORIZONTAL;
+						//return COLLISION_VERTICAL;
+					else 
+						return COLLISION_VERTICAL;
+						//return COLLISION_HORIZONTAL;
 				}
 			cur_block.tl.x += BLOCK_INTERDIST_X + BLOCK_LENGTH;
 			cur_block.br.x += BLOCK_INTERDIST_X + BLOCK_LENGTH;
