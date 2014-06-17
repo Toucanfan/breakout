@@ -2,7 +2,6 @@
 #include "std/draw.h"
 #include "std/text_input.h"
 
-void std_text_input_create(struct std_draw_point *point, char *str, char str_length, char (*test_func)(char input))
 /*
  * Initiates a text input. This function is blocking and will return when the user presses ENTER
  *
@@ -26,6 +25,7 @@ void std_text_input_create(struct std_draw_point *point, char *str, char str_len
  *
  * Here a 4 character text input is created at (3, 1) and only letters can be entered.
  */
+void std_text_input_create(struct std_draw_point *point, char *str, char str_length, char (*test_func)(char input))
 {
 	char key;
 	char i = 0;
