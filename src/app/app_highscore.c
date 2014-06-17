@@ -7,7 +7,7 @@ struct app_highscore *highscores;
 
 void app_highscore_clr()
 {
-	int i;
+	char i;
 	for(i = 0; i < HIGHSCORE_COUNT; i++) {
 		highscores[i].score = 0;
 		highscores[i].name = "0000";
@@ -19,7 +19,7 @@ void app_highscore_clr()
 void app_add_highscore(struct app_highscore score)
 {
 	struct app_highscore tmp;
-	int i;
+	char i;
 	for(i = 0; i < HIGHSCORE_COUNT; i++) {
 		if(highscores[i].score < score.score) {
 			tmp = highscores[i];
@@ -32,7 +32,7 @@ void app_add_highscore(struct app_highscore score)
 // Renders highscore list
 void app_render_highscore()
 {
-	int i;
+	char i;
 	for(i = 0; i < HIGHSCORE_COUNT; i++) {
 		if(highscores[i].score > 0) {
 			printf("%s", highscores[i].name);
@@ -44,9 +44,9 @@ void app_render_highscore()
 }
 
 // Tests if a score is a new highscore
-char app_highscore_test(int score)
+char app_highscore_test(char score)
 {
-	int i;
+	char i;
 	for(i = 0; i < HIGHSCORE_COUNT; i++) {
 		if(score > highscores[i].score)
 			return 1;
