@@ -88,13 +88,20 @@ char test_block_collision(struct ball *ball, long *blocks)
 		for (j = 0; j < BLOCK_COLUMNS; j++) {
 			if(blocks[i] & (0x80000000 >> j)) // test if there is block
 				if ((cur_block.tl.x <= ball_x && ball_x <= cur_block.br.x) && (cur_block.tl.y <= ball_y && ball_y <= cur_block.br.y)) {
-					struct std_fixpt_point temp_pos;
-					temp_pos.x = ball->pos.x;
-					temp_pos.y = ball->pos.y;
-					while ((cur_block.tl.x <= ball_x && ball_x <= cur_block.br.x) && (cur_block.tl.y <= ball_y && ball_y <= cur_block.br.y))
-						temp_pos.x -= ball->vel.x;
-						temp_pos.y -= ball->vel.y;
+					struct std_fixpt_point temp_fpos;
+					temp_fpos = ball->pos;
+					temp_posx = std_fixpt_f2i(temp_fpos.x);
+					temp_posy = std_fixpt_f2i(temp_fpos.y);
+					while ((cur_block.tl.x <= temp_posx && temp_posx <= cur_block.br.x) && (cur_block.tl.y <= temp_posy && temp_posy <= cur_block.br.y)) {
+						temp_fpos.x -= ball->vel.x;
+						temp_fpos.y -= ball->vel.y;
+						temp_posx = std_fixpt_f2i(temp_fpos.x) + 1;
+						temp_posy = std_fixpt_f2i(temp_fpos.y) + 1;
+					}
+					blocks[i] &= ~(0x80000000 >> j)
 					std_draw_box(&cur_block); // delete block
+					std_tty_gotoxy(10,10);
+					std_tty_printf("success");
 					if (!(cur_block.tl.x < ball_x && ball_x < cur_block.br.x))
 						return COLLISION_VERTICAL;
 					else 
