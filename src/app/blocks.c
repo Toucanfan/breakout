@@ -11,6 +11,10 @@
 #define BLOCK_INTERDIST_X 1
 #define BLOCK_INTERDIST_Y 1
 
+#define COLLISION_NONE 0x0
+#define COLLISION_HORIZONTAL 0x1
+#define COLLISION_VERTICAL 0x2
+
 #define WIDTH 170
 #define HEIGHT 60
 
@@ -57,24 +61,23 @@ long *app_map_draw_blocks(void)
 		cur_block.tl.y += (BLOCK_INTERDIST_Y + BLOCK_HEIGHT);
 		cur_block.br.y += (BLOCK_INTERDIST_Y + BLOCK_HEIGHT);
 		
-	}		
+	}
 	
 	return blocks;
 }
 
-char test_block_collision(struct *ball, long *blocks)
+char test_block_collision(struct ball *ball, long *blocks)
 {
 	int i;
 	int j;
 	int k;
-	struct std_draw_box cur_block;
 	
 	int ball_x = std_fixpt_f2i(ball->pos.x) + 1;  // not 100% about this
 	int ball_y = std_fixpt_f2i(ball->pos.y) + 1;
 	
 	int block_start_x = WIDTH / 2 - BLOCK_COLUMNS * (BLOCK_LENGTH+BLOCK_INTERDIST_X) / 2;
 	
-	cur_block.tl.x = block_start_x
+	cur_block.tl.x = block_start_x;
 	cur_block.tl.y = BLOCK_PADDING_TOP;
 	cur_block.br.x = cur_block.tl.x + (BLOCK_LENGTH - 1);
 	cur_block.br.y = cur_block.tl.y + (BLOCK_HEIGHT -1);
@@ -83,9 +86,18 @@ char test_block_collision(struct *ball, long *blocks)
 	for (i = 0; i < BLOCK_ROWS; i++) {
 		for (j = 0; j < BLOCK_COLUMNS; j++) {
 			if(blocks[i] & (0x80000000 >> j)) // test if there is block
-				if ((cur_block.tl.x < ball_x + 1 && ball_x < cur_block.br.x) && (cur_block.tl.y < ball_y && ball_y < cur_block.br.y)) {
+				if ((cur_block.tl.x <= ball_x && ball_x <= cur_block.br.x) && (cur_block.tl.y <= ball_y && ball_y <= cur_block.br.y)) {
+					struct std_fixpt_point temp_pos;
+					temp_pos.x = ball->pos.x;
+					temp_pos.y = ball->pos.y;
+					while ((cur_block.tl.x <= ball_x && ball_x <= cur_block.br.x) && (cur_block.tl.y <= ball_y && ball_y <= cur_block.br.y)
+						temp_pos.x -= ball->vel.x;
+						temp_pos.y -= ball->vel.y;
 					std_draw_box(&cur_block); // delete block
-					return 1;
+					if (!(cur_block.tl.x < ball_x && ball_x < cur_block.br.x))
+						return COLLISION_VERTICAL;
+					else 
+						return COLLISION_HORIZONTAL;
 				}
 			cur_block.tl.x += BLOCK_INTERDIST_X + BLOCK_LENGTH;
 			cur_block.br.x += BLOCK_INTERDIST_X + BLOCK_LENGTH;
@@ -96,18 +108,21 @@ char test_block_collision(struct *ball, long *blocks)
 		cur_block.br.y += (BLOCK_INTERDIST_Y + BLOCK_HEIGHT);
 	}		
 	
-	return 0;
+	return COLLISION_NONE;
 }
 
 int blocks_left(long *blocks)
 {
-int i;
-int j;
-int count;
+	int i;
+	int j;
+	int count;
 
-for (i = 0; i < BLOCK_ROWS; i++)
-	for (j = 0; < BLOCK_COLUMNS; j++)
-		if (blocks[i] & (0x80000000 >> j)
-			count++
-return count;
+	for (i = 0; i < BLOCK_ROWS; i++) {
+		for (j = 0; j < BLOCK_COLUMNS; j++) {
+			if (blocks[i] & (0x80000000 >> j))
+				count++;
+		}
+	}
+	return count;
 }
+
