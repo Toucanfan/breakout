@@ -7,9 +7,9 @@
 #define BLOCK_PADDING_TOP 4
 #define BLOCK_COLUMNS 32 //size of long
 #define BLOCK_LENGTH 4
-#define BLOCK_HEIGHT 2
-#define BLOCK_INTERDIST_X 1
-#define BLOCK_INTERDIST_Y 1
+#define BLOCK_HEIGHT 1
+#define BLOCK_INTERDIST_X 0
+#define BLOCK_INTERDIST_Y 0
 
 #define COLLISION_NONE 0x0
 #define COLLISION_HORIZONTAL 0x1
@@ -96,8 +96,8 @@ char test_block_collision(struct ball *ball, long *blocks)
 					temp_posx = std_fixpt_f2i(temp_fpos.x);
 					temp_posy = std_fixpt_f2i(temp_fpos.y);
 					while ((cur_block.tl.x <= temp_posx && temp_posx <= cur_block.br.x) && (cur_block.tl.y <= temp_posy && temp_posy <= cur_block.br.y)) {
-						temp_fpos.x -= ball->vel.x / 5;
-						temp_fpos.y -= ball->vel.y / 5;
+						temp_fpos.x -= ball->vel.x / 16;
+						temp_fpos.y -= ball->vel.y / 16;
 						temp_posx = std_fixpt_f2i(temp_fpos.x) + 1;
 						temp_posy = std_fixpt_f2i(temp_fpos.y) + 1;
 					}
@@ -105,7 +105,7 @@ char test_block_collision(struct ball *ball, long *blocks)
 					std_draw_box(&cur_block); // delete block
 					std_tty_gotoxy(10,10);
 					std_tty_printf("success");
-					if (!(cur_block.tl.x < ball_x && ball_x < cur_block.br.x))
+					if (!(cur_block.tl.x < temp_posx && temp_posx < cur_block.br.x))
 						return COLLISION_VERTICAL;
 					else 
 						return COLLISION_HORIZONTAL;
