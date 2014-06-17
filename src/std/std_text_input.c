@@ -15,10 +15,10 @@ void std_text_input_create(struct std_draw_point *point, char *str, char str_len
 		if(97 <= key && key <= 122 && i < 3) {
 			str[i] = key;
 			i++;
-		} else if(key == 127 && i > 0) {
+		} else if(key == BACKSPACE && i > 0) {
 			i--;
 			str[i] = ' ';
-		} else if(key == 13 && i > 0) {
+		} else if(key == ENTER && i > 0) {
 			input_loop = 0;
 		}
 
