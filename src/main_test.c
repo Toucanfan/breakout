@@ -14,6 +14,8 @@ void main(void)
 	point.y = 3;
 
 	std_tty_init();
+	std_tty_clrscr();
+	std_tty_printf("Text input");
 
 	std_text_input_create(&point, str, str_length);
 
