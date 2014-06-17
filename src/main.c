@@ -1,6 +1,8 @@
 #include "app/draw.h"
+#include "app/map.h"
 #include "std/draw.h"
 #include "std/button.h"
+#include "std/fixpt.h"
 
 #define IN_SPLASH 0
 #define IN_GAME 1
@@ -9,7 +11,7 @@
 #define IN_MENU 4
 #define IN_DIFFICULTY_SELECT 5
 
-static char difficulty;
+
 static char game_state;
 
 void main(void);
@@ -25,10 +27,20 @@ void help_screen(void);
 void init_splash(void);
 void splash_screen(void);
 
+struct game_condition {
+	char difficulty;
+	char level;
+	char lives;
+	struct app_map_ball ball;
+	struct app_map_paddle paddle;
+	long *blocks;
+	int blocks_left;
+}
+
 void main(void)
 {
-	unsigned char cur_diff;
-
+	struct game_condition game_condition;
+	
 	std_tty_init();
 	std_tty_clrscr();
 	init_splash();
@@ -38,6 +50,7 @@ void main(void)
 				splash_screen();
 				break;
 			case IN_GAME:
+				game_tick(&game_condition);
 				break;
 			case IN_MENU:
 				menu_screen();
@@ -49,7 +62,7 @@ void main(void)
 				highscores_screen();
 				break;
 			case IN_DIFFICULTY_SELECT:
-				diff_select_screen();
+				diff_select_screen(&game_condition);
 				break;
 			default:
 				init_splash();
@@ -106,7 +119,7 @@ app_draw_difficulties(MEDIUM);
 game_state = IN_DIFFICULTY_SELECT;
 }
 
-void diff_select_screen(void)
+void diff_select_screen(struct game_condition *game_condition)
 {
 	static char cur_diff_selection = MEDIUM;
 	
@@ -121,8 +134,8 @@ void diff_select_screen(void)
 			app_draw_difficulties(cur_diff_selection);
 			break;
 		case STD_BUTTON_MIDDLE:
-			difficulty = cur_diff_selection;
-			//init_game();
+			game_condition->difficulty = cur_diff_selection;
+			init_game(game_condition);
 			break;
 		default:
 			break;
@@ -165,4 +178,22 @@ void splash_screen(void)
 {
 	while (std_button_new_press() == STD_BUTTON_NONE) {}
 	init_menu();
+}
+
+void init_game(struct game_condition *game_condition) {
+	game_condition->level = 1;
+	game_condition->score = 0;
+	game_condition->lives = 3;
+	init_level(game_condition);
+	game_state = IN_GAME
+}
+
+void init_level(struct game_condition *game_condition) {
+	draw_blocks(game_condition);
+	game_condition->ball.vel.x = std_fixpt_i2f(1)/32;
+	game_condition->ball.vel.y = -std_fixpt_i2f(1)/32;
+	game_condition->ball.pos.x = 30;
+	game_condition->ball.pos.y = 30;
+	game_condition->paddle.x = 30;
+	game_condition->paddle.vel = 1;
 }

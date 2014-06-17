@@ -19,16 +19,6 @@ extern char test_block_collision(struct ball *ball, long *block_locations);
 #define COLLISION_HORIZONTAL 0x1
 #define COLLISION_VERTICAL 0x2
 
-static struct ball {
-	struct std_fixpt_point pos;
-	struct std_fixpt_point vel;
-};
-
-static struct paddle {
-	long x;
-	long vel;
-};
-
 static void draw_borders(void)
 {
 	struct std_draw_box topb;
