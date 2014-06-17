@@ -33,5 +33,5 @@ char hal_timer_read(char timer)
 {
 	char r = (flags & timer);
 	flags &= ~r;
-	return (flags & timer);
+	return r;
 }
