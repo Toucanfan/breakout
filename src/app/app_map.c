@@ -68,9 +68,11 @@ static void draw_ball(struct ball *ball)
 
 	if (x != x_old && y != y_old) {
 		/* remove drawing of last ball */
+		/*
 		std_tty_gotoxy(x_old, y_old);
 		std_tty_set_fcolor(STD_TTY_FCOLOR_BLACK);
 		std_tty_printf("o");
+		*/
 	
 		/* draw ball at new position */
 		std_tty_gotoxy(x, y);
