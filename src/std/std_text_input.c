@@ -13,7 +13,7 @@ void std_text_input_create(struct std_draw_point *point, char *str, char str_len
 	while(input_loop){
 		std_tty_gotoxy(point->x + i, point->y);
 		key = getch();
-		if(97 <= key && key <= 122 && i < 3) {
+		if(97 <= key && key <= 122 && i < str_length - 1) {
 			str[i] = key;
 			i++;
 		} else if(key == BACKSPACE && i > 0) {
