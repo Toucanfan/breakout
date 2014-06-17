@@ -23,7 +23,7 @@ static struct ball {
 	struct std_fixpt_point vel;
 };
 
-long *app_map_draw_blocks(void)
+long *draw_blocks(void)
 {
 	static long blocks[BLOCK_ROWS] = {0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF}; // 1 bit per block
 	int i;
@@ -72,6 +72,7 @@ char test_block_collision(struct ball *ball, long *blocks)
 	int j;
 	int k;
 	
+	struct std_draw_box cur_block;
 	int ball_x = std_fixpt_f2i(ball->pos.x) + 1;  // not 100% about this
 	int ball_y = std_fixpt_f2i(ball->pos.y) + 1;
 	
@@ -90,7 +91,7 @@ char test_block_collision(struct ball *ball, long *blocks)
 					struct std_fixpt_point temp_pos;
 					temp_pos.x = ball->pos.x;
 					temp_pos.y = ball->pos.y;
-					while ((cur_block.tl.x <= ball_x && ball_x <= cur_block.br.x) && (cur_block.tl.y <= ball_y && ball_y <= cur_block.br.y)
+					while ((cur_block.tl.x <= ball_x && ball_x <= cur_block.br.x) && (cur_block.tl.y <= ball_y && ball_y <= cur_block.br.y))
 						temp_pos.x -= ball->vel.x;
 						temp_pos.y -= ball->vel.y;
 					std_draw_box(&cur_block); // delete block
