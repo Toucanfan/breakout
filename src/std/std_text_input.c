@@ -25,7 +25,7 @@ void std_text_input_create(struct std_draw_point *point, char *str, char str_len
 
 
 		std_tty_gotoxy(point->x, point->y);
-		std_tty_printf("\n%s", str);
+		std_tty_printf("%s", str);
 	}
 
 	for(i++; i < (str_length - 1); i++)
