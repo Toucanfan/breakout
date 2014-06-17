@@ -3,6 +3,29 @@
 #include "std/text_input.h"
 
 void std_text_input_create(struct std_draw_point *point, char *str, char str_length, char (*test_func)(char input))
+/*
+ * Initiates a text input. This function is blocking and will return when the user presses ENTER
+ *
+ * Arguments:
+ *  - point is a pointer to the point where the input is graphically located
+ *  - str: When the input is complete, this will be the entered text
+ *  - str_length: MUST be the length (including null-terminator) of str
+ *  - test_func: is a function pointer to a test function for the input
+ *
+ * Input characters can be limited using the test_func function. The function must return 0 (false) for illegal chars
+ * and something else for legal. These characters will be ignored by the input handler.
+ *
+ * Example usages:
+ *
+ *     struct std_draw_point point;
+ *     char str[4];
+ *     char str_length = 4;
+ *     point.x = 3; point.y = 1;
+ *
+ *     std_text_input_create(&point, str, str_length, &std_ti_letters_test);
+ *
+ * Here a 4 character text input is created at (3, 1) and only letters can be entered.
+ */
 {
 	char key;
 	char i = 0;
