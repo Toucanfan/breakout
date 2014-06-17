@@ -3,9 +3,15 @@
 
 static char flags = 0;
 
-static void timer0_irq_handler(void)
+#pragma interrupt
+void timer0_irq_handler(void)
 {
-	flags |= HAL_TIMER_0;
+	static int count = 0;
+	count++;
+	if (count == 100) {
+		flags |= HAL_TIMER_0;
+		count = 0;
+	}
 }
 
 void hal_timer_init(void)
@@ -21,17 +27,18 @@ void hal_timer_init(void)
 	T0RL = 0x48; //Set low order bits of reload value
 
 	//Set IRQ priority to low
-	IRQ0ENH = 0x00;
-	IRQ0ENL = 0x20;
+	//IRQ0ENH = 0x00;
+	IRQ0ENL |= 0x20;
 
 	T0CTL |= 0x80; //Enable timer
 	SET_VECTOR(TIMER0, timer0_irq_handler); //Map irq handler
 	EI(); // Enable interrupts globally
+	return;
 }
 
 char hal_timer_read(char timer)
 {
 	char r = (flags & timer);
-	flags &= ~r;
+	flags &= ~timer;
 	return r;
 }
