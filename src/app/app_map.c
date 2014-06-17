@@ -5,7 +5,7 @@
 #include "std/button.h"
 
 extern long *draw_blocks(void);
-extern char test_blck_collision(struct ball *ball, long *block_locations);
+extern char test_block_collision(struct ball *ball, long *block_locations);
 
 #define WIDTH 170
 #define HEIGHT 60
@@ -26,7 +26,7 @@ static struct ball {
 static struct paddle {
 	long x_left;
 	long vel;
-}
+};
 
 static void draw_borders(void)
 {
@@ -63,8 +63,8 @@ static void draw_ball(struct ball *ball)
 	static int y_old = 6;
 	int x, y;
 	
-	x = std_fixpt_f2i(ball->pos.x);
-	y = std_fixpt_f2i(ball->pos.y);
+	x = std_fixpt_f2i(ball->pos.x)+1;
+	y = std_fixpt_f2i(ball->pos.y)+1;
 
 	if (x != x_old && y != y_old) {
 		/* remove drawing of last ball */
@@ -84,7 +84,7 @@ static void draw_ball(struct ball *ball)
 
 static void draw_paddle(struct paddle *paddle)
 {
-	static int x_old = WIDTH/2;
+	static int x_old = 0;
 	int x;
 	struct std_draw_box box;
 
@@ -111,19 +111,19 @@ static char test_collision(struct ball *ball, long *block_locations)
 {
 	char r;
 
-	if (ball->pos.x < LBORDER)
+	if (ball->pos.x <= LBORDER)
 		return COLLISION_VERTICAL;
 
-	else if (ball->pos.x > RBORDER)
-		return COLISION_VERTICAL;
+	else if (ball->pos.x >= RBORDER)
+		return COLLISION_VERTICAL;
 
 	else if (r = test_block_collision(ball, block_locations))
 		return r;
 
-	else if (ball->pos.y < TBORDER)
+	else if (ball->pos.y <= TBORDER)
 		return COLLISION_HORIZONTAL;
 
-	else if (ball->pos.y > BBORDER)
+	else if (ball->pos.y >= BBORDER)
 		return COLLISION_HORIZONTAL;
 
 	else 
@@ -153,38 +153,38 @@ void app_map_refresh(char should_reset)
 	char collision;
 	if (should_reset) {
 		ball.pos.x = std_fixpt_i2f(WIDTH/2);
-		ball.pos.y = std_fixpt_i2f(HEIGHT-3);
-		ball.vel.x = std_fixpt_div(std_fixpt_i2f(-1), std_fixpt_i2f(50));
-		ball.vel.y = std_fixpt_div(std_fixpt_i2f(-1), std_fixpt_i2f(50));
+		ball.pos.y = std_fixpt_i2f(HEIGHT/2);
+		ball.vel.x = std_fixpt_div(std_fixpt_i2f(-1), std_fixpt_i2f(64));
+		ball.vel.y = std_fixpt_div(std_fixpt_i2f(-1), std_fixpt_i2f(64));
 		paddle.x_left = std_fixpt_i2f(WIDTH/2-3);
-		paddle.vel = std_fixpt_i2f(1);
+		paddle.vel = std_fixpt_i2f(1)/16;
 		std_tty_clrscr();
 		draw_borders();
 		block_locations = draw_blocks();
 		return;
 	}
-	draw_paddle(&paddle);
-	draw_ball(&ball);
 	collision = test_collision(&ball, block_locations);
 	handle_collision(&ball, collision);
-
+	ball.pos.x += ball.vel.x;
+	ball.pos.y += ball.vel.y;
+	draw_paddle(&paddle);
+	draw_ball(&ball);
 	if (std_button_pressed(STD_BUTTON_LEFT))
 		paddle.x_left -= paddle.vel;
 	else if (std_button_pressed(STD_BUTTON_RIGHT))
-		paddle.x_right += paddle.vel;
+		paddle.x_left += paddle.vel;
 
-	ball.pos.x += ball.vel.x;
-	ball.pos.y += ball.vel.y;
+
 }
 
 void main(void)
 {
 	std_tty_init();
 	std_tty_clrscr();
-	std_timer_init();
+	//std_timer_init();
 	app_map_refresh(1);
 	while (1) {
-		if (std_timer_read(STD_TIMER_0))
+	//	if (std_timer_read(STD_TIMER_0))
 			app_map_refresh(0);
 	}
 
