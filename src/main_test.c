@@ -5,12 +5,6 @@
 void main(void)
 {
 	char ch;
-/*	struct app_highscore score;
-	score.score = 4;
-	score.name = "bc";
-	app_highscore_clr();
-	app_add_highscore(score);
-	app_render_highscore();*/
 
 	init_uart(_UART0, _DEFFREQ, 115200);
 
