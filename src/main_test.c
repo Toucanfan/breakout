@@ -2,6 +2,7 @@
 #include <sio.h> /* special encore serial i/o functions */
 #include "std/text_input.h"
 #include "std/draw.h"
+#include "std/tty.h"
 
 void main(void)
 {
@@ -11,6 +12,8 @@ void main(void)
 
 	point.x = 3;
 	point.y = 3;
+
+	std_tty_init();
 
 	std_text_input_create(&point, str, str_length);
 
