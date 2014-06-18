@@ -1,18 +1,11 @@
 #include "app/draw.h"
+#include "app/highscore.h"
 #include "std/draw.h"
+#include "std/text_input.h"
 #include "std/button.h"
+#include "std/fixpt.h"
+#include "app/game.h"
 
-#define IN_SPLASH 0
-#define IN_GAME 1
-#define IN_HELP_SCREEN 2
-#define IN_HIGHSCORE_SCREEN 3
-#define IN_MENU 4
-#define IN_DIFFICULTY_SELECT 5
-
-static char difficulty;
-static char game_state;
-
-void main(void);
 void init_splash(void);
 void init_menu(void);
 void init_diff_select(void);
@@ -27,8 +20,8 @@ void splash_screen(void);
 
 void main(void)
 {
-	unsigned char cur_diff;
-
+	struct game_condition game_condition;
+	
 	std_tty_init();
 	std_tty_clrscr();
 	init_splash();
@@ -38,6 +31,7 @@ void main(void)
 				splash_screen();
 				break;
 			case IN_GAME:
+				game_tick(&game_condition);
 				break;
 			case IN_MENU:
 				menu_screen();
@@ -49,7 +43,7 @@ void main(void)
 				highscores_screen();
 				break;
 			case IN_DIFFICULTY_SELECT:
-				diff_select_screen();
+				diff_select_screen(&game_condition);
 				break;
 			default:
 				init_splash();
@@ -106,7 +100,7 @@ app_draw_difficulties(MEDIUM);
 game_state = IN_DIFFICULTY_SELECT;
 }
 
-void diff_select_screen(void)
+void diff_select_screen(struct game_condition *game_condition)
 {
 	static char cur_diff_selection = MEDIUM;
 	
@@ -121,8 +115,8 @@ void diff_select_screen(void)
 			app_draw_difficulties(cur_diff_selection);
 			break;
 		case STD_BUTTON_MIDDLE:
-			difficulty = cur_diff_selection;
-			//init_game();
+			game_condition->difficulty = cur_diff_selection;
+			init_game(game_condition);
 			break;
 		default:
 			break;
@@ -166,3 +160,23 @@ void splash_screen(void)
 	while (std_button_new_press() == STD_BUTTON_NONE) {}
 	init_menu();
 }
+
+void init_endgame(struct game_condition *game_condition)
+{
+	struct app_highscore new_highscore;
+	struct std_draw_point point;
+	char name[4];
+	if(app_highscore_test(game_condition->score)) {
+		new_highscore.score = game_condition->score;
+		point.x = 3;
+		point.y = 3;
+
+		std_text_input_create(&point, name, 4, &std_ti_letters_test);
+
+		new_highscore.name = name;
+
+		app_add_highscore(new_highscore);
+	}
+	init_highscores();
+}
+
