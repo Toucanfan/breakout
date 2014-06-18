@@ -26,8 +26,8 @@
 #define BLOCK_COLUMNS 32 //size of long
 #define BLOCK_LENGTH 4
 #define BLOCK_HEIGHT 1
-#define BLOCK_INTERDIST_X 0
-#define BLOCK_INTERDIST_Y 0
+#define BLOCK_INTERDIST_X 1
+#define BLOCK_INTERDIST_Y 1
 #define PRECISION 128
 
 static void draw_borders(void)
@@ -68,6 +68,21 @@ static void draw_borders(void)
 }
 
 
+static int count_blocks(long *blocks)
+{
+	int i;
+	int j;
+	int count = 0;
+
+	for (i = 0; i < BLOCK_ROWS; i++) {
+		for (j = 0; j < BLOCK_COLUMNS; j++) {
+			if (blocks[i] & (0x80000000 >> j))
+				count++;		
+		}
+	}
+	return count;
+}
+
 static void draw_blocks(struct app_map_context *ctx)
 {
 	int i;
@@ -79,13 +94,14 @@ static void draw_blocks(struct app_map_context *ctx)
 
 
 	static const long maps[3][3] = {
-		{0xFFF0FFFF,0xFFF0FFFF,0xFFFFFFFE},
+		{0x00000000,0x00008000,0x00000000},
 		{0xFFFFFFFF,0xFFFFF00E,0xFFFFFFFE},
 		{0xFFFFFFFE,0xFFFFFFFE,0xFFFFFFFE}};
 	
 	for (i = 0; i < BLOCK_ROWS; i++)
-		ctx->blocks[i] = maps[ctx->level][i];
+		ctx->blocks[i] = maps[ctx->level-1][i];  // -1 because first level is 1 and first index is 0
 	
+	ctx->blocks_left = count_blocks(ctx->blocks);
 	
 	cur_block.tl.x = block_start_x;
 	cur_block.tl.y = BLOCK_PADDING_TOP;
@@ -226,9 +242,10 @@ static char test_block_collision(struct app_map_context *ctx)
 						temp_posy = std_fixpt_f2i(temp_fpos.y) + 1;
 					}
 					ctx->blocks[i] &= ~(0x80000000 >> j);
+					ctx->blocks_left--;
 					std_draw_box(&cur_block); // delete block
 					std_tty_gotoxy(10,10);
-					std_tty_printf("success");
+					std_tty_printf("%i", ctx->blocks_left);
 					if (!(cur_block.tl.y <= temp_posy && temp_posy <= cur_block.br.y))
 						return COLLISION_HORIZONTAL;
 						//return COLLISION_VERTICAL;
@@ -309,25 +326,24 @@ static void handle_paddle_collision(struct app_map_ball *ball,
 }
 		
 
-static void handle_collision(struct app_map_ball *ball, 
-			struct app_map_paddle *paddle, 
-			char coll_type)
+static void handle_collision(struct app_map_context *ctx, char coll_type)
 {
 	switch(coll_type) {
 	case COLLISION_VERTICAL:
-		ball->vel.x = -(ball->vel.x);
+		ctx->ball.vel.x = -(ctx->ball.vel.x);
 		break;
 	case COLLISION_PADDLE:
-		handle_paddle_collision(ball, paddle);
+		handle_paddle_collision(&ctx->ball, &ctx->paddle);
 		break;
 	case COLLISION_HORIZONTAL:
-		ball->vel.y = -(ball->vel.y);
+		ctx->ball.vel.y = -(ctx->ball.vel.y);
 		break;
 	case COLLISION_BOTTOM:
-		ball->vel.x = ball->speed*0;
-		ball->vel.y = ball->speed*std_fixpt_i2f(1);
-		ball->pos.x = std_fixpt_i2f(WIDTH/2);
-		ball->pos.y = std_fixpt_i2f(HEIGHT/2);
+		ctx->ball.vel.x = ctx->ball.speed*0;
+		ctx->ball.vel.y = ctx->ball.speed*std_fixpt_i2f(1);
+		ctx->ball.pos.x = std_fixpt_i2f(WIDTH/2);
+		ctx->ball.pos.y = std_fixpt_i2f(HEIGHT/2);
+		ctx->lives--;
 	default:
 		break;
 	}
@@ -351,7 +367,7 @@ void app_map_refresh(struct app_map_context *ctx)
 {
 	char collision;
 	if (collision = test_collision(ctx))
-		handle_collision(&ctx->ball, &ctx->paddle, collision);
+		handle_collision(ctx, collision);
 	ctx->ball.pos.x += ctx->ball.vel.x;
 	ctx->ball.pos.y += ctx->ball.vel.y;
 	draw_ball(&ctx->ball);
@@ -367,19 +383,3 @@ void app_map_refresh(struct app_map_context *ctx)
 	}
 	draw_paddle(&ctx->paddle);
 }
-/*
-void main(void)
-{
-	std_tty_init();
-	std_tty_clrscr();
-	std_tty_gotoxy(1,1);
-	std_timer_init();
-	app_map_refresh(1);
-	while (1) {
-		if (std_timer_read(STD_TIMER_0))
-			app_map_refresh(0);
-	}
-
-	//app_map_draw_blocks();
-}
-*/

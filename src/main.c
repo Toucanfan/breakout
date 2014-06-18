@@ -4,7 +4,10 @@
 #include "std/text_input.h"
 #include "std/button.h"
 #include "std/fixpt.h"
+#include "std/timer.h"
 #include "app/game.h"
+#include "app/state.h"
+
 
 void init_splash(void);
 void init_menu(void);
@@ -18,12 +21,15 @@ void help_screen(void);
 void init_splash(void);
 void splash_screen(void);
 
+char game_state;
+
 void main(void)
 {
-	struct game_condition game_condition;
+	struct app_map_context ctx;
 	
 	std_tty_init();
 	std_tty_clrscr();
+	std_timer_init();
 	init_splash();
 	while (1) {
 		switch(game_state){
@@ -31,7 +37,8 @@ void main(void)
 				splash_screen();
 				break;
 			case IN_GAME:
-				game_tick(&game_condition);
+				if (std_timer_read(STD_TIMER_0))
+					game_tick(&ctx);
 				break;
 			case IN_MENU:
 				menu_screen();
@@ -43,7 +50,7 @@ void main(void)
 				highscores_screen();
 				break;
 			case IN_DIFFICULTY_SELECT:
-				diff_select_screen(&game_condition);
+				diff_select_screen(&ctx);
 				break;
 			default:
 				init_splash();
@@ -100,7 +107,7 @@ app_draw_difficulties(MEDIUM);
 game_state = IN_DIFFICULTY_SELECT;
 }
 
-void diff_select_screen(struct game_condition *game_condition)
+void diff_select_screen(struct app_map_context *ctx)
 {
 	static char cur_diff_selection = MEDIUM;
 	
@@ -115,8 +122,8 @@ void diff_select_screen(struct game_condition *game_condition)
 			app_draw_difficulties(cur_diff_selection);
 			break;
 		case STD_BUTTON_MIDDLE:
-			game_condition->difficulty = cur_diff_selection;
-			init_game(game_condition);
+			ctx->difficulty = cur_diff_selection;
+			init_game(ctx);
 			break;
 		default:
 			break;
@@ -161,13 +168,13 @@ void splash_screen(void)
 	init_menu();
 }
 
-void init_endgame(struct game_condition *game_condition)
+void init_endgame(struct app_map_context *ctx)
 {
 	struct app_highscore new_highscore;
 	struct std_draw_point point;
 	char name[4];
-	if(app_highscore_test(game_condition->score)) {
-		new_highscore.score = game_condition->score;
+	if(app_highscore_test(ctx->score)) {
+		new_highscore.score = ctx->score;
 		point.x = 3;
 		point.y = 3;
 
