@@ -8,16 +8,16 @@
 #define BLOCK_COLUMNS 32 //size of long
 #define BLOCK_LENGTH 4
 #define BLOCK_HEIGHT 1
-#define BLOCK_INTERDIST_X 0
-#define BLOCK_INTERDIST_Y 0
+#define BLOCK_INTERDIST_X 1
+#define BLOCK_INTERDIST_Y 1
 #define PRECISION 128
 
 #define COLLISION_NONE 0x0
 #define COLLISION_HORIZONTAL 0x1
 #define COLLISION_VERTICAL 0x2
 
-#define WIDTH 170
-#define HEIGHT 60
+#define WIDTH 190
+#define HEIGHT 50
 
 static struct ball {
 	struct std_fixpt_point pos;
@@ -62,8 +62,6 @@ long *draw_blocks(void)
 		cur_block.tl.y += (BLOCK_INTERDIST_Y + BLOCK_HEIGHT);
 		cur_block.br.y += (BLOCK_INTERDIST_Y + BLOCK_HEIGHT);
 	}
-	std_tty_gotoxy(40,20);
-	std_tty_printf("done");
 	return blocks;
 }
 
@@ -104,8 +102,6 @@ char test_block_collision(struct ball *ball, long *blocks)
 					}
 					blocks[i] &= ~(0x80000000 >> j);
 					std_draw_box(&cur_block); // delete block
-					std_tty_gotoxy(10,10);
-					std_tty_printf("success");
 					if (!(cur_block.tl.y <= temp_posy && temp_posy <= cur_block.br.y))
 						return COLLISION_HORIZONTAL;
 						//return COLLISION_VERTICAL;
