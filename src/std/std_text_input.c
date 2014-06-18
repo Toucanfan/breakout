@@ -54,6 +54,8 @@ void std_text_input_create(struct std_draw_point *point, char *str, char str_len
 		str[i] = ' ';
 }
 
+/* Character input test functions. USe these to enable different kinds of text input */
+
 char std_ti_number_test(char input)
 {
     return 48 <= input && input <= 57;
