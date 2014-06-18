@@ -43,5 +43,16 @@ void std_tty_blink(char boolean);
 void std_tty_set_bcolor(char bcolor);
 void std_tty_set_fcolor(char fcolor);
 
+/* Keycodes */
+#define ENTER 13
+#define BACKSPACE 127
+#define SPACE 32
+#define ARROWUP 5	
+#define ARROWDOWN 6
+#define ARROWRIGHT 7
+#define ARROWLEFT 8
+#define ESC7 7
+#define ESC27 27
+#define TAB 9
 
 #endif /* std/tty.h */

@@ -1,5 +1,7 @@
 #include "app/draw.h"
+#include "app/highscore.h"
 #include "std/draw.h"
+#include "std/text_input.h"
 #include "std/button.h"
 #include "std/fixpt.h"
 #include "app/state.h"
@@ -159,6 +161,25 @@ void splash_screen(void)
 {
 	while (std_button_new_press() == STD_BUTTON_NONE) {}
 	init_menu();
+}
+
+void init_endgame(struct game_condition *game_condition)
+{
+	struct app_highscore new_highscore;
+	struct std_draw_point point;
+	char name[4];
+	if(app_highscore_test(score)) {
+		new_highscore.score = game_condition->score;
+		point.x = 3;
+		point.y = 3;
+
+		std_text_input_create(&point, name, 4, &std_ti_letters_test)
+
+		new_highscore.name = name;
+
+		app_add_highscore(new_highscore);
+	}
+	init_highscores();
 }
 
 void init_game(struct game_condition *game_condition) {
