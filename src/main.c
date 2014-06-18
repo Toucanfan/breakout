@@ -168,12 +168,12 @@ void init_endgame(struct game_condition *game_condition)
 	struct app_highscore new_highscore;
 	struct std_draw_point point;
 	char name[4];
-	if(app_highscore_test(score)) {
+	if(app_highscore_test(game_condition->score)) {
 		new_highscore.score = game_condition->score;
 		point.x = 3;
 		point.y = 3;
 
-		std_text_input_create(&point, name, 4, &std_ti_letters_test)
+		std_text_input_create(&point, name, 4, &std_ti_letters_test);
 
 		new_highscore.name = name;
 
@@ -182,20 +182,3 @@ void init_endgame(struct game_condition *game_condition)
 	init_highscores();
 }
 
-void init_game(struct game_condition *game_condition) {
-	game_condition->level = 1;
-	game_condition->score = 0;
-	game_condition->lives = 3;
-	init_level(game_condition);
-	game_state = IN_GAME;
-}
-
-void init_level(struct game_condition *game_condition) {
-	draw_blocks(game_condition);
-	game_condition->ball.vel.x = std_fixpt_i2f(1)/32;
-	game_condition->ball.vel.y = -std_fixpt_i2f(1)/32;
-	game_condition->ball.pos.x = 30;
-	game_condition->ball.pos.y = 30;
-	game_condition->paddle.x = 30;
-	game_condition->paddle.vel = 1;
-}
