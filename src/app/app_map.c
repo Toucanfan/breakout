@@ -217,41 +217,39 @@ static void handle_collision(struct ball *ball, struct paddle *paddle, char coll
 	}
 }
 
-void app_map_refresh(char should_reset, struct game_condition *game_condition)
+void app_map_init(struct game_condition *gc)
 {
-	static struct ball ball;
-	static struct paddle paddle;
-	static long *block_locations;
-	char collision;
-	if (should_reset) {
-		ball.pos.x = std_fixpt_i2f(WIDTH/2);
-		ball.pos.y = std_fixpt_i2f(HEIGHT/2);
-		ball.speed = 2;
-		ball.vel.x = ball.speed*0;
-		ball.vel.y = ball.speed*std_fixpt_i2f(1);
-		paddle.x = std_fixpt_i2f(WIDTH/2);
-		paddle.vel = std_fixpt_i2f(3)/1;
+		gc->ball.pos.x = std_fixpt_i2f(WIDTH/2);
+		gc->ball.pos.y = std_fixpt_i2f(HEIGHT/2);
+		gc->ball.speed = 2;
+		gc->ball.vel.x = ball.speed*0;
+		gc->ball.vel.y = ball.speed*std_fixpt_i2f(1);
+		gc->paddle.x = std_fixpt_i2f(WIDTH/2);
+		gc->paddle.vel = std_fixpt_i2f(3)/1;
 		std_tty_clrscr();
 		draw_borders();
-		block_locations = draw_blocks();
-		return;
-	}
-	if (collision = test_collision(&ball, block_locations, &paddle))
-		handle_collision(&ball, &paddle, collision);
-	ball.pos.x += ball.vel.x;
-	ball.pos.y += ball.vel.y;
-	draw_ball(&ball);
+		draw_blocks(gc);
+}
+
+void app_map_refresh(struct game_condition *gc)
+{
+	char collision;
+	if (collision = test_collision(&gc->ball, gc->blocks, &gc->paddle))
+		handle_collision(&gc->ball, &gc->paddle, collision);
+	gc->ball.pos.x += gc->ball.vel.x;
+	gc->ball.pos.y += gc->ball.vel.y;
+	draw_ball(&gc->ball);
 	switch (std_button_pressed()) {
 		case STD_BUTTON_LEFT:
-			paddle.x -= paddle.vel;
+			gc->paddle.x -= gc->paddle.vel;
 			break;
 		case STD_BUTTON_RIGHT:
-			paddle.x += paddle.vel;
+			gc->paddle.x += gc->paddle.vel;
 			break;
 		default:
 			break;
 	}
-	draw_paddle(&paddle);
+	draw_paddle(&gc->paddle);
 }
 
 void main(void)
