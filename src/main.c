@@ -182,13 +182,13 @@ void splash_screen(void)
 	init_menu();
 }
 
-void init_endgame(char score)
+void init_endgame(struct game_condition *game_condition)
 {
 	struct app_highscore new_highscore;
 	struct std_draw_point point;
 	char name[4];
 	if(app_highscore_test(score)) {
-		new_highscore.score = score;
+		new_highscore.score = game_condition->score;
 		point.x = 3;
 		point.y = 3;
 
