@@ -1,18 +1,9 @@
 #include "app/draw.h"
-#include "app/map.h"
 #include "std/draw.h"
 #include "std/button.h"
 #include "std/fixpt.h"
-
-#define IN_SPLASH 0
-#define IN_GAME 1
-#define IN_HELP_SCREEN 2
-#define IN_HIGHSCORE_SCREEN 3
-#define IN_MENU 4
-#define IN_DIFFICULTY_SELECT 5
-
-
-static char game_state;
+#include "app/state.h"
+#include "app/game.h"
 
 void main(void);
 void init_splash(void);
@@ -26,16 +17,6 @@ void init_help(void);
 void help_screen(void);
 void init_splash(void);
 void splash_screen(void);
-
-struct game_condition {
-	char difficulty;
-	char level;
-	char lives;
-	struct app_map_ball ball;
-	struct app_map_paddle paddle;
-	long *blocks;
-	int blocks_left;
-}
 
 void main(void)
 {
@@ -185,7 +166,7 @@ void init_game(struct game_condition *game_condition) {
 	game_condition->score = 0;
 	game_condition->lives = 3;
 	init_level(game_condition);
-	game_state = IN_GAME
+	game_state = IN_GAME;
 }
 
 void init_level(struct game_condition *game_condition) {
