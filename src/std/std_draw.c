@@ -1,6 +1,19 @@
 #include "std/draw.h"
 #include "std/tty.h"
 
+void std_draw_box(struct std_draw_box *box)
+{
+	int i, j;
+	std_tty_set_bcolor(box->color);
+	for (i = box->tl.x; i <= box->br.x; i++) {
+		for (j = box->tl.y; j <= box->br.y; j++) {
+			std_tty_gotoxy(i, j);
+			std_tty_printf(" ");
+		}
+	}
+	std_tty_set_bcolor(STD_TTY_BCOLOR_BLACK);
+}
+
 void std_draw_window(struct std_draw_window *window)
 {
 	int i, j;
@@ -18,8 +31,8 @@ void std_draw_window(struct std_draw_window *window)
 	headerExtra = width - 8 - textLength;
 
 	std_tty_gotoxy(window->tl.x, window->tl.y);
-	printf("%c", window->style.tl);
-	printf("%c", window->style.hstart);
+	std_tty_printf("%c", window->style.tl);
+	std_tty_printf("%c", window->style.hstart);
 	std_tty_reverse(1);
 	std_tty_printf("  %s  ", window->title);
 	if(window->style.fill) {
