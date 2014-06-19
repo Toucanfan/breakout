@@ -3,7 +3,7 @@
 
 #include "app/highscore.h"
 
-struct app_highscore *highscores;
+struct app_highscore highscores[5];
 
 // Resets/clears the entire highscore list. Since the score is set to 0, the
 // rendering will no display it.

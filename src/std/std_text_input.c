@@ -54,7 +54,7 @@ void std_text_input_create(struct std_draw_point *point, char *str, char str_len
 		}
 	}
 
-	for(i++; i < (str_length - 1); i++)
+	for(++i; i < (str_length - 1); i++)
 		str[i] = ' ';
 }
 

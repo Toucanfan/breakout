@@ -27,7 +27,6 @@ char game_state;
 void main(void)
 {
 	struct app_map_context ctx;
-	app_highscore_clr();
 	
 	std_tty_init();
 	std_tty_clrscr();
@@ -162,6 +161,7 @@ void init_splash(void)
 {
 	app_draw_splash();
 	game_state = IN_SPLASH;
+	app_highscore_clr();
 }
 
 void splash_screen(void)
