@@ -55,11 +55,6 @@ void app_draw_highscores(void)
 }
 
 
-void app_draw_difficulties(char selection) {
-int i;
-}
-
-/*
 void app_draw_difficulties(char selection)
 {	
 	int init = 1;
@@ -107,7 +102,7 @@ void app_draw_difficulties(char selection)
 		"   \\  /  | |____| | \\ \\  | |    | |  | |/ ____ \\| | \\ \\| |__| |",
 		"    \\/   |______|_|  \\_\\ |_|    |_|  |_/_/    \\_\\_|  \\_\\_____/ "
 	};
-
+    
 	char **difficulties[DIFFICULTY_AMOUNT];
 	difficulties[0] = easy;
 	difficulties[1] = normal;
@@ -143,7 +138,7 @@ void app_draw_difficulties(char selection)
 
 	prior_selection = selection;
 }
-*/
+
 void app_draw_help(void)
 {
 	std_tty_clrscr();
