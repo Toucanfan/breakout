@@ -170,13 +170,6 @@ static void draw_paddle(struct app_map_paddle *paddle)
 
 	x = std_fixpt_f2i(paddle->x);
 
-	if (x-PADDLE_HALF_LEN <= 1) {
-		paddle->x = std_fixpt_i2f(x_old);
-		x = x_old-1;
-	} else if (x+PADDLE_HALF_LEN >= WIDTH) {
-		paddle->x = std_fixpt_i2f(x_old);
-		x = x_old+1;
-	}
 
 	if (x != x_old) {
 		/* remove drawing of last paddle */
@@ -372,10 +365,12 @@ void app_map_refresh(struct app_map_context *ctx)
 	draw_ball(&ctx->ball);
 	switch (std_button_pressed()) {
 		case STD_BUTTON_LEFT:
-			ctx->paddle.x -= ctx->paddle.vel;
+			if (std_fixpt_f2i(ctx->paddle.x)-PADDLE_HALF_LEN != 1)
+				ctx->paddle.x -= ctx->paddle.vel;
 			break;
 		case STD_BUTTON_RIGHT:
-			ctx->paddle.x += ctx->paddle.vel;
+			if (std_fixpt_f2i(ctx->paddle.x)+PADDLE_HALF_LEN != WIDTH)
+				ctx->paddle.x += ctx->paddle.vel;
 			break;
 		default:
 			break;
