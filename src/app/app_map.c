@@ -21,7 +21,7 @@
 #define COLLISION_BOTTOM 0x4
 
 /* constants to be used when drawing blocks */
-#define BLOCK_ROWS 3
+#define BLOCK_ROWS 5
 #define BLOCK_PADDING_TOP 4
 #define BLOCK_COLUMNS 32 //size of long
 #define BLOCK_LENGTH 4
@@ -93,10 +93,11 @@ static void draw_blocks(struct app_map_context *ctx)
 	int block_start_x = WIDTH / 2 - BLOCK_COLUMNS * (BLOCK_LENGTH+BLOCK_INTERDIST_X) / 2;
 
 
-	static const long maps[3][3] = {
-		{0x00000000,0x00008000,0x00000000},
-		{0xFFFFFFFF,0xFFFFF00E,0xFFFFFFFE},
-		{0xFFFFFFFE,0xFFFFFFFE,0xFFFFFFFE}};
+	static const long maps[3][5] = {
+		{0x38000000,0x70000000,0xE6666666,0x70000000,0x38000000},
+		{0x55555555,0xAAAAAAAA,0x55555555,0x00000000,0x00000000},
+		{0x1F3E7CF8,0x11224488,0x152A54A8,0x11224488,0x1F3E7CF8}
+		};
 	
 	for (i = 0; i < BLOCK_ROWS; i++)
 		ctx->blocks[i] = maps[ctx->level-1][i];  // -1 because first level is 1 and first index is 0
