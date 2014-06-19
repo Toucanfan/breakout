@@ -33,7 +33,7 @@ void app_draw_splash(void)
 		" A:::::A                 A:::::A r:::::r           k::::::k   k:::::ka::::::::::aa:::a n::::n    n::::n oo:::::::::::oo i::::::i  d:::::::::ddd::::d",
 		"AAAAAAA                   AAAAAAArrrrrrr           kkkkkkkk    kkkkkkkaaaaaaaaaa  aaaa nnnnnn    nnnnnn   ooooooooooo   iiiiiiii   ddddddddd   ddddd"
 	};
-
+	
 	int i;
 
 	std_tty_clrscr();
@@ -60,6 +60,8 @@ void app_draw_difficulties(char selection)
 	int i;
 	int j;
 	static int prior_selection = 3;
+	char **difficulties[DIFFICULTY_AMOUNT];
+
 
 	char *easy[] = { 
 		" ______           _______     __", 
@@ -81,7 +83,7 @@ void app_draw_difficulties(char selection)
 		"|_| \\_|\\____/|_|  \\_\\_|  |_/_/    \\_\\______|"
 	};
 
-
+	
 
 	char *hard[] = { 
 		" _    _          _____  _____  ", 
@@ -91,18 +93,17 @@ void app_draw_difficulties(char selection)
 		"| |  | |/ ____ \\| | \\ \\| |__| |",
 		"|_|  |_/_/    \\_\\_|  \\_\\_____/ "
 	};
+		
+	char *very_hard[5];
+	 
+	very_hard[0] = "__      ________ _______     __  _    _          _____  _____  ";
+	very_hard[1] = "\\ \\    / /  ____|  __ \\ \\   / / | |  | |   /\\   |  __ \\|  __ \\ "; 
+	very_hard[2] = " \\ \\  / /| |__  | |__) \\ \\_/ /  | |__| |  /  \\  | |__) | |  | |";
+	very_hard[3] = "   \\  /  | |____| | \\ \\  | |    | |  | |/ ____ \\| | \\ \\| |__| |";
+	very_hard[4] = "    \\/   |______|_|  \\_\\ |_|    |_|  |_/_/    \\_\\_|  \\_\\_____/ ";
 
 
-	char *very_hard[] = { 
-		"__      ________ _______     __  _    _          _____  _____  ", 
-		"\\ \\    / /  ____|  __ \\ \\   / / | |  | |   /\\   |  __ \\|  __ \\ ", 
-		" \\ \\  / /| |__  | |__) \\ \\_/ /  | |__| |  /  \\  | |__) | |  | |",
-		"  \\ \\/ / |  __| |  _  / \\   /   |  __  | / /\\ \\ |  _  /| |  | |",
-		"   \\  /  | |____| | \\ \\  | |    | |  | |/ ____ \\| | \\ \\| |__| |",
-		"    \\/   |______|_|  \\_\\ |_|    |_|  |_/_/    \\_\\_|  \\_\\_____/ "
-	};
-    
-	char **difficulties[DIFFICULTY_AMOUNT];
+	
 	difficulties[0] = easy;
 	difficulties[1] = normal;
 	difficulties[2] = hard;
