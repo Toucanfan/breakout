@@ -19,6 +19,7 @@ static struct timer_state {
 static struct timer_state timer0_state;
 static struct timer_state timer1_state;
 static struct timer_state timer2_state;
+static struct timer_state timer3_state;
 
 
 #pragma interrupt
@@ -48,6 +49,16 @@ void timer2_irq_handler(void)
 	if (timer2_state.subcount == timer2_state.subcount_max) {
 		timer2_state.subcount = 0;
 		timer2_state.count++;
+	}
+}
+
+#pragma interrupt
+void timer3_irq_handler(void)
+{
+	timer3_state.subcount++;
+	if (timer3_state.subcount == timer3_state.subcount_max) {
+		timer3_state.subcount = 0;
+		timer3_state.count++;
 	}
 }
 
@@ -97,6 +108,17 @@ void hal_timer_configure(char timer, int subcount_max)
 		timer2_state.subcount_max = subcount_max;
 		SET_VECTOR(TIMER2, timer2_irq_handler);
 		break;
+	case HAL_TIMER_3:
+		T3CTL |= 0x39; 
+		T3H = 0x00;
+		T3L = 0x01;
+		T3RH = 0x00;
+		T3RL = 0x48;
+		IRQ2ENH &= ~0x80;
+		IRQ2ENL |= 0x80;
+		timer2_state.subcount_max = subcount_max;
+		SET_VECTOR(TIMER3, timer3_irq_handler);
+		break;
 	default:
 		break;
 	}
@@ -119,6 +141,10 @@ void hal_timer_start(char timer)
 		T2CTL |= 0x80;
 		break;
 
+	case HAL_TIMER_3:
+		T3CTL |= 0x80;
+		break;
+
 	default:
 		break;
 	}
@@ -139,6 +165,10 @@ void hal_timer_stop(char timer)
 	
 	case HAL_TIMER_2:
 		T2CTL &= ~0x80;
+		break;
+
+	case HAL_TIMER_3:
+		T3CTL &= ~0x80;
 		break;
 
 	default:
