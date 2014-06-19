@@ -43,8 +43,7 @@ void std_text_input_create(struct std_draw_point *point, char *str, char str_len
 		std_tty_gotoxy(point->x + i, point->y);
 
 		key = getch();
-		std_tty_printf("%05d", key);
-		if(97 <= key && key <= 122 && i < str_length - 1) {
+		if(test_func(key) && i < str_length - 1) {
 			str[i] = key;
 			i++;
 		} else if(key == BACKSPACE && i > 0) {
