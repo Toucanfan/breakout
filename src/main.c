@@ -122,7 +122,7 @@ void diff_select_screen(struct app_map_context *ctx)
 			app_draw_difficulties(cur_diff_selection);
 			break;
 		case STD_BUTTON_MIDDLE:
-			ctx->difficulty = cur_diff_selection;
+			ctx->difficulty = cur_diff_selection + 1;  // Allows difficulty to be used as a multiplier
 			init_game(ctx);
 			break;
 		default:

@@ -218,8 +218,8 @@ static char test_block_collision(struct app_map_context *ctx)
 	int temp_posy;
 	
 	struct std_draw_box cur_block;
-	int ball_x = std_fixpt_f2i(ctx->ball.pos.x) + 1;  // not 100% about this
-	int ball_y = std_fixpt_f2i(ctx->ball.pos.y) + 1;
+	int ball_x = std_fixpt_f2i(ctx->ball.pos.x);  // not 100% about this
+	int ball_y = std_fixpt_f2i(ctx->ball.pos.y);
 	
 	int block_start_x = WIDTH / 2 - BLOCK_COLUMNS * (BLOCK_LENGTH+BLOCK_INTERDIST_X) / 2;
 	
@@ -234,25 +234,23 @@ static char test_block_collision(struct app_map_context *ctx)
 			if(ctx->blocks[i] & (0x80000000 >> j)) // test if there is block
 				if ((cur_block.tl.x <= ball_x && ball_x <= cur_block.br.x) && (cur_block.tl.y <= ball_y && ball_y <= cur_block.br.y)) {
 					temp_fpos = ctx->ball.pos;
-					temp_posx = std_fixpt_f2i(temp_fpos.x) + 1;
-					temp_posy = std_fixpt_f2i(temp_fpos.y) + 1;
-					while ((cur_block.tl.x <= temp_posx && temp_posx <= cur_block.br.x) && (cur_block.tl.y <= temp_posy && temp_posy <= cur_block.br.y)) {
+					do {
 						temp_fpos.x -= ctx->ball.vel.x / PRECISION;
 						temp_fpos.y -= ctx->ball.vel.y / PRECISION;
-						temp_posx = std_fixpt_f2i(temp_fpos.x) + 1;
-						temp_posy = std_fixpt_f2i(temp_fpos.y) + 1;
-					}
-					ctx->blocks[i] &= ~(0x80000000 >> j);
-					ctx->blocks_left--;
-					std_draw_box(&cur_block); // delete block
+						temp_posx = std_fixpt_f2i(temp_fpos.x);
+						temp_posy = std_fixpt_f2i(temp_fpos.y);
+					} while ((cur_block.tl.x <= temp_posx && temp_posx <= cur_block.br.x) && (cur_block.tl.y <= temp_posy && temp_posy <= cur_block.br.y))
+					
+					ctx->blocks[i] &= ~(0x80000000 >> j); // remove block from storage
+					ctx->blocks_left--;                   // update counter
+					ctx->score += ctx->difficulty;        // increase score
+					std_draw_box(&cur_block);             // remove block from screen
 					std_tty_gotoxy(10,10);
 					std_tty_printf("%i", ctx->blocks_left);
 					if (!(cur_block.tl.y <= temp_posy && temp_posy <= cur_block.br.y))
 						return COLLISION_HORIZONTAL;
-						//return COLLISION_VERTICAL;
 					else 
 						return COLLISION_VERTICAL;
-						//return COLLISION_HORIZONTAL;
 				}
 			cur_block.tl.x += BLOCK_INTERDIST_X + BLOCK_LENGTH;
 			cur_block.br.x += BLOCK_INTERDIST_X + BLOCK_LENGTH;
