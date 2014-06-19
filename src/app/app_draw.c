@@ -12,38 +12,31 @@
 #define DIFFICULTY_INTERDIST_Y 1
 #define DIFFICULTY_AMOUNT 4
 
+void draw_line(char *string, char offset, char line);
+
 void app_draw_splash(void) 
 {
-	char *strings[SPLASH_ROWS] = { 
-		"                                                                                                                                            dddddddd", 
-		"               AAA                                 kkkkkkkk                                                               iiii              d::::::d", 
-		"              A:::A                                k::::::k                                                              i::::i             d::::::d",
-		"             A:::::A                               k::::::k                                                               iiii              d::::::d",
-		"            A:::::::A                              k::::::k                                                                                 d:::::d ",
-		"           A:::::::::A          rrrrr   rrrrrrrrr   k:::::k    kkkkkkkaaaaaaaaaaaaa  nnnn  nnnnnnnn       ooooooooooo   iiiiiii     ddddddddd:::::d ",
-		"          A:::::A:::::A         r::::rrr:::::::::r  k:::::k   k:::::k a::::::::::::a n:::nn::::::::nn   oo:::::::::::oo i:::::i   dd::::::::::::::d ",
-		"         A:::::A A:::::A        r:::::::::::::::::r k:::::k  k:::::k  aaaaaaaaa:::::an::::::::::::::nn o:::::::::::::::o i::::i  d::::::::::::::::d ",
-		"        A:::::A   A:::::A       rr::::::rrrrr::::::rk:::::k k:::::k            a::::ann:::::::::::::::no:::::ooooo:::::o i::::i d:::::::ddddd:::::d ",
-		"       A:::::A     A:::::A       r:::::r     r:::::rk::::::k:::::k      aaaaaaa:::::a  n:::::nnnn:::::no::::o     o::::o i::::i d::::::d    d:::::d ",
-		"      A:::::AAAAAAAAA:::::A      r:::::r     rrrrrrrk:::::::::::k     aa::::::::::::a  n::::n    n::::no::::o     o::::o i::::i d:::::d     d:::::d ",
-		"     A:::::::::::::::::::::A     r:::::r            k:::::::::::k    a::::aaaa::::::a  n::::n    n::::no::::o     o::::o i::::i d:::::d     d:::::d ",
-		"    A:::::AAAAAAAAAAAAA:::::A    r:::::r            k::::::k:::::k  a::::a    a:::::a  n::::n    n::::no::::o     o::::o i::::i d:::::d     d:::::d ",
-		"   A:::::A             A:::::A   r:::::r           k::::::k k:::::k a::::a    a:::::a  n::::n    n::::no:::::ooooo:::::oi::::::id::::::ddddd::::::dd",
-		"  A:::::A               A:::::A  r:::::r           k::::::k  k:::::ka:::::aaaa::::::a  n::::n    n::::no:::::::::::::::oi::::::i d:::::::::::::::::d",
-		" A:::::A                 A:::::A r:::::r           k::::::k   k:::::ka::::::::::aa:::a n::::n    n::::n oo:::::::::::oo i::::::i  d:::::::::ddd::::d",
-		"AAAAAAA                   AAAAAAArrrrrrr           kkkkkkkk    kkkkkkkaaaaaaaaaa  aaaa nnnnnn    nnnnnn   ooooooooooo   iiiiiiii   ddddddddd   ddddd"
-	};
+	int line = SPLASH_OFFSET_Y;
 	
-	int i;
-
 	std_tty_clrscr();
 	std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
-	for (i = 0; i < SPLASH_ROWS; i++) {
-		std_tty_gotoxy(SPLASH_OFFSET_X,SPLASH_OFFSET_Y+i);
-		std_tty_printf("%s",strings[i]);
-	}
-
-
+	draw_line("                                                                                                                                            dddddddd",SPLASH_OFFSET_X,line++);
+	draw_line("               AAA                                 kkkkkkkk                                                               iiii              d::::::d",SPLASH_OFFSET_X,line++);
+	draw_line("              A:::A                                k::::::k                                                              i::::i             d::::::d",SPLASH_OFFSET_X,line++);
+	draw_line("             A:::::A                               k::::::k                                                               iiii              d::::::d",SPLASH_OFFSET_X,line++);
+	draw_line("            A:::::::A                              k::::::k                                                                                 d:::::d ",SPLASH_OFFSET_X,line++);
+	draw_line("           A:::::::::A          rrrrr   rrrrrrrrr   k:::::k    kkkkkkkaaaaaaaaaaaaa  nnnn  nnnnnnnn       ooooooooooo   iiiiiii     ddddddddd:::::d ",SPLASH_OFFSET_X,line++);
+	draw_line("          A:::::A:::::A         r::::rrr:::::::::r  k:::::k   k:::::k a::::::::::::a n:::nn::::::::nn   oo:::::::::::oo i:::::i   dd::::::::::::::d ",SPLASH_OFFSET_X,line++);
+	draw_line("         A:::::A A:::::A        r:::::::::::::::::r k:::::k  k:::::k  aaaaaaaaa:::::an::::::::::::::nn o:::::::::::::::o i::::i  d::::::::::::::::d ",SPLASH_OFFSET_X,line++);
+	draw_line("        A:::::A   A:::::A       rr::::::rrrrr::::::rk:::::k k:::::k            a::::ann:::::::::::::::no:::::ooooo:::::o i::::i d:::::::ddddd:::::d ",SPLASH_OFFSET_X,line++);
+	draw_line("       A:::::A     A:::::A       r:::::r     r:::::rk::::::k:::::k      aaaaaaa:::::a  n:::::nnnn:::::no::::o     o::::o i::::i d::::::d    d:::::d ",SPLASH_OFFSET_X,line++);
+	draw_line("      A:::::AAAAAAAAA:::::A      r:::::r     rrrrrrrk:::::::::::k     aa::::::::::::a  n::::n    n::::no::::o     o::::o i::::i d:::::d     d:::::d ",SPLASH_OFFSET_X,line++);
+	draw_line("     A:::::::::::::::::::::A     r:::::r            k:::::::::::k    a::::aaaa::::::a  n::::n    n::::no::::o     o::::o i::::i d:::::d     d:::::d ",SPLASH_OFFSET_X,line++);
+	draw_line("    A:::::AAAAAAAAAAAAA:::::A    r:::::r            k::::::k:::::k  a::::a    a:::::a  n::::n    n::::no::::o     o::::o i::::i d:::::d     d:::::d ",SPLASH_OFFSET_X,line++);
+	draw_line("   A:::::A             A:::::A   r:::::r           k::::::k k:::::k a::::a    a:::::a  n::::n    n::::no:::::ooooo:::::oi::::::id::::::ddddd::::::dd",SPLASH_OFFSET_X,line++);
+	draw_line("  A:::::A               A:::::A  r:::::r           k::::::k  k:::::ka:::::aaaa::::::a  n::::n    n::::no:::::::::::::::oi::::::i d:::::::::::::::::d",SPLASH_OFFSET_X,line++);
+	draw_line(" A:::::A                 A:::::A r:::::r           k::::::k   k:::::ka::::::::::aa:::a n::::n    n::::n oo:::::::::::oo i::::::i  d:::::::::ddd::::d",SPLASH_OFFSET_X,line++);
+	draw_line("AAAAAAA                   AAAAAAArrrrrrr           kkkkkkkk    kkkkkkkaaaaaaaaaa  aaaa nnnnnn    nnnnnn   ooooooooooo   iiiiiiii   ddddddddd   ddddd",SPLASH_OFFSET_X,line++);
 }
 
 void app_draw_highscores(void)
@@ -156,4 +149,8 @@ void app_draw_menu(char selection)
 	std_tty_printf("%c",0x3E);
 }
 
-
+void draw_line(char *string, char offset, char line)
+{
+	std_tty_gotoxy(offset,line);
+	std_tty_printf("%s",string);
+}
