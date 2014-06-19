@@ -14,7 +14,7 @@
 #define draw_line(string,offset,line) \
 do { \
   std_tty_gotoxy(offset,line);\
-  std_tty_printf("%s",string);\
+  std_tty_printf(string);\
 } while (0)
 
 void app_draw_splash(void) 
@@ -52,85 +52,71 @@ void app_draw_highscores(void)
 
 void app_draw_difficulties(char selection)
 {	
-	int init = 1;
+	char init = 1; 
+	char line = DIFFICULTY_OFFSET_Y;
 	int i;
-	int j;
 	static int prior_selection = 3;
-	char **difficulties[3];
 
-
-	char *easy[] = { 
-		" ______           _______     __", 
-		"|  ____|   /\\    / ____\\ \\   / /", 
-		"| |__     /  \\  | (___  \\ \\_/ / ",
-		"|  __|   / /\\ \\  \\___ \\  \\   /  ",
-		"| |____ / ____ \\ ____) |  | |  ",
-		"|______/_/    \\_\\_____/   |_|   "
-	};
-
-
-
-	char *normal[] = { 
-		" _   _  ____  _____  __  __          _    ", 
-		"| \\ | |/ __ \\|  __ \\|  \\/  |   /\\   | |     ", 
-		"|  \\| | |  | | |__) | \\  / |  /  \\  | |     ",
-		"| . ` | |  | |  _  /| |\\/| | / /\\ \\ | |     ",
-		"| |\\  | |__| | | \\ \\| |  | |/ ____ \\| |____ ",
-		"|_| \\_|\\____/|_|  \\_\\_|  |_/_/    \\_\\______|"
-	};
-
-	char *hard[];
-	printf(" _    _          _____  _____  ");
-	
-	hard[0] = " _    _          _____  _____  ";
-	hard[1] = "| |  | |   /\\   |  __ \\|  __ \\ ";
-	hard[2] = "| |__| |  /  \\  | |__) | |  | |";
-    hard[3] = "|  __  | / /\\ \\ |  _  /| |  | |";
-	hard[4] = "| |  | |/ ____ \\| | \\ \\| |__| |";
-	hard[5] = "|_|  |_/_/    \\_\\_|  \\_\\_____/ ";
-	 
-	difficulties[3][0] = "__      ________ _______     __  _    _          _____  _____  ";
-	difficulties[3][1] = "\\ \\    / /  ____|  __ \\ \\   / / | |  | |   /\\   |  __ \\|  __ \\ "; 
-	difficulties[3][2] = " \\ \\  / /| |__  | |__) \\ \\_/ /  | |__| |  /  \\  | |__) | |  | |";
-	difficulties[3][3] = "  \\ \\/ / |  __| |  _  / \\   /   |  __  | / /\\ \\ |  _  /| |  | |";
-	difficulties[3][4] = "   \\  /  | |____| | \\ \\  | |    | |  | |/ ____ \\| | \\ \\| |__| |";
-	difficulties[3][5] = "    \\/   |______|_|  \\_\\ |_|    |_|  |_/_/    \\_\\_|  \\_\\_____/ ";
-
-printf("%s","hasjdæasdjlsadlsaello");
-printf("%s","hasjdæasdjasdasdaello");
-printf("%s","hasjdæakasædjasdjlkadlsaello");
-printf(" \\ \\aslædkcæodjgvliufdvduimigivgigvdigdivgijmdmg  / /| |__  | |__) \\ \\_/ /  | |__| |  /siuvdsjvglfduhgvdfbngldfknh  \\  | |__) | |  | |");
-std_tty_printf(" \\ \\aslædkcæodjgvliufdvduimigivgigvdigdivgsdfækkjdsljgvhfcmgvoføojp__| |  /siuvdsjvglfduhgvdfbngldfknh  \\  | |__) | |  | |");
-std_tty_printf("loaskodøøåasdøåoiiasøoidkaskdpaspdpuasduiukdsaiuæoasoiudoasdonasndnisdaludsalnsdl");
-std_tty_printf("ojhsafouisodfoiusdlfjsdjflsdljfjlljsdfllkjsdfljlsjkdfljsdljfl");
-	std_tty_clrscr();
-	std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
-
-	if (init) {
-		// draw all
-		for (j = 0; j < DIFFICULTY_AMOUNT; j++)
-			for (i = 0; i < DIFFICULTY_ROWS; i++) {
-			std_tty_gotoxy(DIFFICULTY_OFFSET_X,DIFFICULTY_OFFSET_Y+(DIFFICULTY_INTERDIST_Y+DIFFICULTY_ROWS)*prior_selection+i);
-			std_tty_printf("%s",difficulties[j][i]);
-			}
-	} else {
-		// redraw old
-		for (i = 0; i < DIFFICULTY_ROWS; i++) {
-		std_tty_gotoxy(DIFFICULTY_OFFSET_X,DIFFICULTY_OFFSET_Y+(DIFFICULTY_INTERDIST_Y+DIFFICULTY_ROWS)*prior_selection+i);   
-		std_tty_printf("%s",difficulties[prior_selection][i]);
-		}
-	} 
-	
-	// highlight selection
-	std_tty_blink(1);
-	std_tty_set_fcolor(STD_TTY_FCOLOR_RED);
-	for (i = 0; i < DIFFICULTY_ROWS; i++) {
-		std_tty_gotoxy(DIFFICULTY_OFFSET_X,DIFFICULTY_OFFSET_Y+(DIFFICULTY_INTERDIST_Y+DIFFICULTY_ROWS)*selection+i);
-		std_tty_printf("%s",difficulties[selection][i]);
+	if (selection)
+		std_tty_set_fcolor(STD_TTY_FCOLOR_RED);
+	else
+		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
+	if(selection || prior_selection || init) {
+		draw_line(" ______           _______     __",DIFFICULTY_OFFSET_X,line++)
+		draw_line("|  ____|   /\\    / ____\\ \\   / /",DIFFICULTY_OFFSET_X,line++)
+		draw_line("| |__     /  \\  | (___  \\ \\_/ / ",DIFFICULTY_OFFSET_X,line++)
+		draw_line("|  __|   / /\\ \\  \\___ \\  \\   /  ",DIFFICULTY_OFFSET_X,line++)
+		draw_line("| |____ / ____ \\ ____) |  | |  ",DIFFICULTY_OFFSET_X,line++)
+		draw_line("|______/_/    \\_\\_____/   |_|   ",DIFFICULTY_OFFSET_X,line++)
 	}
-	std_tty_blink(0);
 
-	prior_selection = selection;
+	for (i = 0; i < DIFFICULTY_INTERDIST_Y; i++)
+		std_tty_printf("\n");
+
+	if (selection)
+		std_tty_set_fcolor(STD_TTY_FCOLOR_RED);
+	else
+		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
+	if(selection || prior_selection || init) {
+		draw_line(" _   _  ____  _____  __  __          _    ",DIFFICULTY_OFFSET_X,line++)
+		draw_line("| \\ | |/ __ \\|  __ \\|  \\/  |   /\\   | |     ",DIFFICULTY_OFFSET_X,line++)
+		draw_line("|  \\| | |  | | |__) | \\  / |  /  \\  | |     ",DIFFICULTY_OFFSET_X,line++)
+		draw_line("| . ` | |  | |  _  /| |\\/| | / /\\ \\ | |     ",DIFFICULTY_OFFSET_X,line++)
+		draw_line("| |\\  | |__| | | \\ \\| |  | |/ ____ \\| |____ ",DIFFICULTY_OFFSET_X,line++)
+		draw_line("|_| \\_|\\____/|_|  \\_\\_|  |_/_/    \\_\\______|",DIFFICULTY_OFFSET_X,line++)
+	}
+
+	for (i = 0; i < DIFFICULTY_INTERDIST_Y; i++)
+		std_tty_printf("\n");
+
+	if (selection)
+		std_tty_set_fcolor(STD_TTY_FCOLOR_RED);
+	else
+		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
+	if(selection || prior_selection || init) {
+		draw_line(" _    _          _____  _____  ",DIFFICULTY_OFFSET_X,line++)
+		draw_line("| |  | |   /\\   |  __ \\|  __ \\ ",DIFFICULTY_OFFSET_X,line++)
+		draw_line("| |__| |  /  \\  | |__) | |  | |",DIFFICULTY_OFFSET_X,line++)
+		draw_line("|  __  | / /\\ \\ |  _  /| |  | |",DIFFICULTY_OFFSET_X,line++)
+		draw_line("| |  | |/ ____ \\| | \\ \\| |__| |",DIFFICULTY_OFFSET_X,line++)
+		draw_line("|_|  |_/_/    \\_\\_|  \\_\\_____/ ",DIFFICULTY_OFFSET_X,line++)
+	}
+
+	for (i = 0; i < DIFFICULTY_INTERDIST_Y; i++)
+		std_tty_printf("\n");
+
+	if (selection)
+		std_tty_set_fcolor(STD_TTY_FCOLOR_RED);
+	else
+		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
+	if(selection || prior_selection || init) {
+		draw_line("__      ________ _______     __  _    _          _____  _____  ",DIFFICULTY_OFFSET_X,line++)
+		draw_line("\\ \\    / /  ____|  __ \\ \\   / / | |  | |   /\\   |  __ \\|  __ \\ ",DIFFICULTY_OFFSET_X,line++)
+		draw_line(" \\ \\  / /| |__  | |__) \\ \\_/ /  | |__| |  /  \\  | |__) | |  | |",DIFFICULTY_OFFSET_X,line++)
+		draw_line("  \\ \\/ / |  __| |  _  / \\   /   |  __  | / /\\ \\ |  _  /| |  | |",DIFFICULTY_OFFSET_X,line++)
+		draw_line("   \\  /  | |____| | \\ \\  | |    | |  | |/ ____ \\| | \\ \\| |__| |",DIFFICULTY_OFFSET_X,line++)
+		draw_line("    \\/   |______|_|  \\_\\ |_|    |_|  |_/_/    \\_\\_|  \\_\\_____/ ",DIFFICULTY_OFFSET_X,line++)
+	}
 }
 
 void app_draw_help(void)
