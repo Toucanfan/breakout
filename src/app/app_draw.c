@@ -7,7 +7,10 @@
 
 void app_draw_splash(void) 
 {
-const char* Title[] = { "first", "second", "third" };
+const char **Title[] = { 
+"first", 
+"second", 
+"third" };
 
 
 }
