@@ -20,5 +20,6 @@ void app_draw_highscores(void);
 void app_draw_menu(char selection);
 void app_draw_help(void);
 void app_draw_difficulties(char selection);
+void app_draw_endgame(void);
 
 #endif /* app/draw.h */

@@ -26,8 +26,8 @@
  * Here a 4 character text input is created at (3, 1) and only letters can be entered.
  */
 
-#define BACKSPACE 0x0
-#define ENTER 0x95
+#define BACKSPACE 127
+#define ENTER 13
 
 void std_text_input_create(struct std_draw_point *point, char *str, char str_length, char (*test_func)(char input))
 {

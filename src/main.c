@@ -27,6 +27,7 @@ char game_state;
 void main(void)
 {
 	struct app_map_context ctx;
+	app_highscore_clr();
 	
 	std_tty_init();
 	std_tty_clrscr();
@@ -175,13 +176,17 @@ void init_endgame(struct app_map_context *ctx)
 	struct std_draw_point point;
 	char name[4];
 	if(app_highscore_test(ctx->score)) {
+		app_draw_endgame();
 		new_highscore.score = ctx->score;
 		point.x = 3;
 		point.y = 3;
 
 		std_text_input_create(&point, name, 4, &std_ti_letters_test);
 
-		new_highscore.name = name;
+		new_highscore.name[0] = name[0];
+		new_highscore.name[1] = name[1];
+		new_highscore.name[2] = name[2];
+		new_highscore.name[3] = name[3];
 
 		app_add_highscore(new_highscore);
 	}

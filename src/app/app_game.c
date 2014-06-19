@@ -18,8 +18,6 @@ void game_tick (struct app_map_context *ctx)
 	
 	if (ctx->lives == 0) {
 		init_endgame(ctx); //  HENRIKS FUNKTION OM HIGHSCORE
-		std_tty_gotoxy(5,5);
-		std_tty_printf("troels");
 	}
 }
 
