@@ -60,7 +60,7 @@ void app_draw_difficulties(char selection)
 	int i;
 	int j;
 	static int prior_selection = 3;
-	char **difficulties[DIFFICULTY_AMOUNT];
+	char **difficulties[3];
 
 
 	char *easy[] = { 
@@ -83,9 +83,9 @@ void app_draw_difficulties(char selection)
 		"|_| \\_|\\____/|_|  \\_\\_|  |_/_/    \\_\\______|"
 	};
 
-	
-
 	char *hard[];
+	printf(" _    _          _____  _____  ");
+	
 	hard[0] = " _    _          _____  _____  ";
 	hard[1] = "| |  | |   /\\   |  __ \\|  __ \\ ";
 	hard[2] = "| |__| |  /  \\  | |__) | |  | |";
@@ -98,8 +98,10 @@ void app_draw_difficulties(char selection)
 	difficulties[3][2] = " \\ \\  / /| |__  | |__) \\ \\_/ /  | |__| |  /  \\  | |__) | |  | |";
 	difficulties[3][3] = "  \\ \\/ / |  __| |  _  / \\   /   |  __  | / /\\ \\ |  _  /| |  | |";
 	difficulties[3][4] = "   \\  /  | |____| | \\ \\  | |    | |  | |/ ____ \\| | \\ \\| |__| |";
-	difficulties[3][5] = "    \\/   |______|_|  \\_\\ |_|    |_|  |_/_/    \\_\\_|  \\_\\_____/ ";
+//	difficulties[3][5] = "    \\/   |______|_|  \\_\\ |_|    |_|  |_/_/    \\_\\_|  \\_\\_____/ ";
 
+printf(" \\ \\aslædkcæodjgvliufdvduimigivgigvdigdivgijmdmg  / /| |__  | |__) \\ \\_/ /  | |__| |  /siuvdsjvglfduhgvdfbngldfknh  \\  | |__) | |  | |");
+printf(" \\ \\aslædkcæodjgvliufdvduimigivgigvdigdivgsdfækkjdsljgvhfcmgvoføojp__| |  /siuvdsjvglfduhgvdfbngldfknh  \\  | |__) | |  | |");
 
 	std_tty_clrscr();
 	std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
