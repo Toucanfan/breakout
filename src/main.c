@@ -27,6 +27,7 @@ char game_state;
 void main(void)
 {
 	struct app_map_context ctx;
+	app_highscore_clr();
 	
 	std_tty_init();
 	std_tty_clrscr();
@@ -175,6 +176,7 @@ void init_endgame(struct app_map_context *ctx)
 	struct std_draw_point point;
 	char name[4];
 	if(app_highscore_test(ctx->score)) {
+		app_draw_endgame();
 		new_highscore.score = ctx->score;
 		point.x = 3;
 		point.y = 3;

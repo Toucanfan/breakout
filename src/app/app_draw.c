@@ -1,6 +1,7 @@
 #include "std/draw.h"
 #include "std/tty.h"
 #include "app/draw.h"
+#include "app/highscore.h"
 
 void app_draw_splash(void) 
 {
@@ -13,7 +14,7 @@ void app_draw_highscores(void)
 {
 	std_tty_clrscr();
 	std_tty_gotoxy(1,1);
-	std_tty_printf("highscores bitch");
+	app_render_highscore();
 }
 
 void app_draw_menu(char selection)
@@ -55,4 +56,10 @@ void app_draw_difficulties(char selection)
 	std_tty_printf("%c",0x3E);
 }
 
+void app_draw_endgame()
+{
+	std_tty_clrscr();
+	std_tty_gotoxy(5,2);
+	std_tty_printf("Game Over");
+}
 
