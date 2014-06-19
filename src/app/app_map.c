@@ -25,7 +25,7 @@
 #define BLOCK_PADDING_TOP 4
 #define BLOCK_COLUMNS 32 //size of long
 #define BLOCK_LENGTH 4
-#define BLOCK_HEIGHT 1
+#define BLOCK_HEIGHT 2
 #define BLOCK_INTERDIST_X 1
 #define BLOCK_INTERDIST_Y 1
 #define PRECISION 128
@@ -165,7 +165,7 @@ static void draw_ball(struct app_map_ball *ball)
 
 static void draw_paddle(struct app_map_paddle *paddle)
 {
-	static int x_old = 10;
+	static int x_old = 30;
 	int x;
 
 	x = std_fixpt_f2i(paddle->x);
@@ -365,11 +365,15 @@ void app_map_refresh(struct app_map_context *ctx)
 	draw_ball(&ctx->ball);
 	switch (std_button_pressed()) {
 		case STD_BUTTON_LEFT:
-			if (std_fixpt_f2i(ctx->paddle.x)-PADDLE_HALF_LEN != 1)
+			if (std_fixpt_f2i(ctx->paddle.x-ctx->paddle.vel)-PADDLE_HALF_LEN <= 1)
+				ctx->paddle.x = std_fixpt_i2f(1+PADDLE_HALF_LEN);
+			else
 				ctx->paddle.x -= ctx->paddle.vel;
 			break;
 		case STD_BUTTON_RIGHT:
-			if (std_fixpt_f2i(ctx->paddle.x)+PADDLE_HALF_LEN != WIDTH)
+			if (std_fixpt_f2i(ctx->paddle.x+ctx->paddle.vel)+PADDLE_HALF_LEN >= WIDTH)
+				ctx->paddle.x = std_fixpt_i2f(WIDTH-PADDLE_HALF_LEN);
+			else
 				ctx->paddle.x += ctx->paddle.vel;
 			break;
 		default:
