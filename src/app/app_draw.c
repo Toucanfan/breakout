@@ -3,11 +3,14 @@
 #include "app/draw.h"
 #include "app/highscore.h"
 
+#define splash_offset_x 20
+#define splash_offset_y 30
+
 void app_draw_splash(void) 
 {
-	std_tty_clrscr();
-	std_tty_gotoxy(3,3);
-	std_tty_printf("Splash motherfucker");
+const char* Title[] = { "first", "second", "third" };
+
+
 }
 
 void app_draw_highscores(void)
