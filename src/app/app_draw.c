@@ -63,12 +63,12 @@ void app_draw_difficulties(char selection)
 	else
 		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
 	if(selection || prior_selection || init) {
-		draw_line(" ______           _______     __",DIFFICULTY_OFFSET_X,line++)
-		draw_line("|  ____|   /\\    / ____\\ \\   / /",DIFFICULTY_OFFSET_X,line++)
-		draw_line("| |__     /  \\  | (___  \\ \\_/ / ",DIFFICULTY_OFFSET_X,line++)
-		draw_line("|  __|   / /\\ \\  \\___ \\  \\   /  ",DIFFICULTY_OFFSET_X,line++)
-		draw_line("| |____ / ____ \\ ____) |  | |  ",DIFFICULTY_OFFSET_X,line++)
-		draw_line("|______/_/    \\_\\_____/   |_|   ",DIFFICULTY_OFFSET_X,line++)
+		draw_line(" ______           _______     __",DIFFICULTY_OFFSET_X,line++);
+		draw_line("|  ____|   /\\    / ____\\ \\   / /",DIFFICULTY_OFFSET_X,line++);
+		draw_line("| |__     /  \\  | (___  \\ \\_/ / ",DIFFICULTY_OFFSET_X,line++);
+		draw_line("|  __|   / /\\ \\  \\___ \\  \\   /  ",DIFFICULTY_OFFSET_X,line++);
+		draw_line("| |____ / ____ \\ ____) |  | |  ",DIFFICULTY_OFFSET_X,line++);
+		draw_line("|______/_/    \\_\\_____/   |_|   ",DIFFICULTY_OFFSET_X,line++);
 	}
 
 	for (i = 0; i < DIFFICULTY_INTERDIST_Y; i++)
@@ -79,12 +79,12 @@ void app_draw_difficulties(char selection)
 	else
 		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
 	if(selection || prior_selection || init) {
-		draw_line(" _   _  ____  _____  __  __          _    ",DIFFICULTY_OFFSET_X,line++)
-		draw_line("| \\ | |/ __ \\|  __ \\|  \\/  |   /\\   | |     ",DIFFICULTY_OFFSET_X,line++)
-		draw_line("|  \\| | |  | | |__) | \\  / |  /  \\  | |     ",DIFFICULTY_OFFSET_X,line++)
-		draw_line("| . ` | |  | |  _  /| |\\/| | / /\\ \\ | |     ",DIFFICULTY_OFFSET_X,line++)
-		draw_line("| |\\  | |__| | | \\ \\| |  | |/ ____ \\| |____ ",DIFFICULTY_OFFSET_X,line++)
-		draw_line("|_| \\_|\\____/|_|  \\_\\_|  |_/_/    \\_\\______|",DIFFICULTY_OFFSET_X,line++)
+		draw_line(" _   _  ____  _____  __  __          _    ",DIFFICULTY_OFFSET_X,line++);
+		draw_line("| \\ | |/ __ \\|  __ \\|  \\/  |   /\\   | |     ",DIFFICULTY_OFFSET_X,line++);
+		draw_line("|  \\| | |  | | |__) | \\  / |  /  \\  | |     ",DIFFICULTY_OFFSET_X,line++);
+		draw_line("| . ` | |  | |  _  /| |\\/| | / /\\ \\ | |     ",DIFFICULTY_OFFSET_X,line++);
+		draw_line("| |\\  | |__| | | \\ \\| |  | |/ ____ \\| |____ ",DIFFICULTY_OFFSET_X,line++);
+		draw_line("|_| \\_|\\____/|_|  \\_\\_|  |_/_/    \\_\\______|",DIFFICULTY_OFFSET_X,line++);
 	}
 
 	for (i = 0; i < DIFFICULTY_INTERDIST_Y; i++)
@@ -95,12 +95,12 @@ void app_draw_difficulties(char selection)
 	else
 		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
 	if(selection || prior_selection || init) {
-		draw_line(" _    _          _____  _____  ",DIFFICULTY_OFFSET_X,line++)
-		draw_line("| |  | |   /\\   |  __ \\|  __ \\ ",DIFFICULTY_OFFSET_X,line++)
-		draw_line("| |__| |  /  \\  | |__) | |  | |",DIFFICULTY_OFFSET_X,line++)
-		draw_line("|  __  | / /\\ \\ |  _  /| |  | |",DIFFICULTY_OFFSET_X,line++)
-		draw_line("| |  | |/ ____ \\| | \\ \\| |__| |",DIFFICULTY_OFFSET_X,line++)
-		draw_line("|_|  |_/_/    \\_\\_|  \\_\\_____/ ",DIFFICULTY_OFFSET_X,line++)
+		draw_line(" _    _          _____  _____  ",DIFFICULTY_OFFSET_X,line++);
+		draw_line("| |  | |   /\\   |  __ \\|  __ \\ ",DIFFICULTY_OFFSET_X,line++);
+		draw_line("| |__| |  /  \\  | |__) | |  | |",DIFFICULTY_OFFSET_X,line++);
+		draw_line("|  __  | / /\\ \\ |  _  /| |  | |",DIFFICULTY_OFFSET_X,line++);
+		draw_line("| |  | |/ ____ \\| | \\ \\| |__| |",DIFFICULTY_OFFSET_X,line++);
+		draw_line("|_|  |_/_/    \\_\\_|  \\_\\_____/ ",DIFFICULTY_OFFSET_X,line++);
 	}
 
 	for (i = 0; i < DIFFICULTY_INTERDIST_Y; i++)
@@ -111,12 +111,12 @@ void app_draw_difficulties(char selection)
 	else
 		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
 	if(selection || prior_selection || init) {
-		draw_line("__      ________ _______     __  _    _          _____  _____  ",DIFFICULTY_OFFSET_X,line++)
-		draw_line("\\ \\    / /  ____|  __ \\ \\   / / | |  | |   /\\   |  __ \\|  __ \\ ",DIFFICULTY_OFFSET_X,line++)
-		draw_line(" \\ \\  / /| |__  | |__) \\ \\_/ /  | |__| |  /  \\  | |__) | |  | |",DIFFICULTY_OFFSET_X,line++)
-		draw_line("  \\ \\/ / |  __| |  _  / \\   /   |  __  | / /\\ \\ |  _  /| |  | |",DIFFICULTY_OFFSET_X,line++)
-		draw_line("   \\  /  | |____| | \\ \\  | |    | |  | |/ ____ \\| | \\ \\| |__| |",DIFFICULTY_OFFSET_X,line++)
-		draw_line("    \\/   |______|_|  \\_\\ |_|    |_|  |_/_/    \\_\\_|  \\_\\_____/ ",DIFFICULTY_OFFSET_X,line++)
+		draw_line("__      ________ _______     __  _    _          _____  _____  ",DIFFICULTY_OFFSET_X,line++);
+		draw_line("\\ \\    / /  ____|  __ \\ \\   / / | |  | |   /\\   |  __ \\|  __ \\ ",DIFFICULTY_OFFSET_X,line++);
+		draw_line(" \\ \\  / /| |__  | |__) \\ \\_/ /  | |__| |  /  \\  | |__) | |  | |",DIFFICULTY_OFFSET_X,line++);
+		draw_line("  \\ \\/ / |  __| |  _  / \\   /   |  __  | / /\\ \\ |  _  /| |  | |",DIFFICULTY_OFFSET_X,line++);
+		draw_line("   \\  /  | |____| | \\ \\  | |    | |  | |/ ____ \\| | \\ \\| |__| |",DIFFICULTY_OFFSET_X,line++);
+		draw_line("    \\/   |______|_|  \\_\\ |_|    |_|  |_/_/    \\_\\_|  \\_\\_____/ ",DIFFICULTY_OFFSET_X,line++);
 	}
 }
 
