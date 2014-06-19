@@ -12,8 +12,11 @@
 #define DIFFICULTY_ROWS 17
 #define DIFFICULTY_INTERDIST_Y 1
 #define DIFFICULTY_AMOUNT 4
-
-void draw_line(char *string, char offset, char line);
+#define draw_line(string,offset,line) \
+do { \
+  std_tty_gotoxy(offset,line);\
+  std_tty_printf("%s",string);\
+} while (0)
 
 void app_draw_splash(void) 
 {
@@ -92,11 +95,15 @@ void app_draw_difficulties(char selection)
 	difficulties[3][2] = " \\ \\  / /| |__  | |__) \\ \\_/ /  | |__| |  /  \\  | |__) | |  | |";
 	difficulties[3][3] = "  \\ \\/ / |  __| |  _  / \\   /   |  __  | / /\\ \\ |  _  /| |  | |";
 	difficulties[3][4] = "   \\  /  | |____| | \\ \\  | |    | |  | |/ ____ \\| | \\ \\| |__| |";
-//	difficulties[3][5] = "    \\/   |______|_|  \\_\\ |_|    |_|  |_/_/    \\_\\_|  \\_\\_____/ ";
+	difficulties[3][5] = "    \\/   |______|_|  \\_\\ |_|    |_|  |_/_/    \\_\\_|  \\_\\_____/ ";
 
+printf("%s","hasjdæasdjlsadlsaello");
+printf("%s","hasjdæasdjasdasdaello");
+printf("%s","hasjdæakasædjasdjlkadlsaello");
 printf(" \\ \\aslædkcæodjgvliufdvduimigivgigvdigdivgijmdmg  / /| |__  | |__) \\ \\_/ /  | |__| |  /siuvdsjvglfduhgvdfbngldfknh  \\  | |__) | |  | |");
-printf(" \\ \\aslædkcæodjgvliufdvduimigivgigvdigdivgsdfækkjdsljgvhfcmgvoføojp__| |  /siuvdsjvglfduhgvdfbngldfknh  \\  | |__) | |  | |");
-
+std_tty_printf(" \\ \\aslædkcæodjgvliufdvduimigivgigvdigdivgsdfækkjdsljgvhfcmgvoføojp__| |  /siuvdsjvglfduhgvdfbngldfknh  \\  | |__) | |  | |");
+std_tty_printf("loaskodøøåasdøåoiiasøoidkaskdpaspdpuasduiukdsaiuæoasoiudoasdonasndnisdaludsalnsdl");
+std_tty_printf("ojhsafouisodfoiusdlfjsdjflsdljfjlljsdfllkjsdfljlsjkdfljsdljfl");
 	std_tty_clrscr();
 	std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
 
