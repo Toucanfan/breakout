@@ -12,7 +12,7 @@ void game_tick (struct app_map_context *ctx)
 	
 	if (ctx->blocks_left == 0) {
 		ctx->level++;
-		ctx->score += difficulty * 20;  // bonus points for level finish
+		ctx->score += ctx->difficulty * 20;  // bonus points for level finish
 		app_map_reset(ctx);
 	}
 	

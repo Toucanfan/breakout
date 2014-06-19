@@ -20,6 +20,7 @@ void init_help(void);
 void help_screen(void);
 void init_splash(void);
 void splash_screen(void);
+void init_endgame(struct app_map_context *ctx);
 
 char game_state;
 

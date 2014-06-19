@@ -239,7 +239,7 @@ static char test_block_collision(struct app_map_context *ctx)
 						temp_fpos.y -= ctx->ball.vel.y / PRECISION;
 						temp_posx = std_fixpt_f2i(temp_fpos.x);
 						temp_posy = std_fixpt_f2i(temp_fpos.y);
-					} while ((cur_block.tl.x <= temp_posx && temp_posx <= cur_block.br.x) && (cur_block.tl.y <= temp_posy && temp_posy <= cur_block.br.y))
+					} while ((cur_block.tl.x <= temp_posx && temp_posx <= cur_block.br.x) && (cur_block.tl.y <= temp_posy && temp_posy <= cur_block.br.y));
 					
 					ctx->blocks[i] &= ~(0x80000000 >> j); // remove block from storage
 					ctx->blocks_left--;                   // update counter
