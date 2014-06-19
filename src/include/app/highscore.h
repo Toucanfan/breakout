@@ -5,7 +5,7 @@
 
 struct app_highscore {
 	char score;
-	char *name;
+	char name[4];
 };
 
 void app_highscore_clr(void);

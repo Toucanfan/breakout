@@ -12,7 +12,10 @@ void app_highscore_clr()
 	char i;
 	for(i = 0; i < HIGHSCORE_COUNT; i++) {
 		highscores[i].score = 0;
-		highscores[i].name = "000";
+		highscores[i].name[0] = '0';
+		highscores[i].name[1] = '0';
+		highscores[i].name[2] = '0';
+		highscores[i].name[3] = '\0';
 	}
 }
 
