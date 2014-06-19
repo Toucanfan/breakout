@@ -5,7 +5,9 @@
 #define HAL_TIMER_1 0x2
 #define HAL_TIMER_2 0x4
 
-extern char hal_timer_read(char timer);
-extern char hal_timer_init(void);
+extern int hal_timer_read(char timer);
+extern void hal_timer_configure(char timer, int subcount_max);
+extern void hal_timer_start(char timer);
+extern void hal_timer_stop(char timer);
 
 #endif /* hal/timer.h */

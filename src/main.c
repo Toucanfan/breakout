@@ -30,7 +30,7 @@ void main(void)
 	
 	std_tty_init();
 	std_tty_clrscr();
-	std_timer_init();
+	std_timer_configure(STD_TIMER_0, 200);
 	init_splash();
 	while (1) {
 		switch(game_state){
