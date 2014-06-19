@@ -15,7 +15,7 @@
 
 void app_draw_splash(void) 
 {
-	char *strings[] = { 
+	char *strings[SPLASH_ROWS] = { 
 		"                                                                                                                                            dddddddd", 
 		"               AAA                                 kkkkkkkk                                                               iiii              d::::::d", 
 		"              A:::A                                k::::::k                                                              i::::i             d::::::d",
@@ -33,13 +33,13 @@ void app_draw_splash(void)
 		"  A:::::A               A:::::A  r:::::r           k::::::k  k:::::ka:::::aaaa::::::a  n::::n    n::::no:::::::::::::::oi::::::i d:::::::::::::::::d",
 		" A:::::A                 A:::::A r:::::r           k::::::k   k:::::ka::::::::::aa:::a n::::n    n::::n oo:::::::::::oo i::::::i  d:::::::::ddd::::d",
 		"AAAAAAA                   AAAAAAArrrrrrr           kkkkkkkk    kkkkkkkaaaaaaaaaa  aaaa nnnnnn    nnnnnn   ooooooooooo   iiiiiiii   ddddddddd   ddddd"
-		};
+	};
 
 	int i;
 
 	std_tty_clrscr();
 	std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
-	for (i = 0 i < SPLASH_ROWS; i++) {
+	for (i = 0; i < SPLASH_ROWS; i++) {
 		std_tty_gotoxy(SPLASH_OFFSET_X,SPLASH_OFFSET_Y+i);
 		std_tty_printf("%s",strings[i]);
 	}
@@ -54,6 +54,12 @@ void app_draw_highscores(void)
 	app_render_highscore();
 }
 
+
+void app_draw_difficulties(char selection) {
+int i;
+}
+
+/*
 void app_draw_difficulties(char selection)
 {	
 	int init = 1;
@@ -68,7 +74,7 @@ void app_draw_difficulties(char selection)
 		"|  __|   / /\\ \\  \\___ \\  \\   /  ",
 		"| |____ / ____ \\ ____) |  | |  ",
 		"|______/_/    \\_\\_____/   |_|   "
-		};
+	};
 
 
 
@@ -79,7 +85,7 @@ void app_draw_difficulties(char selection)
 		"| . ` | |  | |  _  /| |\\/| | / /\\ \\ | |     ",
 		"| |\\  | |__| | | \\ \\| |  | |/ ____ \\| |____ ",
 		"|_| \\_|\\____/|_|  \\_\\_|  |_/_/    \\_\\______|"
-		};
+	};
 
 
 
@@ -90,7 +96,7 @@ void app_draw_difficulties(char selection)
 		"|  __  | / /\\ \\ |  _  /| |  | |",
 		"| |  | |/ ____ \\| | \\ \\| |__| |",
 		"|_|  |_/_/    \\_\\_|  \\_\\_____/ "
-		};
+	};
 
 
 	char *very_hard[] = { 
@@ -100,27 +106,27 @@ void app_draw_difficulties(char selection)
 		"  \\ \\/ / |  __| |  _  / \\   /   |  __  | / /\\ \\ |  _  /| |  | |",
 		"   \\  /  | |____| | \\ \\  | |    | |  | |/ ____ \\| | \\ \\| |__| |",
 		"    \\/   |______|_|  \\_\\ |_|    |_|  |_/_/    \\_\\_|  \\_\\_____/ "
-		};
+	};
 
 	char **difficulties[DIFFICULTY_AMOUNT];
 	difficulties[0] = easy;
-	difficulties[1] = medium;
+	difficulties[1] = normal;
 	difficulties[2] = hard;
-	difficulties[3] = very hard;
+	difficulties[3] = very_hard;
 
 	std_tty_clrscr();
-	std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN
+	std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
 
 	if (init) {
 		// draw all
-		for (j = 0, j < DIFFICULTY_AMOUNT; j++)
-			for (i = 0 i < DIFFICULTY_ROWS; i++) {
+		for (j = 0; j < DIFFICULTY_AMOUNT; j++)
+			for (i = 0; i < DIFFICULTY_ROWS; i++) {
 			std_tty_gotoxy(DIFFICULTY_OFFSET_X,DIFFICULTY_OFFSET_Y+(DIFFICULTY_INTERDIST_Y+DIFFICULTY_ROWS)*prior_selection+i);
 			std_tty_printf("%s",difficulties[j][i]);
 			}
 	} else {
 		// redraw old
-		for (i = 0 i < DIFFICULTY_ROWS; i++) {
+		for (i = 0; i < DIFFICULTY_ROWS; i++) {
 		std_tty_gotoxy(DIFFICULTY_OFFSET_X,DIFFICULTY_OFFSET_Y+(DIFFICULTY_INTERDIST_Y+DIFFICULTY_ROWS)*prior_selection+i);   
 		std_tty_printf("%s",difficulties[prior_selection][i]);
 		}
@@ -129,15 +135,15 @@ void app_draw_difficulties(char selection)
 	// highlight selection
 	std_tty_blink(1);
 	std_tty_set_fcolor(STD_TTY_FCOLOR_RED);
-	for (i = 0 i < DIFFICULTY_ROWS; i++) {
+	for (i = 0; i < DIFFICULTY_ROWS; i++) {
 		std_tty_gotoxy(DIFFICULTY_OFFSET_X,DIFFICULTY_OFFSET_Y+(DIFFICULTY_INTERDIST_Y+DIFFICULTY_ROWS)*selection+i);
 		std_tty_printf("%s",difficulties[selection][i]);
 	}
-	std_tty_blink(0):
+	std_tty_blink(0);
 
 	prior_selection = selection;
 }
-
+*/
 void app_draw_help(void)
 {
 	std_tty_clrscr();
@@ -145,7 +151,7 @@ void app_draw_help(void)
 	std_tty_printf("help yo motherfucker");
 }
 
-void app_draw_difficulties(char selection)
+void app_draw_menu(char selection)
 {
 	std_tty_clrscr();
 	std_tty_gotoxy(5,2);
