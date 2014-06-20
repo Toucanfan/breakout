@@ -1,6 +1,8 @@
+#include "std/button.h"
 #include "std/tty.h"
 #include "std/draw.h"
 #include "std/text_input.h"
+#include "std/kb.h"
 
 /*
  * Initiates a text input. This function is blocking and will return when the user presses ENTER
@@ -26,8 +28,6 @@
  * Here a 4 character text input is created at (3, 1) and only letters can be entered.
  */
 
-#define BACKSPACE 127
-#define ENTER 13
 
 void std_text_input_create(struct std_draw_point *point, char *str, char str_length, char (*test_func)(char input))
 {
@@ -42,7 +42,7 @@ void std_text_input_create(struct std_draw_point *point, char *str, char str_len
 		std_tty_printf("%s", str);
 		std_tty_gotoxy(point->x + i, point->y);
 
-		key = getch();
+		key = get_char();
 		if(test_func(key) && i < str_length - 1) {
 			str[i] = key;
 			i++;
