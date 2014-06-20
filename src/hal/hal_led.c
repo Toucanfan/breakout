@@ -6,6 +6,7 @@
 #define DIGITS 4
 #define STRING_SIZE 64
 #define VIDEO_BUFFER_SIZE 32
+#define SLOWNESS 100
 
 #define STRING_LAST_CHAR string[STRING_SIZE]
 #define STRING_ID string[STRING_SIZE+1]
@@ -156,7 +157,7 @@ static char should_scroll(void)
 {
 	static int i = 0;
 	i++;
-	if (i == 500) {
+	if (i == SLOWNESS) {
 		i = 0;
 		return 1;
 	} else {
@@ -168,7 +169,7 @@ static char should_load_next_char(void)
 {
 	static int i = 0;
 	i++;
-	if (i == 500*5) {
+	if (i == SLOWNESS*6) {
 		i = 0;
 		return 1;
 	} else {
@@ -184,6 +185,7 @@ static void load_next_char(char *video_buffer, char offset, char *next_ch)
 		vbi = (offset + COLUMNS*DIGITS + i) & 0x1F;
 		video_buffer[vbi] = character_data[string[*next_ch] - 0x20][i];
 	}
+	video_buffer[(offset + COLUMNS*DIGITS + COLUMNS) & 0x1F] = 0x00;
 	if (string[*next_ch+1] == '\0')
 		*next_ch = 0;
 	else
@@ -288,3 +290,4 @@ void hal_led_refresh(void)
 
 	do_refresh(video_buffer, offset);
 }
+
