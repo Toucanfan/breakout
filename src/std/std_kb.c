@@ -1,6 +1,7 @@
 #include <uart.h>
 #include <ez8.h>
 #include "std/kb.h"
+#include "hal/kb.h"
 #include "hal/button.h"
 
 char get_char()
@@ -10,5 +11,5 @@ char get_char()
 	if(hal_button_pressed() == HAL_BUTTON_B2)
 		return ESC7;
 
-	return U0RXD;
+	return UART_DATA_RECEIVE;
 }
