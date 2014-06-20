@@ -51,6 +51,11 @@ void std_text_input_create(struct std_draw_point *point, char *str, char str_len
 			str[i] = ' ';
 		} else if(key == ENTER && i > 0) {
 			input_loop = 0;
+		} else if(key == ESC27 || key == ESC7) {
+			for(i = 0; i < str_length - 1; i++) {
+				str[i] = ' ';
+			}
+			input_loop = 0;
 		}
 	}
 
