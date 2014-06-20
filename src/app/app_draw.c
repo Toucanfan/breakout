@@ -8,11 +8,12 @@
 #define DIFFICULTY_OFFSET_X 20
 #define DIFFICULTY_OFFSET_Y 30
 #define DIFFICULTY_INTERDIST_Y 1
+#define DIFFICULTY_TEXT_HEIGHT 6
 
 #define MENU_OFFSET_X 20
 #define MENU_OFFSET_Y 30
 #define MENU_INTERDIST_Y 1
-
+#define MENU_TEXT_HEIGHT 6
 
 #define draw_line(string,offset,line) \
 do { \
@@ -23,7 +24,7 @@ do { \
 void app_draw_splash(void) 
 {
 	int line = SPLASH_OFFSET_Y;
-	
+
 	std_tty_clrscr();
 	std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
 	draw_line("                                                                                                                                            dddddddd",SPLASH_OFFSET_X,line++);
@@ -53,73 +54,81 @@ void app_draw_highscores(void)
 }
 
 
-void app_draw_difficulties(char selection)
+void app_draw_difficulties(char init, char selection)
 {	
-	char init = 1; 
 	char line = DIFFICULTY_OFFSET_Y;
 	int i;
 	static int prior_selection = 3;
+	
+	if (init)
+		std_tty_clrscr();
 
-	if (selection)
+	if (selection == 0)
 		std_tty_set_fcolor(STD_TTY_FCOLOR_RED);
 	else
 		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
-	if(selection || prior_selection || init) {
+	if(selection == 0 || prior_selection == 0 || init) {
 		draw_line(" ______           _______     __",DIFFICULTY_OFFSET_X,line++);
 		draw_line("|  ____|   /\\    / ____\\ \\   / /",DIFFICULTY_OFFSET_X,line++);
 		draw_line("| |__     /  \\  | (___  \\ \\_/ / ",DIFFICULTY_OFFSET_X,line++);
 		draw_line("|  __|   / /\\ \\  \\___ \\  \\   /  ",DIFFICULTY_OFFSET_X,line++);
 		draw_line("| |____ / ____ \\ ____) |  | |  ",DIFFICULTY_OFFSET_X,line++);
 		draw_line("|______/_/    \\_\\_____/   |_|   ",DIFFICULTY_OFFSET_X,line++);
-	}
+	} else
+		line += DIFFICULTY_TEXT_HEIGHT;
 
 	for (i = 0; i < DIFFICULTY_INTERDIST_Y; i++)
 		std_tty_printf("\n");
 
-	if (selection)
+	if (selection == 1)
 		std_tty_set_fcolor(STD_TTY_FCOLOR_RED);
 	else
 		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
-	if(selection || prior_selection || init) {
+	if(selection == 1 || prior_selection == 1 || init) {
 		draw_line(" _   _  ____  _____  __  __          _    ",DIFFICULTY_OFFSET_X,line++);
 		draw_line("| \\ | |/ __ \\|  __ \\|  \\/  |   /\\   | |     ",DIFFICULTY_OFFSET_X,line++);
 		draw_line("|  \\| | |  | | |__) | \\  / |  /  \\  | |     ",DIFFICULTY_OFFSET_X,line++);
 		draw_line("| . ` | |  | |  _  /| |\\/| | / /\\ \\ | |     ",DIFFICULTY_OFFSET_X,line++);
 		draw_line("| |\\  | |__| | | \\ \\| |  | |/ ____ \\| |____ ",DIFFICULTY_OFFSET_X,line++);
 		draw_line("|_| \\_|\\____/|_|  \\_\\_|  |_/_/    \\_\\______|",DIFFICULTY_OFFSET_X,line++);
-	}
+	} else
+		line += DIFFICULTY_TEXT_HEIGHT;
 
 	for (i = 0; i < DIFFICULTY_INTERDIST_Y; i++)
 		std_tty_printf("\n");
 
-	if (selection)
+	if (selection == 2)
 		std_tty_set_fcolor(STD_TTY_FCOLOR_RED);
 	else
 		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
-	if(selection || prior_selection || init) {
+	if(selection == 2 || prior_selection == 2 || init) {
 		draw_line(" _    _          _____  _____  ",DIFFICULTY_OFFSET_X,line++);
 		draw_line("| |  | |   /\\   |  __ \\|  __ \\ ",DIFFICULTY_OFFSET_X,line++);
 		draw_line("| |__| |  /  \\  | |__) | |  | |",DIFFICULTY_OFFSET_X,line++);
 		draw_line("|  __  | / /\\ \\ |  _  /| |  | |",DIFFICULTY_OFFSET_X,line++);
 		draw_line("| |  | |/ ____ \\| | \\ \\| |__| |",DIFFICULTY_OFFSET_X,line++);
 		draw_line("|_|  |_/_/    \\_\\_|  \\_\\_____/ ",DIFFICULTY_OFFSET_X,line++);
-	}
+	} else
+		line += DIFFICULTY_TEXT_HEIGHT;
 
 	for (i = 0; i < DIFFICULTY_INTERDIST_Y; i++)
 		std_tty_printf("\n");
 
-	if (selection)
+	if (selection == 3)
 		std_tty_set_fcolor(STD_TTY_FCOLOR_RED);
 	else
 		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
-	if(selection || prior_selection || init) {
+	if(selection == 3 || prior_selection == 3 || init) {
 		draw_line("__      ________ _______     __  _    _          _____  _____  ",DIFFICULTY_OFFSET_X,line++);
 		draw_line("\\ \\    / /  ____|  __ \\ \\   / / | |  | |   /\\   |  __ \\|  __ \\ ",DIFFICULTY_OFFSET_X,line++);
 		draw_line(" \\ \\  / /| |__  | |__) \\ \\_/ /  | |__| |  /  \\  | |__) | |  | |",DIFFICULTY_OFFSET_X,line++);
 		draw_line("  \\ \\/ / |  __| |  _  / \\   /   |  __  | / /\\ \\ |  _  /| |  | |",DIFFICULTY_OFFSET_X,line++);
 		draw_line("   \\  /  | |____| | \\ \\  | |    | |  | |/ ____ \\| | \\ \\| |__| |",DIFFICULTY_OFFSET_X,line++);
 		draw_line("    \\/   |______|_|  \\_\\ |_|    |_|  |_/_/    \\_\\_|  \\_\\_____/ ",DIFFICULTY_OFFSET_X,line++);
-	}
+	} else
+		line += DIFFICULTY_TEXT_HEIGHT;
+
+	prior_selection = selection;
 }
 
 void app_draw_help(void)
@@ -129,72 +138,82 @@ void app_draw_help(void)
 	std_tty_printf("help yo motherfucker");
 }
 
-void app_draw_menu(char selection)
+void app_draw_menu(char init, char selection)
 {	
-	char init = 1; 
 	char line = MENU_OFFSET_Y;
 	int i;
 	static int prior_selection = 3;
+	
+	if (init)
+		std_tty_clrscr();
 
-	if (selection)
+	if (selection == 0)
 		std_tty_set_fcolor(STD_TTY_FCOLOR_RED);
 	else
 		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
-	if(selection || prior_selection || init) {
+
+	if(selection == 0 || prior_selection == 0 || init) {
 		draw_line("  _____          __  __ ______ ",MENU_OFFSET_X,line++);
 		draw_line(" / ____|   /\\   |  \\/  |  ____|",MENU_OFFSET_X,line++);
 		draw_line("| |  __   /  \\  | \\  / | |__   ",MENU_OFFSET_X,line++);
 		draw_line("| | |_ | / /\\ \\ | |\\/| |  __|  ",MENU_OFFSET_X,line++);
 		draw_line("| |__| |/ ____ \\| |  | | |____ ",MENU_OFFSET_X,line++);
 		draw_line(" \\_____/_/    \\_\\_|  |_|______|",MENU_OFFSET_X,line++);
-		
-	}
+	} else 
+		line += MENU_TEXT_HEIGHT;
 
 	for (i = 0; i < MENU_INTERDIST_Y; i++)
 		std_tty_printf("\n");
 
-	if (selection)
+	if (selection == 1)
 		std_tty_set_fcolor(STD_TTY_FCOLOR_RED);
 	else
 		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
-	if(selection || prior_selection || init) {
+	if(selection == 1 || prior_selection == 1 || init) {
 		draw_line(" _    _ ______ _      _____  ",MENU_OFFSET_X,line++);
 		draw_line("| |  | |  ____| |    |  __ \\ ",MENU_OFFSET_X,line++);
 		draw_line("| |__| | |__  | |    | |__) |",MENU_OFFSET_X,line++);
 		draw_line("|  __  |  __| | |    |  ___/ ",MENU_OFFSET_X,line++);
 		draw_line("| |  | | |____| |____| |     ",MENU_OFFSET_X,line++);
 		draw_line("|_|  |_|______|______|_|     ",MENU_OFFSET_X,line++);
-	}
+	} else
+		line += MENU_TEXT_HEIGHT;
+
 
 	for (i = 0; i < MENU_INTERDIST_Y; i++)
 		std_tty_printf("\n");
 
-	if (selection)
+	if (selection == 2)
 		std_tty_set_fcolor(STD_TTY_FCOLOR_RED);
 	else
 		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
-	if(selection || prior_selection || init) {
+	if(selection == 2 || prior_selection == 2 || init) {
 		draw_line(" _    _ _____ _____ _    _  _____  _____ ____  _____  ______  _____ ",MENU_OFFSET_X,line++);
 		draw_line("| |  | |_   _/ ____| |  | |/ ____|/ ____/ __ \\|  __ \\|  ____|/ ____|",MENU_OFFSET_X,line++);
 		draw_line("| |__| | | || |  __| |__| | (___ | |   | |  | | |__) | |__  | (___  ",MENU_OFFSET_X,line++);
 		draw_line("|  __  | | || | |_ |  __  |\\___ \\| |   | |  | |  _  /|  __|  \\___ \\ ",MENU_OFFSET_X,line++);
 		draw_line("| |  | |_| || |__| | |  | |____) | |___| |__| | | \\ \\| |____ ____) |",MENU_OFFSET_X,line++);
 		draw_line("|_|  |_|_____\\_____|_|  |_|_____/ \\_____\\____/|_|  \\_\\______|_____/ ",MENU_OFFSET_X,line++);
-	}
+	} else
+		line += MENU_TEXT_HEIGHT;
+
 
 	for (i = 0; i < MENU_INTERDIST_Y; i++)
 		std_tty_printf("\n");
 
-	if (selection)
+	if (selection == 3)
 		std_tty_set_fcolor(STD_TTY_FCOLOR_RED);
 	else
 		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
-	if(selection || prior_selection || init) {
+	if(selection == 3 || prior_selection == 3 || init) {
 		draw_line(" ________   _______ _______ ",MENU_OFFSET_X,line++);
 		draw_line("|  ____\\ \\ / /_   _|__   __|",MENU_OFFSET_X,line++);
 		draw_line("| |__   \\ V /  | |    | |   ",MENU_OFFSET_X,line++);
 		draw_line("|  __|   > <   | |    | |   ",MENU_OFFSET_X,line++);
 		draw_line("| |____ / . \\ _| |_   | |   ",MENU_OFFSET_X,line++);
 		draw_line("|______/_/ \\_\\_____|  |_|   ",MENU_OFFSET_X,line++);
-	}
+	} else
+		line += MENU_TEXT_HEIGHT;
+
+	prior_selection = selection;
 }

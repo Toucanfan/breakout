@@ -61,7 +61,7 @@ void main(void)
 
 void init_menu(void)
 {
-	app_draw_menu(GAME);
+	app_draw_menu(1,GAME);
 	game_state = IN_MENU;
 }
 	
@@ -73,11 +73,11 @@ void menu_screen(void)
 	switch(std_button_pressed()) {
 		case STD_BUTTON_LEFT:
 			menu_selection = --menu_selection & 0x03;
-			app_draw_menu(menu_selection);
+			app_draw_menu(0,menu_selection);
 			break;
 		case STD_BUTTON_RIGHT:
 			menu_selection = ++menu_selection & 0x03;
-			app_draw_menu(menu_selection);
+			app_draw_menu(0,menu_selection);
 			break;
 		case STD_BUTTON_MIDDLE:
 			switch (menu_selection) {
@@ -104,7 +104,7 @@ void menu_screen(void)
 	
 void init_diff_select(void)
 {
-app_draw_difficulties(MEDIUM);
+app_draw_difficulties(1,MEDIUM);
 game_state = IN_DIFFICULTY_SELECT;
 }
 
@@ -116,11 +116,11 @@ void diff_select_screen(struct app_map_context *ctx)
 	switch(std_button_pressed()) {
 		case STD_BUTTON_LEFT:
 			cur_diff_selection = --cur_diff_selection & 0x03;
-			app_draw_difficulties(cur_diff_selection);
+			app_draw_difficulties(0,cur_diff_selection);
 			break;
 		case STD_BUTTON_RIGHT:
 			cur_diff_selection = ++cur_diff_selection & 0x03;
-			app_draw_difficulties(cur_diff_selection);
+			app_draw_difficulties(0,cur_diff_selection);
 			break;
 		case STD_BUTTON_MIDDLE:
 			ctx->difficulty = cur_diff_selection + 1;  // Allows difficulty to be used as a multiplier
