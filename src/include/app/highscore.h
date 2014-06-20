@@ -9,6 +9,7 @@ struct app_highscore {
 };
 
 void app_highscore_clr(void);
+void app_highscore_init(void);
 void app_add_highscore(struct app_highscore score);
 void app_render_highscore();
 char app_highscore_test(char score);

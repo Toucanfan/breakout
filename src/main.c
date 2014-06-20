@@ -162,7 +162,7 @@ void init_splash(void)
 {
 	app_draw_splash();
 	game_state = IN_SPLASH;
-	app_highscore_clr();
+	app_highscore_init();
 }
 
 void splash_screen(void)

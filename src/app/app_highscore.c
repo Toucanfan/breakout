@@ -2,6 +2,8 @@
 #include <sio.h> /* special encore serial i/o functions */
 
 #include "app/highscore.h"
+#include "std/tty.h"
+#include "std/rom.h"
 
 struct app_highscore highscores[5];
 
@@ -17,6 +19,7 @@ void app_highscore_clr()
 		highscores[i].name[2] = '0';
 		highscores[i].name[3] = '\0';
 	}
+	std_rom_write(STD_ROM_PAGE0, highscores, sizeof(highscores));
 }
 
 // Adds a score struct to the highscore at the correct position. If it is
@@ -39,6 +42,7 @@ void app_add_highscore(struct app_highscore score)
 			score = tmp;
 		}
 	}
+	std_rom_write(STD_ROM_PAGE0, highscores, sizeof(highscores));
 }
 
 // Renders highscore list
@@ -71,4 +75,11 @@ char app_highscore_test(char score)
 struct app_highscore *app_get_top_score()
 {
 	return &highscores[0];
+}
+
+void app_highscore_init(void)
+{
+	std_rom_read(STD_ROM_PAGE0, highscores, sizeof(highscores));
+	if (highscores[0].name[3] != '\0')
+		app_highscore_clr();
 }
