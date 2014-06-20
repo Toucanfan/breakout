@@ -25,10 +25,14 @@
 #define BLOCK_PADDING_TOP 4
 #define BLOCK_COLUMNS 32 //size of long
 #define BLOCK_LENGTH 4
-#define BLOCK_HEIGHT 2
+#define BLOCK_HEIGHT 3
 #define BLOCK_INTERDIST_X 1
 #define BLOCK_INTERDIST_Y 1
 #define PRECISION 128
+#define BALL_WITHIN_BLOCK_X (x <= std_fixpt_f2i(ball_pos_x_next) && std_fixpt_f2i(ball_pos_x_next) <= x + (BLOCK_LENGTH-1))
+#define BALL_WITHIN_BLOCK_Y (y <= std_fixpt_f2i(ball_pos_y_next) && std_fixpt_f2i(ball_pos_y_next) <= y + (BLOCK_HEIGHT-1))
+
+#define MAPS 3
 
 static void draw_borders(void)
 {
@@ -64,14 +68,14 @@ static void draw_borders(void)
 	std_draw_box(&leftb);
 	std_draw_box(&topb);
 	std_draw_box(&rightb);
-	//std_draw_box(&botb);
+	//std_draw_box(&botb);           // TROELS KIG HER WTF ER DET?
 }
 
 
 static int count_blocks(long *blocks)
 {
-	int i;
-	int j;
+	char i;
+	char j;
 	int count = 0;
 
 	for (i = 0; i < BLOCK_ROWS; i++) {
@@ -83,57 +87,70 @@ static int count_blocks(long *blocks)
 	return count;
 }
 
+void draw_block(char row, char column, char draw)
+{
+	int x = WIDTH / 2 - BLOCK_COLUMNS * (BLOCK_LENGTH+BLOCK_INTERDIST_X) / 2 + column * (BLOCK_LENGTH+BLOCK_INTERDIST_X); // start position
+	int y = BLOCK_PADDING_TOP + (BLOCK_INTERDIST_Y + BLOCK_HEIGHT) * row;
+	int i;
+	int j;
+	
+	if (draw)
+		std_tty_set_bcolor(STD_TTY_BCOLOR_GREEN);
+	else
+		std_tty_set_bcolor(STD_TTY_BCOLOR_BLACK); // remove block
+	
+	for (i = 0; i < BLOCK_HEIGHT; i++) {
+		std_tty_gotoxy(x,y+i);
+		for (j = 0; j < BLOCK_LENGTH; j++)
+			std_tty_printf(" ");
+	}
+	std_tty_set_bcolor(STD_TTY_BCOLOR_BLACK);
+}
+
+char test_block(char row, char column, struct app_map_context *ctx)
+{	
+	int x = WIDTH / 2 - BLOCK_COLUMNS * (BLOCK_LENGTH+BLOCK_INTERDIST_X) / 2 + column * (BLOCK_LENGTH+BLOCK_INTERDIST_X); // start position
+	int y = BLOCK_PADDING_TOP + (BLOCK_INTERDIST_Y + BLOCK_HEIGHT) * row;
+	
+	long ball_pos_x_next = ctx->ball.pos.x + ctx->ball.vel.x;
+	long ball_pos_y_next = ctx->ball.pos.y + ctx->ball.vel.y;
+	
+
+	if (BALL_WITHIN_BLOCK_X && BALL_WITHIN_BLOCK_Y) {
+		while (BALL_WITHIN_BLOCK_X && BALL_WITHIN_BLOCK_Y) {
+			ball_pos_x_next -= ctx->ball.vel.x / PRECISION;
+			ball_pos_y_next -= ctx->ball.vel.y / PRECISION;
+		}	
+		if (BALL_WITHIN_BLOCK_X)
+			return COLLISION_HORIZONTAL;
+		else
+			return COLLISION_VERTICAL;
+	}
+	
+	return COLLISION_NONE;
+}
+
+
 static void draw_blocks(struct app_map_context *ctx)
 {
 	int i;
 	int j;
-	int k;
-	struct std_draw_box cur_block;
-	
-	int block_start_x = WIDTH / 2 - BLOCK_COLUMNS * (BLOCK_LENGTH+BLOCK_INTERDIST_X) / 2;
 
-
-	static const long maps[3][5] = {
-		{0x38000000,0x70000000,0xE6666666,0x70000000,0x38000000},
+	static const long maps[MAPS][BLOCK_ROWS] = {
+		{0x38000000,0x70000000,0x66666666,0x70000000,0x38000000},
 		{0x55555555,0xAAAAAAAA,0x55555555,0x00000000,0x00000000},
 		{0x1F3E7CF8,0x11224488,0x152A54A8,0x11224488,0x1F3E7CF8}
 		};
 	
 	for (i = 0; i < BLOCK_ROWS; i++)
-		ctx->blocks[i] = maps[ctx->level-1][i];  // -1 because first level is 1 and first index is 0
+		ctx->blocks[i] = maps[ctx->level-1+2][i];  // -1 because first level is 1 and first index is 0
 	
 	ctx->blocks_left = count_blocks(ctx->blocks);
 	
-	cur_block.tl.x = block_start_x;
-	cur_block.tl.y = BLOCK_PADDING_TOP;
-	cur_block.br.x = cur_block.tl.x + (BLOCK_LENGTH - 1);
-	cur_block.br.y = cur_block.tl.y + (BLOCK_HEIGHT -1);
-	cur_block.color = STD_TTY_BCOLOR_GRAY;
-	
-	for (i = 0; i < BLOCK_ROWS; i++) {
-		for (j = 0; j < BLOCK_COLUMNS; j++) {
-			if(ctx->blocks[i] & (0x80000000 >> j)) {
-				std_draw_box(&cur_block);
-				for (k = 1; k <= BLOCK_INTERDIST_X; k++) {
-					std_tty_gotoxy(cur_block.br.x+k,cur_block.br.y);
-					std_tty_printf(" "); // blank box
-				}
-			} else {
-				for (k = 0; k <= BLOCK_INTERDIST_X + BLOCK_LENGTH; k++) {
-					std_tty_gotoxy(cur_block.tl.x+k,cur_block.tl.y);
-					std_tty_printf(" "); // blank box
-				}
-			}
-			cur_block.tl.x += BLOCK_INTERDIST_X + BLOCK_LENGTH;
-			cur_block.br.x += BLOCK_INTERDIST_X + BLOCK_LENGTH;
-		}	
-		cur_block.tl.x = block_start_x;
-		cur_block.br.x = cur_block.tl.x + (BLOCK_LENGTH-1);
-		cur_block.tl.y += (BLOCK_INTERDIST_Y + BLOCK_HEIGHT);
-		cur_block.br.y += (BLOCK_INTERDIST_Y + BLOCK_HEIGHT);
-	}
-	std_tty_gotoxy(40,20);
-	std_tty_printf("done");
+	for (i = 0; i < BLOCK_ROWS; i++)
+		for (j = 0; j < BLOCK_COLUMNS; j++)
+			if(ctx->blocks[i] & (0x80000000 >> j))  // only draw block if relevant bit is 1
+				draw_block(i,j,1);
 }
 
 
@@ -205,55 +222,20 @@ static char test_block_collision(struct app_map_context *ctx)
 {
 	int i;
 	int j;
-	int k;
-	struct std_fixpt_point temp_fpos;
-	int temp_posx;
-	int temp_posy;
-	
-	struct std_draw_box cur_block;
-	int ball_x = std_fixpt_f2i(ctx->ball.pos.x);  // not 100% about this
-	int ball_y = std_fixpt_f2i(ctx->ball.pos.y);
-	
-	int block_start_x = WIDTH / 2 - BLOCK_COLUMNS * (BLOCK_LENGTH+BLOCK_INTERDIST_X) / 2;
-	
-	cur_block.tl.x = block_start_x;
-	cur_block.tl.y = BLOCK_PADDING_TOP;
-	cur_block.br.x = cur_block.tl.x + (BLOCK_LENGTH - 1);
-	cur_block.br.y = cur_block.tl.y + (BLOCK_HEIGHT -1);
-	cur_block.color = STD_TTY_BCOLOR_BLACK; // simply delete block
-	
-	for (i = 0; i < BLOCK_ROWS; i++) {
-		for (j = 0; j < BLOCK_COLUMNS; j++) {
-			if(ctx->blocks[i] & (0x80000000 >> j)) // test if there is block
-				if ((cur_block.tl.x <= ball_x && ball_x <= cur_block.br.x) && (cur_block.tl.y <= ball_y && ball_y <= cur_block.br.y)) {
-					temp_fpos = ctx->ball.pos;
-					do {
-						temp_fpos.x -= ctx->ball.vel.x / PRECISION;
-						temp_fpos.y -= ctx->ball.vel.y / PRECISION;
-						temp_posx = std_fixpt_f2i(temp_fpos.x);
-						temp_posy = std_fixpt_f2i(temp_fpos.y);
-					} while ((cur_block.tl.x <= temp_posx && temp_posx <= cur_block.br.x) && (cur_block.tl.y <= temp_posy && temp_posy <= cur_block.br.y));
-					
-					ctx->blocks[i] &= ~(0x80000000 >> j); // remove block from storage
-					ctx->blocks_left--;                   // update counter
-					ctx->score += ctx->difficulty;        // increase score
-					std_draw_box(&cur_block);             // remove block from screen
-					std_tty_gotoxy(10,10);
-					std_tty_printf("%i", ctx->blocks_left);
-					if (!(cur_block.tl.y <= temp_posy && temp_posy <= cur_block.br.y))
-						return COLLISION_HORIZONTAL;
-					else 
-						return COLLISION_VERTICAL;
+	char collision;
+
+	for (i = 0; i < BLOCK_ROWS; i++)
+		for (j = 0; j < BLOCK_COLUMNS; j++)
+			if (ctx->blocks[i] & (0x80000000 >> j)) { // test if there is block
+				collision = test_block(i,j,ctx);
+				if (collision) {
+					draw_block(i,j,0); // remove block from screen
+					ctx->blocks[i] &= ~(0x80000000 >> j); // turn off relevant block bit
+					ctx->score += ctx->difficulty;
+					ctx->blocks_left--;
+					return collision;
 				}
-			cur_block.tl.x += BLOCK_INTERDIST_X + BLOCK_LENGTH;
-			cur_block.br.x += BLOCK_INTERDIST_X + BLOCK_LENGTH;
-		}	
-		cur_block.tl.x = block_start_x;
-		cur_block.br.x = cur_block.tl.x + (BLOCK_LENGTH-1);
-		cur_block.tl.y += (BLOCK_INTERDIST_Y + BLOCK_HEIGHT);
-		cur_block.br.y += (BLOCK_INTERDIST_Y + BLOCK_HEIGHT);
-	}		
-	
+			}
 	return COLLISION_NONE;
 }
 
@@ -345,7 +327,7 @@ void app_map_reset(struct app_map_context *ctx)
 {
 		ctx->ball.pos.x = std_fixpt_i2f(WIDTH/2);
 		ctx->ball.pos.y = std_fixpt_i2f(HEIGHT/2);
-		ctx->ball.speed = 2;
+		ctx->ball.speed = 1;
 		ctx->ball.vel.x = ctx->ball.speed*0;
 		ctx->ball.vel.y = ctx->ball.speed*std_fixpt_i2f(1);
 		ctx->paddle.x = std_fixpt_i2f(WIDTH/2);
