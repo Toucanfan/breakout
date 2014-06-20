@@ -107,6 +107,7 @@ void menu_screen(void)
 				default:
 					break;
 			}
+			menu_selection = GAME; // default selection for next time
 	    	break;
 	 	default:
 			break;
