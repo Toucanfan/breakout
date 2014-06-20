@@ -9,6 +9,8 @@
 #define ARROWLEFT 8
 #define SPACE 32
 #define TAB 9
+#define ESC27 27
+#define ESC7 7
 
 char get_char(void);
 
