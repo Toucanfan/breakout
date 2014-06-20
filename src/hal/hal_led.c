@@ -115,36 +115,6 @@ static char string[STRING_SIZE+2];
 static char mode = 0;
 static volatile char should_refresh = 1;
 
-
-
-
-#pragma interrupt
-static void timer_irq_handler(void)
-{
-	should_refresh = 1;
-}
-
-static void timer_init(void)
-{
-	DI(); // Disable interrupts globally
-	T0CTL = 0x39; //Disable timer, enable cont. mode, set prescale to 0x80
-
-	T0H = 0x00; //Set high order bits of preset
-	T0L = 0x01; //Set low order bits of preset
-
-	// We set the reload value to 0x48 (72) giving us a timer on 0.5 ms
-	T0RH = 0x00; //Set high order bits of reload value
-	T0RL = 0x48; //Set low order bits of reload value
-
-	//Set IRQ priority to low
-	IRQ0ENH = 0x00;
-	IRQ0ENL = 0x20;
-
-	T0CTL |= 0x80; //Enable timer
-	SET_VECTOR(TIMER0, timer_irq_handler); //Map irq handler
-	EI(); // Enable interrupts globally
-}
-
 static void reset_video_buffer(char *video_buffer)
 {
 	int i;
@@ -232,8 +202,6 @@ static void do_refresh(char *video_buffer, char offset)
 
 void hal_led_init(void)
 {
-	timer_init(); /* initialize timer */
-
 	/* Disable alternate functions */
 	PEAF = 0x0;
 	PGAF = 0x0;
