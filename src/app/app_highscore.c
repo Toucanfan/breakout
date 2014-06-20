@@ -51,10 +51,10 @@ void app_render_highscore()
 	char i;
 	for(i = 0; i < HIGHSCORE_COUNT; i++) {
 		if(highscores[i].score > 0) {
-			printf("%s", highscores[i].name);
-			printf(" : %5d\n", highscores[i].score);
+			printf(" %s", highscores[i].name);
+			printf(" : %3d\n", highscores[i].score);
 		} else {
-			printf(" -- : --\n");
+			printf(" --- : ---\n");
 		}
 	}
 }
