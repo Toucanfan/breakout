@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "app/draw.h"
 #include "app/highscore.h"
 #include "std/draw.h"
@@ -5,6 +7,7 @@
 #include "std/button.h"
 #include "std/fixpt.h"
 #include "std/timer.h"
+#include "std/led.h"
 #include "app/game.h"
 #include "app/state.h"
 
@@ -32,6 +35,7 @@ void main(void)
 	std_tty_clrscr();
 	std_timer_configure(STD_TIMER_0, 100);
 	std_timer_start(STD_TIMER_0);
+	std_led_init();
 	init_splash();
 	while (1) {
 		switch(game_state){
@@ -69,8 +73,14 @@ void init_menu(void)
 void menu_screen(void)
 {
 	static unsigned char menu_selection = GAME;
-	
-	while (std_button_new_press() == STD_BUTTON_NONE) {}	
+	static char hstring[32];
+
+	struct app_highscore *highscore = app_get_top_score();
+	sprintf(hstring, "Topscore: %s:%d    ", highscore->name, highscore->score);
+	std_led_set_string(hstring);
+	while (std_button_new_press() == STD_BUTTON_NONE) {
+		std_led_refresh();
+	}
 	switch(std_button_pressed()) {
 		case STD_BUTTON_LEFT:
 			menu_selection = --menu_selection & 0x03;
@@ -167,7 +177,10 @@ void init_splash(void)
 
 void splash_screen(void)
 {
-	while (std_button_new_press() == STD_BUTTON_NONE) {}
+	std_led_set_string("Arkanoid    ");
+	while (std_button_new_press() == STD_BUTTON_NONE) {
+		std_led_refresh();
+		}
 	init_menu();
 }
 
