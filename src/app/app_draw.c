@@ -182,8 +182,7 @@ void app_draw_menu(char init, char selection)
 	} else
 		line += MENU_TEXT_HEIGHT;
 
-
-	for (i = 0; i < MENU_INTERDIST_Y; i++)
+		for (i = 0; i < MENU_INTERDIST_Y; i++)
 		std_tty_printf("\n");
 
 	if (selection == 2)
