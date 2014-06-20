@@ -196,8 +196,11 @@ void init_endgame(struct app_map_context *ctx)
 	if(app_highscore_test(ctx->score)) {
 		app_draw_endgame();
 		new_highscore.score = ctx->score;
-		point.x = 3;
+		point.x = 9;
 		point.y = 3;
+
+		std_tty_gotoxy(3, 3);
+		std_tty_printf("Name:");
 
 		std_text_input_create(&point, name, 4, &std_ti_letters_test);
 
