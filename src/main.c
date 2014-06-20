@@ -189,6 +189,10 @@ void init_endgame(struct app_map_context *ctx)
 	struct app_highscore new_highscore;
 	struct std_draw_point point;
 	char name[4];
+	name[0] = ' ';
+	name[1] = ' ';
+	name[2] = ' ';
+	name[3] = '\0';
 	if(app_highscore_test(ctx->score)) {
 		app_draw_endgame();
 		new_highscore.score = ctx->score;
