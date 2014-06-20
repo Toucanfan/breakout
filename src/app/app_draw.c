@@ -16,6 +16,8 @@
 #define MENU_INTERDIST_Y 1
 #define MENU_TEXT_HEIGHT 6
 
+#define ASCII_LETTER_WIDTH 6
+
 #define draw_line(string,offset,line) \
 do { \
   std_tty_gotoxy(offset,line);\
