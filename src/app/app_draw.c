@@ -173,12 +173,12 @@ void app_draw_menu(char init, char selection)
 	else
 		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
 	if(selection == 1 || prior_selection == 1 || init) {
-		draw_line(" _    _ ______ _      _____  ",MENU_OFFSET_X,line++);
-		draw_line("| |  | |  ____| |    |  __ \\ ",MENU_OFFSET_X,line++);
-		draw_line("| |__| | |__  | |    | |__) |",MENU_OFFSET_X,line++);
-		draw_line("|  __  |  __| | |    |  ___/ ",MENU_OFFSET_X,line++);
-		draw_line("| |  | | |____| |____| |     ",MENU_OFFSET_X,line++);
-		draw_line("|_|  |_|______|______|_|     ",MENU_OFFSET_X,line++);
+		draw_line(" _    _ _____ _____ _    _  _____  _____ ____  _____  ______  _____ ",MENU_OFFSET_X,line++);
+		draw_line("| |  | |_   _/ ____| |  | |/ ____|/ ____/ __ \\|  __ \\|  ____|/ ____|",MENU_OFFSET_X,line++);
+		draw_line("| |__| | | || |  __| |__| | (___ | |   | |  | | |__) | |__  | (___  ",MENU_OFFSET_X,line++);
+		draw_line("|  __  | | || | |_ |  __  |\\___ \\| |   | |  | |  _  /|  __|  \\___ \\ ",MENU_OFFSET_X,line++);
+		draw_line("| |  | |_| || |__| | |  | |____) | |___| |__| | | \\ \\| |____ ____) |",MENU_OFFSET_X,line++);
+		draw_line("|_|  |_|_____\\_____|_|  |_|_____/ \\_____\\____/|_|  \\_\\______|_____/ ",MENU_OFFSET_X,line++);
 	} else
 		line += MENU_TEXT_HEIGHT;
 
@@ -191,15 +191,16 @@ void app_draw_menu(char init, char selection)
 	else
 		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
 	if(selection == 2 || prior_selection == 2 || init) {
-		draw_line(" _    _ _____ _____ _    _  _____  _____ ____  _____  ______  _____ ",MENU_OFFSET_X,line++);
-		draw_line("| |  | |_   _/ ____| |  | |/ ____|/ ____/ __ \\|  __ \\|  ____|/ ____|",MENU_OFFSET_X,line++);
-		draw_line("| |__| | | || |  __| |__| | (___ | |   | |  | | |__) | |__  | (___  ",MENU_OFFSET_X,line++);
-		draw_line("|  __  | | || | |_ |  __  |\\___ \\| |   | |  | |  _  /|  __|  \\___ \\ ",MENU_OFFSET_X,line++);
-		draw_line("| |  | |_| || |__| | |  | |____) | |___| |__| | | \\ \\| |____ ____) |",MENU_OFFSET_X,line++);
-		draw_line("|_|  |_|_____\\_____|_|  |_|_____/ \\_____\\____/|_|  \\_\\______|_____/ ",MENU_OFFSET_X,line++);
+		draw_line(" _    _ ______ _      _____  ",MENU_OFFSET_X,line++);
+		draw_line("| |  | |  ____| |    |  __ \\ ",MENU_OFFSET_X,line++);
+		draw_line("| |__| | |__  | |    | |__) |",MENU_OFFSET_X,line++);
+		draw_line("|  __  |  __| | |    |  ___/ ",MENU_OFFSET_X,line++);
+		draw_line("| |  | | |____| |____| |     ",MENU_OFFSET_X,line++);
+		draw_line("|_|  |_|______|______|_|     ",MENU_OFFSET_X,line++);
 	} else
 		line += MENU_TEXT_HEIGHT;
 
+	
 
 	for (i = 0; i < MENU_INTERDIST_Y; i++)
 		std_tty_printf("\n");
