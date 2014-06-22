@@ -3,6 +3,8 @@
 
 #include "std/fixpt.h"
 
+#define BLOCK_ROWS 5
+
 struct app_map_ball {
 	struct std_fixpt_point pos;
 	struct std_fixpt_point vel;
@@ -22,7 +24,7 @@ struct app_map_context {
 	int score;
 	struct app_map_ball ball;
 	struct app_map_paddle paddle;
-	long *blocks;
+	long blocks[BLOCK_ROWS];
 	int blocks_left;
 	char resumed_game;
 };

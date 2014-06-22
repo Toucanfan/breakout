@@ -158,7 +158,7 @@ void highscores_screen(void)
 
 void init_resume(struct app_map_context *ctx) 
 {
-	std_rom_read(STD_ROM_PAGE1, ctx, sizeof(*ctx));
+ 	std_rom_read(STD_ROM_PAGE1, ctx, sizeof(*ctx));
 	if (ctx->resumed_game == 1) {    // 99% of the time, this will not be the case if no save is present
 		app_map_reset(ctx);
 		game_state = IN_GAME;

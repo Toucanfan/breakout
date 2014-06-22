@@ -22,7 +22,6 @@
 #define COLLISION_BOTTOM 0x4
 
 /* constants to be used when drawing blocks */
-#define BLOCK_ROWS 5
 #define BLOCK_PADDING_TOP 4
 #define BLOCK_COLUMNS 32 //size of long
 #define BLOCK_LENGTH 4
@@ -143,11 +142,14 @@ static void draw_blocks(struct app_map_context *ctx)
 		{0x1F3E7CF8,0x11224488,0x152A54A8,0x11224488,0x1F3E7CF8}
 		};
 	
-	if (!ctx->resumed_game) {
+	if (ctx->resumed_game != 1) {
 		for (i = 0; i < BLOCK_ROWS; i++)
 			ctx->blocks[i] = maps[ctx->level-1][i];  // -1 because first level is 1 and first index is 0
-		
 		ctx->blocks_left = count_blocks(ctx->blocks);
+		std_tty_gotoxy(30,30);
+		printf("success");
+			std_tty_gotoxy(30,31);
+		printf("%i",sizeof(*ctx));
 	}
 
 	for (i = 0; i < BLOCK_ROWS; i++)
@@ -331,8 +333,6 @@ void save_game(struct app_map_context *ctx)
 	ctx->resumed_game = 1;
 	std_rom_write(STD_ROM_PAGE1, ctx, sizeof(*ctx));
 	ctx->resumed_game = 0;
-	std_tty_gotoxy(30,30);
-	std_tty_printf("success");
 }
 
 void app_map_reset(struct app_map_context *ctx)
@@ -340,7 +340,7 @@ void app_map_reset(struct app_map_context *ctx)
 		std_tty_clrscr();
 		draw_borders();
 		draw_blocks(ctx);
-		if (ctx->resumed_game) {
+		if (ctx->resumed_game == 1) {
 			ctx->resumed_game = 0;
 			return;
 		}
