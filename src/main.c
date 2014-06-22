@@ -23,6 +23,7 @@ void highscores_screen(void);
 void init_resume(struct app_map_context *ctx);
 void init_splash(void);
 void splash_screen(void);
+void resume_screen(void);
 void init_endgame(struct app_map_context *ctx);
 
 char game_state;
@@ -48,6 +49,9 @@ void main(void)
 				break;
 			case IN_MENU:
 				menu_screen(&ctx);
+				break;
+			case IN_RESUME_SCREEN:
+				resume_screen();
 				break;
 			case IN_HIGHSCORE_SCREEN:
 				highscores_screen();
@@ -155,8 +159,13 @@ void highscores_screen(void)
 void init_resume(struct app_map_context *ctx) 
 {
 	std_rom_read(STD_ROM_PAGE1, ctx, sizeof(*ctx));
-	app_map_reset(ctx);
-	game_state = IN_GAME;
+	if (ctx->resumed_game == 1) {    // 99% of the time, this will not be the case if no save is present
+		app_map_reset(ctx);
+		game_state = IN_GAME;
+	} else {
+		app_draw_resume();
+		game_state = IN_RESUME_SCREEN;
+	}
 }
 
 void init_splash(void) 
@@ -172,6 +181,12 @@ void splash_screen(void)
 	while (std_button_new_press() == STD_BUTTON_NONE) {
 		std_led_refresh();
 		}
+	init_menu();
+}
+
+void resume_screen(void) 
+{
+	while (std_button_new_press() == STD_BUTTON_NONE) {}
 	init_menu();
 }
 

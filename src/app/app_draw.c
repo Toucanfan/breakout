@@ -16,7 +16,8 @@
 #define MENU_INTERDIST_Y 1
 #define MENU_TEXT_HEIGHT 6
 
-#define ASCII_LETTER_WIDTH 6
+#define RESUME_OFFSET_X 20
+#define RESUME_OFFSET_Y 30
 
 #define draw_line(string,offset,line) \
 do { \
@@ -56,6 +57,19 @@ void app_draw_highscores(void)
 	app_render_highscore();
 }
 
+void app_draw_resume(void)
+{
+	int line = RESUME_OFFSET_Y;
+
+	std_tty_clrscr();
+	std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
+	draw_line("  _   _  ____     _____    __      ________    _____ _______    _______ ______ ",RESUME_OFFSET_X,line++);
+	draw_line(" | \\ | |/ __ \\   / ____|  /\\ \\    / /  ____|  / ____|__   __|/\\|__   __|  ____|",RESUME_OFFSET_X,line++);
+	draw_line(" |  \\| | |  | | | (___   /  \\ \\  / /| |__    | (___    | |  /  \\  | |  | |__   ",RESUME_OFFSET_X,line++);
+	draw_line(" | . ` | |  | |  \\___ \\ / /\\ \\ \\/ / |  __|    \\___ \\   | | / /\\ \\ | |  |  __|  ",RESUME_OFFSET_X,line++);
+	draw_line(" | |\\  | |__| |  ____) / ____ \\  /  | |____   ____) |  | |/ ____ \\| |  | |____ ",RESUME_OFFSET_X,line++);
+	draw_line(" |_| \\_|\\____/  |_____/_/    \\_\\/   |______| |_____/   |_/_/    \\_\\_|  |______|",RESUME_OFFSET_X,line++);
+}
 
 void app_draw_difficulties(char init, char selection)
 {	
@@ -184,11 +198,11 @@ void app_draw_menu(char init, char selection)
 		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
 	if(selection == 2 || prior_selection == 2 || init) {
 		draw_line(" _____  ______  _____ _    _ __  __ ______ ",MENU_OFFSET_X,line++);
-		draw_line("|  __ \|  ____|/ ____| |  | |  \/  |  ____|",MENU_OFFSET_X,line++);
-		draw_line("| |__) | |__  | (___ | |  | | \  / | |__   ",MENU_OFFSET_X,line++);
-		draw_line("|  _  /|  __|  \___ \| |  | | |\/| |  __|  ",MENU_OFFSET_X,line++);
-		draw_line("| | \ \| |____ ____) | |__| | |  | | |____ ",MENU_OFFSET_X,line++);
-		draw_line("|_|  \_\______|_____/ \____/|_|  |_|______|",MENU_OFFSET_X,line++);
+		draw_line("|  __ \\  ____|/ ____| |  | |  \\/  |  ____|",MENU_OFFSET_X,line++);
+		draw_line("| |__) | |__  | (___ | |  | | \\  / | |__   ",MENU_OFFSET_X,line++);
+		draw_line("|  _  /|  __|  \\___ \\| |  | | |\\/| |  __|  ",MENU_OFFSET_X,line++);
+		draw_line("| | \\ \\| |____ ____) | |__| | |  | | |____ ",MENU_OFFSET_X,line++);
+		draw_line("|_|  \\_\\______|_____/ \\____/|_|  |_|______|",MENU_OFFSET_X,line++);
 	} else
 		line += MENU_TEXT_HEIGHT;
 
