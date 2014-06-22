@@ -143,11 +143,13 @@ static void draw_blocks(struct app_map_context *ctx)
 		{0x1F3E7CF8,0x11224488,0x152A54A8,0x11224488,0x1F3E7CF8}
 		};
 	
-	for (i = 0; i < BLOCK_ROWS; i++)
-		ctx->blocks[i] = maps[ctx->level-1+2][i];  // -1 because first level is 1 and first index is 0
-	
-	ctx->blocks_left = count_blocks(ctx->blocks);
-	
+	if (!ctx->resumed_game) {
+		for (i = 0; i < BLOCK_ROWS; i++)
+			ctx->blocks[i] = maps[ctx->level-1+2][i];  // -1 because first level is 1 and first index is 0
+		
+		ctx->blocks_left = count_blocks(ctx->blocks);
+	}
+
 	for (i = 0; i < BLOCK_ROWS; i++)
 		for (j = 0; j < BLOCK_COLUMNS; j++)
 			if(ctx->blocks[i] & (0x80000000 >> j))  // only draw block if relevant bit is 1
@@ -326,23 +328,27 @@ static void handle_collision(struct app_map_context *ctx, char coll_type)
 
 void save_game(struct app_map_context *ctx)
 {
+	ctx->resumed_game = 1;
 	std_rom_write(STD_ROM_PAGE1, ctx, sizeof(*ctx));
+	ctx->resumed_game = 0;
 	std_tty_gotoxy(30,30);
 	std_tty_printf("success");
 }
 
 void app_map_reset(struct app_map_context *ctx)
-{
-		ctx->ball.pos.x = std_fixpt_i2f(WIDTH/2);
-		ctx->ball.pos.y = std_fixpt_i2f(HEIGHT/2);
-		ctx->ball.speed = 1;
-		ctx->ball.vel.x = ctx->ball.speed*0;
-		ctx->ball.vel.y = ctx->ball.speed*std_fixpt_i2f(1);
-		ctx->paddle.x = std_fixpt_i2f(WIDTH/2);
-		ctx->paddle.vel = std_fixpt_i2f(3)/1;
+{		
 		std_tty_clrscr();
 		draw_borders();
 		draw_blocks(ctx);
+		if (ctx->resumed_game)
+			return;
+				ctx->ball.speed = 1;
+		ctx->ball.vel.x = ctx->ball.speed*0;
+		ctx->ball.vel.y = ctx->ball.speed*std_fixpt_i2f(1);
+		ctx->paddle.vel = std_fixpt_i2f(3)/1;
+		ctx->ball.pos.x = std_fixpt_i2f(WIDTH/2);
+		ctx->ball.pos.y = std_fixpt_i2f(HEIGHT/2);
+		ctx->paddle.x = std_fixpt_i2f(WIDTH/2);
 }
 
 void app_map_refresh(struct app_map_context *ctx)
