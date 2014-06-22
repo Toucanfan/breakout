@@ -20,8 +20,7 @@ void diff_select_screen(void);
 void init_highscores(void);
 void menu_screen(struct app_map_context *ctx);
 void highscores_screen(void);
-void init_help(struct app_map_context *ctx);
-void help_screen(void);
+void init_resume(struct app_map_context *ctx);
 void init_splash(void);
 void splash_screen(void);
 void init_endgame(struct app_map_context *ctx);
@@ -49,9 +48,6 @@ void main(void)
 				break;
 			case IN_MENU:
 				menu_screen(&ctx);
-				break;
-			case IN_HELP_SCREEN:
-				help_screen();
 				break;
 			case IN_HIGHSCORE_SCREEN:
 				highscores_screen();
@@ -96,8 +92,8 @@ void menu_screen(struct app_map_context *ctx)
 				case GAME: 
 					init_diff_select(); 
 					break;
-				case HELP:
-					init_help(ctx);
+				case RESUME:
+					init_resume(ctx);
 					break;
 				case HIGHSCORES:
 					init_highscores();
@@ -156,23 +152,12 @@ void highscores_screen(void)
 	init_menu();
 }
 
-
-void init_help(struct app_map_context *ctx) 
+void init_resume(struct app_map_context *ctx) 
 {
 	std_rom_read(STD_ROM_PAGE1, ctx, sizeof(*ctx));
 	app_map_reset(ctx);
 	game_state = IN_GAME;
-
-	//app_draw_help();
-	//game_state = IN_HELP_SCREEN;
 }
-	
-void help_screen(void) 
-{
-	while (std_button_new_press() == STD_BUTTON_NONE) {}
-	init_menu();
-}
-
 
 void init_splash(void) 
 {

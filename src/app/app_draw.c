@@ -134,13 +134,6 @@ void app_draw_difficulties(char init, char selection)
 	prior_selection = selection;
 }
 
-void app_draw_help(void)
-{
-	std_tty_clrscr();
-	std_tty_gotoxy(1,1);
-	std_tty_printf("help yo motherfucker");
-}
-
 void app_draw_menu(char init, char selection)
 {	
 	char line = MENU_OFFSET_Y;
@@ -190,12 +183,12 @@ void app_draw_menu(char init, char selection)
 	else
 		std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
 	if(selection == 2 || prior_selection == 2 || init) {
-		draw_line(" _    _ ______ _      _____  ",MENU_OFFSET_X,line++);
-		draw_line("| |  | |  ____| |    |  __ \\ ",MENU_OFFSET_X,line++);
-		draw_line("| |__| | |__  | |    | |__) |",MENU_OFFSET_X,line++);
-		draw_line("|  __  |  __| | |    |  ___/ ",MENU_OFFSET_X,line++);
-		draw_line("| |  | | |____| |____| |     ",MENU_OFFSET_X,line++);
-		draw_line("|_|  |_|______|______|_|     ",MENU_OFFSET_X,line++);
+		draw_line(" _____  ______  _____ _    _ __  __ ______ ",MENU_OFFSET_X,line++);
+		draw_line("|  __ \|  ____|/ ____| |  | |  \/  |  ____|",MENU_OFFSET_X,line++);
+		draw_line("| |__) | |__  | (___ | |  | | \  / | |__   ",MENU_OFFSET_X,line++);
+		draw_line("|  _  /|  __|  \___ \| |  | | |\/| |  __|  ",MENU_OFFSET_X,line++);
+		draw_line("| | \ \| |____ ____) | |__| | |  | | |____ ",MENU_OFFSET_X,line++);
+		draw_line("|_|  \_\______|_____/ \____/|_|  |_|______|",MENU_OFFSET_X,line++);
 	} else
 		line += MENU_TEXT_HEIGHT;
 
