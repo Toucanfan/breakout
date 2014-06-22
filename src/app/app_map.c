@@ -5,6 +5,7 @@
 #include "std/button.h"
 #include "std/rom.h"
 #include "app/map.h"
+#include "app/draw.h"
 
 /* dimension of map in characters, to be used in various functions */
 #define WIDTH 190
@@ -33,6 +34,7 @@
 #define BALL_WITHIN_BLOCK_Y (y <= std_fixpt_f2i(ball_pos_y_next) && std_fixpt_f2i(ball_pos_y_next) <= y + (BLOCK_HEIGHT-1))
 
 #define MAPS 3
+
 
 static void draw_borders(void)
 {
@@ -329,7 +331,8 @@ static void handle_collision(struct app_map_context *ctx, char coll_type)
 }
 
 void save_game(struct app_map_context *ctx)
-{
+{	
+	app_draw_save();
 	ctx->resumed_game = 1;
 	std_rom_write(STD_ROM_PAGE1, ctx, sizeof(*ctx));
 	ctx->resumed_game = 0;

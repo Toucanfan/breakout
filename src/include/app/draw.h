@@ -21,5 +21,6 @@ void app_draw_menu(char init, char selection);
 void app_draw_resume();
 void app_draw_endgame(void);
 void app_draw_difficulties(char init, char selection);
+void app_draw_save(void);
 
 #endif /* app/draw.h */

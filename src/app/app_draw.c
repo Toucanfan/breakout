@@ -19,6 +19,9 @@
 #define RESUME_OFFSET_X 20
 #define RESUME_OFFSET_Y 30
 
+#define SAVE_OFFSET_X 20
+#define SAVE_OFFSET_Y 30
+
 #define draw_line(string,offset,line) \
 do { \
   std_tty_gotoxy(offset,line);\
@@ -227,6 +230,31 @@ void app_draw_menu(char init, char selection)
 
 	prior_selection = selection;
 }
+
+void app_draw_save(void)
+{
+	int line = SAVE_OFFSET_Y;
+
+	std_tty_set_fcolor(STD_TTY_FCOLOR_GREEN);
+	draw_line("  _____    __      ________ _____  ",SAVE_OFFSET_X,line++);
+	draw_line(" / ____|  /\\ \\    / /  ____|  __ \\ ",SAVE_OFFSET_X,line++);
+	draw_line("| (___   /  \\ \\  / /| |__  | |  | |",SAVE_OFFSET_X,line++);
+	draw_line(" \\___ \\ / /\\ \\ \\/ / |  __| | |  | |",SAVE_OFFSET_X,line++);
+	draw_line(" ____) / ____ \\  /  | |____| |__| |",SAVE_OFFSET_X,line++);
+	draw_line("|_____/_/    \\_\\/   |______|_____/ ",SAVE_OFFSET_X,line++);
+
+	int line = SAVE_OFFSET_Y;
+
+	// draw blanks on top for animation effect
+	draw_line("                                   ",SAVE_OFFSET_X,line++);
+	draw_line("                                   ",SAVE_OFFSET_X,line++);
+	draw_line("                                   ",SAVE_OFFSET_X,line++);
+	draw_line("                                   ",SAVE_OFFSET_X,line++);
+	draw_line("                                   ",SAVE_OFFSET_X,line++);
+	draw_line("                                   ",SAVE_OFFSET_X,line++);
+
+}
+
 
 void app_draw_endgame()
 {
