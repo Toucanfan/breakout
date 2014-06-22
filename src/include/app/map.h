@@ -24,6 +24,7 @@ struct app_map_context {
 	struct app_map_paddle paddle;
 	long *blocks;
 	int blocks_left;
+	char resumed_game;
 };
 
 extern void app_map_reset(struct app_map_context *ctx);

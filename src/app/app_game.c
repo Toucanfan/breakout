@@ -25,6 +25,7 @@ void init_game(struct app_map_context *ctx) {
 	ctx->level = 1;
 	ctx->score = 0;
 	ctx->lives = 3;
+	ctx->resumed_game = 0;
 	
 	app_map_reset(ctx);
 	game_state = IN_GAME;

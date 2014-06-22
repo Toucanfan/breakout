@@ -145,7 +145,7 @@ static void draw_blocks(struct app_map_context *ctx)
 	
 	if (!ctx->resumed_game) {
 		for (i = 0; i < BLOCK_ROWS; i++)
-			ctx->blocks[i] = maps[ctx->level-1+2][i];  // -1 because first level is 1 and first index is 0
+			ctx->blocks[i] = maps[ctx->level-1][i];  // -1 because first level is 1 and first index is 0
 		
 		ctx->blocks_left = count_blocks(ctx->blocks);
 	}
@@ -340,9 +340,11 @@ void app_map_reset(struct app_map_context *ctx)
 		std_tty_clrscr();
 		draw_borders();
 		draw_blocks(ctx);
-		if (ctx->resumed_game)
+		if (ctx->resumed_game) {
+			ctx->resumed_game = 0;
 			return;
-				ctx->ball.speed = 1;
+		}
+		ctx->ball.speed = 1;
 		ctx->ball.vel.x = ctx->ball.speed*0;
 		ctx->ball.vel.y = ctx->ball.speed*std_fixpt_i2f(1);
 		ctx->paddle.vel = std_fixpt_i2f(3)/1;

@@ -10,6 +10,7 @@
 #include "std/led.h"
 #include "app/game.h"
 #include "app/state.h"
+#include "std/rom.h"
 
 
 void init_splash(void);
@@ -158,7 +159,7 @@ void highscores_screen(void)
 
 void init_help(struct app_map_context *ctx) 
 {
-	hal_rom_read(STD_ROM_PAGE1, ctx, sizeof(*ctx));
+	std_rom_read(STD_ROM_PAGE1, ctx, sizeof(*ctx));
 	app_map_reset(ctx);
 	game_state = IN_GAME;
 
