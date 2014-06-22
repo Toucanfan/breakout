@@ -3,6 +3,7 @@
 #include "std/fixpt.h"
 #include "std/timer.h"
 #include "std/button.h"
+#include "std/rom.h"
 #include "app/map.h"
 
 /* dimension of map in characters, to be used in various functions */
@@ -323,6 +324,13 @@ static void handle_collision(struct app_map_context *ctx, char coll_type)
 	}
 }
 
+void save_game(struct app_map_context *ctx)
+{
+	std_rom_write(STD_ROM_PAGE1, ctx, sizeof(*ctx));
+	std_tty_gotoxy(30,30);
+	std_tty_printf("success");
+}
+
 void app_map_reset(struct app_map_context *ctx)
 {
 		ctx->ball.pos.x = std_fixpt_i2f(WIDTH/2);
@@ -358,6 +366,8 @@ void app_map_refresh(struct app_map_context *ctx)
 			else
 				ctx->paddle.x += ctx->paddle.vel;
 			break;
+		case STD_BUTTON_MIDDLE:
+			save_game(ctx);
 		default:
 			break;
 	}
