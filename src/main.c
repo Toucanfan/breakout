@@ -17,9 +17,9 @@ void init_menu(void);
 void init_diff_select(void);
 void diff_select_screen(void);
 void init_highscores(void);
-void menu_screen(void);
+void menu_screen(struct app_map_context *ctx);
 void highscores_screen(void);
-void init_help(void);
+void init_help(struct app_map_context *ctx);
 void help_screen(void);
 void init_splash(void);
 void splash_screen(void);
@@ -47,7 +47,7 @@ void main(void)
 					game_tick(&ctx);
 				break;
 			case IN_MENU:
-				menu_screen();
+				menu_screen(&ctx);
 				break;
 			case IN_HELP_SCREEN:
 				help_screen();
@@ -70,7 +70,7 @@ void init_menu(void)
 	game_state = IN_MENU;
 }
 	
-void menu_screen(void)
+void menu_screen(struct app_map_context *ctx)
 {
 	static unsigned char menu_selection = GAME;
 	static char hstring[32];
@@ -96,7 +96,7 @@ void menu_screen(void)
 					init_diff_select(); 
 					break;
 				case HELP:
-					init_help();
+					init_help(ctx);
 					break;
 				case HIGHSCORES:
 					init_highscores();
@@ -156,10 +156,14 @@ void highscores_screen(void)
 }
 
 
-void init_help(void) 
+void init_help(struct app_map_context *ctx) 
 {
-	app_draw_help();
-	game_state = IN_HELP_SCREEN;
+	hal_rom_read(STD_ROM_PAGE1, ctx, sizeof(*ctx));
+	app_map_reset(ctx);
+	game_state = IN_GAME;
+
+	//app_draw_help();
+	//game_state = IN_HELP_SCREEN;
 }
 	
 void help_screen(void) 
