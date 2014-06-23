@@ -148,10 +148,6 @@ static void draw_blocks(struct app_map_context *ctx)
 		for (i = 0; i < BLOCK_ROWS; i++)
 			ctx->blocks[i] = maps[ctx->level-1][i];  // -1 because first level is 1 and first index is 0
 		ctx->blocks_left = count_blocks(ctx->blocks);
-		std_tty_gotoxy(30,30);
-		printf("success");
-			std_tty_gotoxy(30,31);
-		printf("%i",sizeof(*ctx));
 	}
 
 	for (i = 0; i < BLOCK_ROWS; i++)

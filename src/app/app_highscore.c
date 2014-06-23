@@ -60,7 +60,7 @@ void app_render_highscore()
 }
 
 // Tests if a score is a new highscore
-char app_highscore_test(char score)
+char app_highscore_test(int score)
 {
 	char i;
 	for(i = 0; i < HIGHSCORE_COUNT; i++) {
