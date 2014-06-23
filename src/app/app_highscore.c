@@ -46,7 +46,7 @@ void app_highscore_clr()
  * Adds a score struct to the highscore at the correct position. If it is
  * lower than all items on the list, it is discarded.
  *
- * @params score The highscore to be inserted
+ * @param score The highscore to be inserted
  */
 void app_add_highscore(struct app_highscore score)
 {
@@ -88,7 +88,7 @@ void app_render_highscore()
 /**
  * Tests if a score is a new highscore
  *
- * @params score The score to test
+ * @param score The score to test
  * 
  * @return Boolean char: 0 it if is not a new highscore, 1 if it is
  */
