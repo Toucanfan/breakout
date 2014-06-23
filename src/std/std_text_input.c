@@ -1,22 +1,12 @@
-#include "std/button.h"
-#include "std/tty.h"
-#include "std/draw.h"
-#include "std/text_input.h"
-#include "std/kb.h"
-
-/*
- * Initiates a text input. This function is blocking and will return when the user presses ENTER
- *
- * Arguments:
- *  - point is a pointer to the point where the input is graphically located
- *  - str: When the input is complete, this will be the entered text
- *  - str_length: MUST be the length (including null-terminator) of str
- *  - test_func: is a function pointer to a test function for the input
- *
- * Input characters can be limited using the test_func function. The function must return 0 (false) for illegal chars
- * and something else for legal. These characters will be ignored by the input handler.
- *
- * Example usages:
+/**
+ * @file
+ * @author Henrik Enggaard Hansen <henrik.enggaard@gmail.com>
+ * @version 1.0
+ * @section Description
+ * 
+ * A general purpose text input field for keyboard input from a UART connected terminal.
+ * 
+ * @section Usage
  *
  *     struct std_draw_point point;
  *     char str[4];
@@ -28,7 +18,23 @@
  * Here a 4 character text input is created at (3, 1) and only letters can be entered.
  */
 
+#include "std/button.h"
+#include "std/tty.h"
+#include "std/draw.h"
+#include "std/text_input.h"
+#include "std/kb.h"
 
+/**
+ * Initiates a text input. This function is blocking and will return when the user presses ENTER
+ *
+ * Input characters can be limited using the test_func function. The function must return 0 (false) for illegal chars
+ * and something else for legal. These characters will be ignored by the input handler.
+ *
+ * @param point The origin point of the text input
+ * @param str The string which the text will be "entered" into
+ * @param str_length MUST be the length (including null-terminator) of `str`
+ * @param test_func The test function for allowed characters
+ */
 void std_text_input_create(struct std_draw_point *point, char *str, char str_length, char (*test_func)(char input))
 {
 	char key;
@@ -63,28 +69,32 @@ void std_text_input_create(struct std_draw_point *point, char *str, char str_len
 		str[i] = ' ';
 }
 
-/* Character input test functions. USe these to enable different kinds of text input */
 
+//! Test function for number chars
 char std_ti_number_test(char input)
 {
     return 48 <= input && input <= 57;
 }
 
+//! Test function for lowercase chars
 char std_ti_letters_lowercase_test(char input)
 {
     return 97 <= input && input <= 122;
 }
 
+//! Test function for uppercase chars
 char std_ti_letters_uppercase_test(char input)
 {
     return 65 <= input && input <= 90;
 }
 
+//! Test function for upper- and lowercase chars
 char std_ti_letters_test(char input)
 {
     return (65 <= input && input <= 90) || (97 <= input && input <= 122);
 }
 
+//! Test function for all letters and numbers chars
 char std_ti_alphanum_test(char input)
 {
     return (65 <= input && input <= 90) || (97 <= input && input <= 122) || (48 <= input && input <= 57);
