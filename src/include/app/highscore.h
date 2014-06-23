@@ -3,8 +3,14 @@
 
 #define HIGHSCORE_COUNT 5
 
+//! Struct for a single highscore entry
 struct app_highscore {
-	int score;
+	int score; //!< The score
+
+	//! The name of the player.
+	/**
+	 * Last char must be `\0	`
+	 */
 	char name[4];
 };
 
