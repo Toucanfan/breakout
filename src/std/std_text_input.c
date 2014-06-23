@@ -24,8 +24,9 @@
 #include "std/text_input.h"
 #include "std/kb.h"
 
+//! Initiates a text input.
 /**
- * Initiates a text input. This function is blocking and will return when the user presses ENTER
+ * This function is blocking and will return when the user presses ENTER
  *
  * Input characters can be limited using the test_func function. The function must return 0 (false) for illegal chars
  * and something else for legal. These characters will be ignored by the input handler.
