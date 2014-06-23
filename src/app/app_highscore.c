@@ -1,5 +1,22 @@
-#include <ez8.h> /* special encore constants, macros and falsh functions */
-#include <sio.h> /* special encore serial i/o functions */
+/**
+ * @file
+ * @author Henrik Enggaard Hansen <henrik.enggaard@gmail.com>
+ * @version 1.1
+ * @section Description
+ * 
+ * This file implements the functions needed for handling the highscore list.
+ * 
+ * @section Example usage
+ * 
+ * This 
+ * 
+ *     int i;
+ * 
+ * This is 
+ */
+
+#include <ez8.h>
+#include <sio.h>
 
 #include "app/highscore.h"
 #include "std/tty.h"
@@ -7,8 +24,11 @@
 
 struct app_highscore highscores[5];
 
-// Resets/clears the entire highscore list. Since the score is set to 0, the
-// rendering will no display it.
+/*
+ * Clears the highscore list.
+ *
+ * All scores are replaced by zero.
+ */
 void app_highscore_clr()
 {
 	char i;
@@ -22,8 +42,12 @@ void app_highscore_clr()
 	std_rom_write(STD_ROM_PAGE0, highscores, sizeof(highscores));
 }
 
-// Adds a score struct to the highscore at the correct position. If it is
-// lower than all other items on the list, it is discarded
+/**
+ * Adds a score struct to the highscore at the correct position. If it is
+ * lower than all items on the list, it is discarded.
+ *
+ * @params score The highscore to be inserted
+ */
 void app_add_highscore(struct app_highscore score)
 {
 	struct app_highscore tmp;
@@ -45,7 +69,9 @@ void app_add_highscore(struct app_highscore score)
 	std_rom_write(STD_ROM_PAGE0, highscores, sizeof(highscores));
 }
 
-// Renders highscore list
+/**
+ * Prints the highscore list
+ */
 void app_render_highscore()
 {
 	char i;
@@ -59,7 +85,13 @@ void app_render_highscore()
 	}
 }
 
-// Tests if a score is a new highscore
+/**
+ * Tests if a score is a new highscore
+ *
+ * @params score The score to test
+ * 
+ * @return Boolean char: 0 it if is not a new highscore, 1 if it is
+ */
 char app_highscore_test(int score)
 {
 	char i;
@@ -71,12 +103,23 @@ char app_highscore_test(int score)
 	return 0;
 }
 
-// Returns the top score
+/**
+ * Returns the top score
+ * 
+ * @return The top score
+ */
 struct app_highscore *app_get_top_score()
 {
 	return &highscores[0];
 }
 
+/**
+ * Initializes the highscore list. If there is a
+ * well formed highscore list in the ROM, it is read
+ * and used.
+ *
+ * Otherwise the highscore list is cleared.
+ */
 void app_highscore_init(void)
 {
 	std_rom_read(STD_ROM_PAGE0, highscores, sizeof(highscores));
