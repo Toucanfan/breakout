@@ -1,3 +1,19 @@
+/**
+ * @file
+ * @author Troels Mæhl Folke
+ * @version 1.0
+ * @section hal_led-description Description
+ *
+ * Display scrolling text on the LED display.
+ *
+ * @section hal_led-usage Usage
+ *
+ *     hal_led_set_string("Hello, World!    ");
+ *     hal_led_init();
+ *     while(1){hal_led_refresh();}
+ *
+ */
+
 #include <ez8.h>
 #include "hal/led.h"
 #include "hal/timer.h"
@@ -12,7 +28,7 @@
 #define STRING_LAST_CHAR string[STRING_SIZE]
 #define STRING_ID string[STRING_SIZE+1]
 
-
+//! Look-up table of characters for LED display
 static const char character_data[95][5] = {
 	{0x00, 0x00, 0x00, 0x00, 0x00},
 	{0x00, 0x5F, 0x5F, 0x00, 0x00},
@@ -111,10 +127,13 @@ static const char character_data[95][5] = {
 	{0x08, 0x04, 0x08, 0x10, 0x08}
 };
 
-
 static char string[STRING_SIZE+2];
 static char mode = 0;
 
+//! Resets the video buffer
+/**
+ * @param video_buffer The video buffer
+ */
 static void reset_video_buffer(char *video_buffer)
 {
 	int i;
@@ -123,6 +142,12 @@ static void reset_video_buffer(char *video_buffer)
 	}
 }
 
+//! Determines if scrolling is needed
+/**
+ * This function should be called at each "tick".
+ *
+ * @return True if text should scroll
+ */
 static char should_scroll(void)
 {
 	static int i = 0;
@@ -135,6 +160,12 @@ static char should_scroll(void)
 	}
 }
 
+//! Determines if a new character should be loaded
+/**
+ * This function should be called at each "tick".
+ *
+ * @return True if a character should be loaded
+ */
 static char should_load_next_char(void)
 {
 	static int i = 0;
@@ -147,6 +178,12 @@ static char should_load_next_char(void)
 	}
 }
 
+//! Loads the next character
+/**
+ * @param video_buffer The video buffer
+ * @param offset The scroll offset
+ * @param next_ch Index of next char load
+ */
 static void load_next_char(char *video_buffer, char offset, char *next_ch)
 {
 	int i;
@@ -162,6 +199,11 @@ static void load_next_char(char *video_buffer, char offset, char *next_ch)
 		*next_ch += 1;
 }
 
+//! Refresh the LED display
+/**
+ * @param video_buffer The video buffer
+ * @param offset The scroll offset
+ */
 static void do_refresh(char *video_buffer, char offset)
 {
 	int i, j;
@@ -196,10 +238,7 @@ static void do_refresh(char *video_buffer, char offset)
 	}
 }
 
-
-
-
-
+//! Initialize the output pins for the LED display
 void hal_led_init(void)
 {
 	/* Disable alternate functions */
@@ -214,6 +253,10 @@ void hal_led_init(void)
 	hal_timer_start(HAL_TIMER_1);
 }
 
+//! Set the string for the LED display
+/**
+ * @param str The string to display
+ */
 void hal_led_set_string(char *str)
 {
 	char i;
@@ -225,11 +268,13 @@ void hal_led_set_string(char *str)
 	STRING_ID += 1;
 }
 
+//! Set the mode for the display (not implemented)
 void hal_led_set_mode(char m)
 {
 	mode = m;
 }
 
+//! Refresh the states for the LED display
 void hal_led_refresh(void)
 {
 	static char video_buffer[VIDEO_BUFFER_SIZE];
