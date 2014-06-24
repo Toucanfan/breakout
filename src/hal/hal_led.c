@@ -1,5 +1,6 @@
 #include <ez8.h>
 #include "hal/led.h"
+#include "std/timer.h"
 
 #define COLUMNS 5
 #define ROWS 7
@@ -209,6 +210,9 @@ void hal_led_init(void)
 	/* Configure data direction (output mode) */
 	PEDD = 0x0;
 	PGDD = 0x0;
+
+	std_timer_configure(STD_TIMER_1, 100);
+	std_timer_start(STD_TIMER_1);
 }
 
 void hal_led_set_string(char *str)
@@ -234,10 +238,8 @@ void hal_led_refresh(void)
 	static char next_ch = 0; /* index of next char to load if scrolling */
 	static char offset = 0;
 
-	if (!should_refresh)
+	if (!std_timer_read(std_timer_1))
 		return;
-	else
-		should_refresh = 1;
 
 	if (string_id_old != STRING_ID) { 
 		/* new string has been loaded */
