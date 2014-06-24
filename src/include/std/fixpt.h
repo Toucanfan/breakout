@@ -1,6 +1,7 @@
 #ifndef STD_FIXPT_H
 #define STD_FIXPT_H
 
+//! Fixed-point struct
 struct std_fixpt_point {
 	long x;
 	long y;
