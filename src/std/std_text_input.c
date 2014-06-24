@@ -2,11 +2,11 @@
  * @file
  * @author Henrik Enggaard Hansen <henrik.enggaard@gmail.com>
  * @version 1.0
- * @section Description
+ * @section std_text_input-description Description
  * 
  * A general purpose text input field for keyboard input from a UART connected terminal.
  * 
- * @section Usage
+ * @section std_text_input-usage Usage
  *
  *     struct std_draw_point point;
  *     char str[4];

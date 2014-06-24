@@ -2,11 +2,11 @@
  * @file
  * @author Henrik Enggaard Hansen <henrik.enggaard@gmail.com>
  * @version 1.1
- * @section Description
+ * @section app_highscore-description Description
  * 
  * This file implements the functions needed for handling the highscore list.
  * 
- * @section Example usage
+ * @section app_highscore-usage Usage
  * 
  * This 
  * 
