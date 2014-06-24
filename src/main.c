@@ -37,6 +37,7 @@ void main(void)
 	std_timer_configure(STD_TIMER_0, 100);
 	std_timer_start(STD_TIMER_0);
 	std_led_init();
+	app_highscore_init(); // related to setting up highscores, not game_state
 	init_splash();
 	while (1) {
 		switch(game_state){
@@ -172,7 +173,6 @@ void init_splash(void)
 {
 	app_draw_splash();
 	game_state = IN_SPLASH;
-	app_highscore_init();
 }
 
 void splash_screen(void)
