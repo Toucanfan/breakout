@@ -24,18 +24,20 @@
 
 /* constants to be used when drawing blocks */
 #define BLOCK_PADDING_TOP 4
-#define BLOCK_COLUMNS 32 //size of long
+#define BLOCK_COLUMNS 32 //!<size of long
 #define BLOCK_LENGTH 4
 #define BLOCK_HEIGHT 3
 #define BLOCK_INTERDIST_X 1
 #define BLOCK_INTERDIST_Y 1
 #define PRECISION 128
+//! Expression testing if the ball is within the x-components of the block
 #define BALL_WITHIN_BLOCK_X (x <= std_fixpt_f2i(ball_pos_x_next) && std_fixpt_f2i(ball_pos_x_next) <= x + (BLOCK_LENGTH-1))
+//! Expression testing if the ball is within the y-components of the block
 #define BALL_WITHIN_BLOCK_Y (y <= std_fixpt_f2i(ball_pos_y_next) && std_fixpt_f2i(ball_pos_y_next) <= y + (BLOCK_HEIGHT-1))
 
 #define MAPS 3
 
-
+//! Draws the borders of the map
 static void draw_borders(void)
 {
 	struct std_draw_box topb;
@@ -73,7 +75,12 @@ static void draw_borders(void)
 	//std_draw_box(&botb);           // TROELS KIG HER WTF ER DET?
 }
 
-
+//! Counts the number of blocks left
+/**
+ * @param blocks The map (a pointer to longs)
+ *
+ * @return The number of blocks
+ */
 static int count_blocks(long *blocks)
 {
 	char i;
@@ -89,6 +96,12 @@ static int count_blocks(long *blocks)
 	return count;
 }
 
+//! Draws or erases a block
+/**
+ * @param row The row to draw on
+ * @param column The column to draw on
+ * @param draw Boolean char for drawing or erasing
+ */
 void draw_block(char row, char column, char draw)
 {
 	int x = WIDTH / 2 - BLOCK_COLUMNS * (BLOCK_LENGTH+BLOCK_INTERDIST_X) / 2 + column * (BLOCK_LENGTH+BLOCK_INTERDIST_X); // start position
@@ -109,6 +122,14 @@ void draw_block(char row, char column, char draw)
 	std_tty_set_bcolor(STD_TTY_BCOLOR_BLACK);
 }
 
+//! Tests if the ball collides with a block
+/**
+ * @param row The row to check
+ * @param column The column to check
+ * @param ctx The game context
+ *
+ * @return Collision type
+ */
 char test_block(char row, char column, struct app_map_context *ctx)
 {	
 	int x = WIDTH / 2 - BLOCK_COLUMNS * (BLOCK_LENGTH+BLOCK_INTERDIST_X) / 2 + column * (BLOCK_LENGTH+BLOCK_INTERDIST_X); // start position
@@ -132,7 +153,10 @@ char test_block(char row, char column, struct app_map_context *ctx)
 	return COLLISION_NONE;
 }
 
-
+//! Draws all blocks
+/**
+ * @param ctx The game context
+ */
 static void draw_blocks(struct app_map_context *ctx)
 {
 	int i;
@@ -156,7 +180,10 @@ static void draw_blocks(struct app_map_context *ctx)
 				draw_block(i,j,1);
 }
 
-
+//! Draws a ball
+/**
+ * @param ball The ball struct
+ */
 static void draw_ball(struct app_map_ball *ball)
 {
 	static int x_old = 6;
@@ -183,6 +210,10 @@ static void draw_ball(struct app_map_ball *ball)
 	}
 }
 
+//! Resets the paddle
+/**
+ * @param paddle The paddle struct
+ */
 static void reset_paddle(struct app_map_paddle *paddle)
 {
 	int x = WIDTH/2;
@@ -196,6 +227,10 @@ static void reset_paddle(struct app_map_paddle *paddle)
 
 }
 
+//! Draws the paddle
+/**
+ * @param paddle The paddle struct
+ */
 static void draw_paddle(struct app_map_paddle *paddle)
 {
 	static int x_old = WIDTH/2;
@@ -245,6 +280,13 @@ static void draw_paddle(struct app_map_paddle *paddle)
 	std_tty_set_bcolor(STD_TTY_BCOLOR_BLACK);
 }
 
+//! Tests for paddle collision
+/**
+ * @param ball The ball struct
+ * @param paddle The paddle struct
+ *
+ * @return Collision type
+ */
 static char test_paddle_collision(struct app_map_ball *ball, 
 				struct app_map_paddle *paddle)
 {
@@ -260,7 +302,12 @@ static char test_paddle_collision(struct app_map_ball *ball,
 
 }
 
-
+//! Tests for block collisions
+/**
+ * @param ctx The game context
+ *
+ * @return Collision type
+ */
 static char test_block_collision(struct app_map_context *ctx)
 {
 	int i;
@@ -282,6 +329,14 @@ static char test_block_collision(struct app_map_context *ctx)
 	return COLLISION_NONE;
 }
 
+//! Tests for collisions
+/**
+ * Tests for collisions between ball and blocks and paddle.
+ *
+ * @param ctx The game context
+ *
+ * @return Collision type
+ */
 static char test_collision(struct app_map_context *ctx)
 {
 	char r;
@@ -310,6 +365,11 @@ static char test_collision(struct app_map_context *ctx)
 		return COLLISION_NONE;
 }
 
+//! Handle paddle collision
+/**
+ * @param ball The ball struct
+ * @param paddle The paddle struct
+ */
 static void handle_paddle_collision(struct app_map_ball *ball, 
 				struct app_map_paddle *paddle)
 {
@@ -341,8 +401,12 @@ static void handle_paddle_collision(struct app_map_ball *ball,
 		ball->vel.y = -(ball->speed*std_fixpt_sin(32));
 	}
 }
-		
 
+//! Handle collisions
+/**
+ * @param ctx The game context
+ * @param coll_type The type of collision
+ */
 static void handle_collision(struct app_map_context *ctx, char coll_type)
 {
 	switch(coll_type) {
@@ -366,6 +430,10 @@ static void handle_collision(struct app_map_context *ctx, char coll_type)
 	}
 }
 
+//! Save the game state
+/**
+ * @param ctx The game context
+ */
 void save_game(struct app_map_context *ctx)
 {	
 	app_draw_save();
@@ -374,6 +442,10 @@ void save_game(struct app_map_context *ctx)
 	ctx->resumed_game = 0;
 }
 
+//! Reset the map, ball and paddle
+/**
+ * @param ctx The game context
+ */
 void app_map_reset(struct app_map_context *ctx)
 {		
 		std_tty_clrscr();
@@ -393,6 +465,10 @@ void app_map_reset(struct app_map_context *ctx)
 		reset_paddle(&ctx->paddle);
 }
 
+//! Refresh the ball and paddle
+/**
+ * @param ctx The game context 
+ */
 void app_map_refresh(struct app_map_context *ctx)
 {
 	char collision;
