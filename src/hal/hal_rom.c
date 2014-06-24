@@ -1,9 +1,26 @@
+/**
+ * @file
+ * @author Troels Mæhl Folke
+ * @version 1.0
+ * @section hal_rom-description Description
+ * 
+ * ROM data saving and retreiving.
+ *
+ * Note that this is a hardware library, please refer to std_rom for the application programming interface.
+ */
+
 #include <ez8.h>
 #include "hal/rom.h"
 #include "std/tty.h"
 
 #define FLASH_STATE_LOCKED 0x00
 
+//! Read data from ROM
+/**
+ * @param page Page file to read from
+ * @param buf Buffer to read into
+ * @param n Size of data to read
+ */
 void hal_rom_read(unsigned char page, void *buf, int n)
 {
 	char *dst = buf;
@@ -22,6 +39,12 @@ void hal_rom_read(unsigned char page, void *buf, int n)
 	EI();
 }
 
+//! Write data to ROM
+/**
+ * @param page Page file to write to
+ * @param buf Buffer to write from
+ * @param n Size of data to write
+ */
 void hal_rom_write(unsigned char page, void *buf, int n)
 {
 	char *src = buf;
