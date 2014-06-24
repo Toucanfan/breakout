@@ -45,10 +45,12 @@ void main(void)
 				splash_screen();
 				break;
 			case IN_GAME:
+				std_timer_stop(STD_TIMER_1);
 				if (std_timer_read(STD_TIMER_0))
 					game_tick(&ctx);
 				break;
 			case IN_MENU:
+				std_timer_start(STD_TIMER_1);
 				menu_screen(&ctx);
 				break;
 			case IN_RESUME_SCREEN:

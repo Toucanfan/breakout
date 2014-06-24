@@ -128,7 +128,7 @@ static char should_scroll(void)
 {
 	static int i = 0;
 	i++;
-	if (i == SLOWNESS) {
+	if (i >= SLOWNESS) {
 		i = 0;
 		return 1;
 	} else {
@@ -140,7 +140,7 @@ static char should_load_next_char(void)
 {
 	static int i = 0;
 	i++;
-	if (i == SLOWNESS*6) {
+	if (i >= SLOWNESS*6) {
 		i = 0;
 		return 1;
 	} else {
@@ -211,7 +211,7 @@ void hal_led_init(void)
 	PEDD = 0x0;
 	PGDD = 0x0;
 
-	std_timer_configure(STD_TIMER_1, 100);
+	std_timer_configure(STD_TIMER_1, 1);
 	std_timer_start(STD_TIMER_1);
 }
 
@@ -238,7 +238,7 @@ void hal_led_refresh(void)
 	static char next_ch = 0; /* index of next char to load if scrolling */
 	static char offset = 0;
 
-	if (!std_timer_read(std_timer_1))
+	if (!std_timer_read(STD_TIMER_1))
 		return;
 
 	if (string_id_old != STRING_ID) { 
