@@ -1,5 +1,11 @@
 #include "std/fixpt.h"
 
+//! Fixed-point sine function
+/**
+ * Precalculate look-up table.
+ *
+ * @param dgr512 An angle in 512-degree format
+ */
 long std_fixpt_sin(int dgr512)
 {
 	static const short LUT[] =
@@ -80,7 +86,11 @@ long std_fixpt_sin(int dgr512)
 	return LUT[dgr512 & 0x1FF];
 }
 
-
+//! Rotation of fixed-point point
+/**
+ * @param point The point to rotate
+ * @param dgr512 An angle in 512-degree format
+ */
 void std_fixpt_rotate(struct std_fixpt_point *point, int dgr512)
 {
 	long x = point->x;
