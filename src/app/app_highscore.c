@@ -22,7 +22,7 @@
 #include "std/tty.h"
 #include "std/rom.h"
 
-struct app_highscore highscores[5];
+static struct app_highscore highscores[5];
 
 /*
  * Clears the highscore list.
@@ -48,7 +48,7 @@ void app_highscore_clr()
  *
  * @param score The highscore to be inserted
  */
-void app_add_highscore(struct app_highscore score)
+void app_highscore_add(struct app_highscore score)
 {
 	struct app_highscore tmp;
 	char i;
@@ -72,15 +72,15 @@ void app_add_highscore(struct app_highscore score)
 /**
  * Prints the highscore list
  */
-void app_render_highscore()
+void app_highscore_render()
 {
 	char i;
 	for(i = 0; i < HIGHSCORE_COUNT; i++) {
 		if(highscores[i].score > 0) {
-			printf(" %s", highscores[i].name);
-			printf(" : %3d\n", highscores[i].score);
+			std_tty_printf(" %s", highscores[i].name);
+			std_tty_printf(" : %3d\n", highscores[i].score);
 		} else {
-			printf(" --- : ---\n");
+			std_tty_printf(" --- : ---\n");
 		}
 	}
 }
@@ -108,7 +108,7 @@ char app_highscore_test(int score)
  * 
  * @return The top score
  */
-struct app_highscore *app_get_top_score()
+struct app_highscore *app_highscore_get_topscore()
 {
 	return &highscores[0];
 }

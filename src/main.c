@@ -47,7 +47,7 @@ void main(void)
 			case IN_GAME:
 				std_timer_stop(STD_TIMER_1);
 				if (std_timer_read(STD_TIMER_0))
-					game_tick(&ctx);
+					app_game_tick(&ctx);
 				break;
 			case IN_MENU:
 				std_timer_start(STD_TIMER_1);
@@ -79,7 +79,7 @@ void menu_screen(struct app_map_context *ctx)
 	static unsigned char menu_selection = GAME;
 	static char hstring[32];
 
-	struct app_highscore *highscore = app_get_top_score();
+	struct app_highscore *highscore = app_highscore_get_topscore();
 	sprintf(hstring, "Topscore: %s:%d    ", highscore->name, highscore->score);
 	std_led_set_string(hstring);
 	while (std_button_new_press() == STD_BUTTON_NONE) {
@@ -140,7 +140,7 @@ void diff_select_screen(struct app_map_context *ctx)
 			break;
 		case STD_BUTTON_MIDDLE:
 			ctx->difficulty = cur_diff_selection + 1;  // Allows difficulty to be used as a multiplier
-			init_game(ctx);
+			app_game_init(ctx);
 			break;
 		default:
 			break;
@@ -192,7 +192,7 @@ void resume_screen(void)
 	init_menu();
 }
 
-void init_endgame(struct app_map_context *ctx)
+void app_game_end(struct app_map_context *ctx)
 {
 	struct app_highscore new_highscore;
 	struct std_draw_point point;

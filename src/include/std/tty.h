@@ -31,6 +31,7 @@
 
 /* macro functions */
 #define std_tty_printf printf
+#define std_tty_sprintf sprintf
 #define std_tty_puts(s) puts(s)
 #define std_tty_init() hal_uart_init()
 

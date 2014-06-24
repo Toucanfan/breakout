@@ -14,10 +14,10 @@ struct app_highscore {
 	char name[4];
 };
 
-void app_highscore_clr(void);
-void app_highscore_init(void);
-void app_add_highscore(struct app_highscore score);
-void app_render_highscore();
-char app_highscore_test(int score);
-struct app_highscore *app_get_top_score();
+extern void app_highscore_clr(void);
+extern void app_highscore_init(void);
+extern void app_highscore_add(struct app_highscore score);
+extern void app_highscore_render();
+extern char app_highscore_test(int score);
+extern struct app_highscore *app_highscore_get_topscore(void);
 #endif

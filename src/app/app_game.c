@@ -12,7 +12,7 @@
  *
  * @param ctx The game context
  */
-void game_tick (struct app_map_context *ctx)
+void app_game_tick(struct app_map_context *ctx)
 {
 	app_map_refresh(ctx);
 	
@@ -23,7 +23,7 @@ void game_tick (struct app_map_context *ctx)
 	}
 	
 	if (ctx->lives == 0) {
-		init_endgame(ctx); //  HENRIKS FUNKTION OM HIGHSCORE
+		app_game_end(ctx); //  HENRIKS FUNKTION OM HIGHSCORE
 	}
 }
 
@@ -31,7 +31,7 @@ void game_tick (struct app_map_context *ctx)
 /**
  * @param ctx The game context
  */
-void init_game(struct app_map_context *ctx) {
+void app_game_init(struct app_map_context *ctx) {
 	ctx->level = 1;
 	ctx->score = 0;
 	ctx->lives = 3;

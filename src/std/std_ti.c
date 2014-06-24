@@ -2,18 +2,18 @@
  * @file
  * @author Henrik Enggaard Hansen <henrik.enggaard@gmail.com>
  * @version 1.0
- * @section std_text_input-description Description
+ * @section std_ti-description Description
  * 
  * A general purpose text input field for keyboard input from a UART connected terminal.
  * 
- * @section std_text_input-usage Usage
+ * @section std_ti-usage Usage
  *
  *     struct std_draw_point point;
  *     char str[4];
  *     char str_length = 4;
  *     point.x = 3; point.y = 1;
  *
- *     std_text_input_create(&point, str, str_length, &std_ti_letters_test);
+ *     std_ti_create(&point, str, str_length, &std_ti_letters_test);
  *
  * Here a 4 character text input is created at (3, 1) and only letters can be entered.
  */
@@ -21,7 +21,7 @@
 #include "std/button.h"
 #include "std/tty.h"
 #include "std/draw.h"
-#include "std/text_input.h"
+#include "std/ti.h"
 #include "std/kb.h"
 
 //! Initiates a text input.
@@ -36,7 +36,7 @@
  * @param str_length MUST be the length (including null-terminator) of `str`
  * @param test_func The test function for allowed characters
  */
-void std_text_input_create(struct std_draw_point *point, char *str, char str_length, char (*test_func)(char input))
+void std_ti_create(struct std_draw_point *point, char *str, char str_length, char (*test_func)(char input))
 {
 	char key;
 	char i = 0;

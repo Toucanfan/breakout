@@ -1,17 +1,17 @@
 #ifndef STD_KB_H
 #define STD_KB_H
 
-#define BACKSPACE 127
-#define ENTER 13
-#define ARROWUP 5
-#define ARROWDOWN 6
-#define ARROWRIGHT 7
-#define ARROWLEFT 8
-#define SPACE 32
-#define TAB 9
-#define ESC27 27
-#define ESC7 7
+#define STD_KB_BACKSPACE 127
+#define STD_KB_ENTER 13
+#define STD_KB_ARROWUP 5
+#define STD_KB_ARROWDOWN 6
+#define STD_KB_ARROWRIGHT 7
+#define STD_KB_ARROWLEFT 8
+#define STD_KB_SPACE 32
+#define STD_KB_TAB 9
+#define STD_KB_ESC27 27
+#define STD_KB_ESC7 7
 
-char get_char(void);
+extern char std_kb_get_char(void);
 
 #endif

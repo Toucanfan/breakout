@@ -3,10 +3,10 @@
 
 #include "app/map.h"
 
-extern char game_state;
+extern char app_game_state;
 
-void game_tick (struct app_map_context *ctx);
-void init_game(struct app_map_context *ctx);
-extern void init_endgame(struct app_map_context *ctx);
+extern void app_game_tick (struct app_map_context *ctx);
+extern void app_game_init(struct app_map_context *ctx);
+extern void app_game_end(struct app_map_context *ctx);
 
 #endif /* app/game.h */
