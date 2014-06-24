@@ -6,6 +6,12 @@
 #include "app/map.h"
 #include "app/state.h"
 
+//! Updates game states
+/**
+ * Calls app_map_refresh to update map state and moves to next level or ends game.
+ *
+ * @param ctx The game context
+ */
 void game_tick (struct app_map_context *ctx)
 {
 	app_map_refresh(ctx);
@@ -21,6 +27,10 @@ void game_tick (struct app_map_context *ctx)
 	}
 }
 
+//! Initializes game
+/**
+ * @param ctx The game context
+ */
 void init_game(struct app_map_context *ctx) {
 	ctx->level = 1;
 	ctx->score = 0;
