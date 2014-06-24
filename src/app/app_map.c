@@ -442,6 +442,16 @@ void save_game(struct app_map_context *ctx)
 	ctx->resumed_game = 0;
 }
 
+//! Draw score and lives
+/**
+ * @param ctx The game context
+ */
+void draw_info(struct app_map_context *ctx)
+{
+	std_tty_gotoxy(1,55);
+	std_tty_printf("Score: %3d  Lives left: %d", ctx->score, ctx->lives);
+}
+
 //! Reset the map, ball and paddle
 /**
  * @param ctx The game context
@@ -506,4 +516,5 @@ void app_map_refresh(struct app_map_context *ctx)
 			break;
 	}
 	draw_paddle(&ctx->paddle);
+	draw_info(ctx);
 }
