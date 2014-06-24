@@ -1,6 +1,18 @@
+/**
+ * @file
+ * @version 1.0
+ * @section std_draw-description Description
+ *
+ * Implements the functions needed for drawing boxes and windows
+ */
+
 #include "std/draw.h"
 #include "std/tty.h"
 
+//! Draw a box
+/**
+ * @param box The box definition struct
+ */
 void std_draw_box(struct std_draw_box *box)
 {
 	int i, j;
@@ -14,6 +26,10 @@ void std_draw_box(struct std_draw_box *box)
 	std_tty_set_bcolor(STD_TTY_BCOLOR_BLACK);
 }
 
+//! Draw a window
+/**
+ * @param window The window definition struct
+ */
 void std_draw_window(struct std_draw_window *window)
 {
 	int i, j;
