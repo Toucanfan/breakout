@@ -91,7 +91,7 @@ void hal_timer_configure(char timer, int subcount_max)
 		T1H = 0x00;
 		T1L = 0x01;
 		T1RH = 0x00;
-		T1RL = 0x48;
+		T1RL = 0x24;
 		IRQ0ENH &= ~0x40;
 		IRQ0ENL |= 0x40;
 		timer1_state.subcount_max = subcount_max;
