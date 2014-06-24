@@ -10,7 +10,7 @@
 /**
  * Calls app_map_refresh to update map state and moves to next level or ends game.
  *
- * @param app_map_context The game context
+ * @param ctx The game context
  */
 void game_tick (struct app_map_context *ctx)
 {
@@ -29,7 +29,7 @@ void game_tick (struct app_map_context *ctx)
 
 //! Initializes game
 /**
- * @param app_map_context The game context
+ * @param ctx The game context
  */
 void init_game(struct app_map_context *ctx) {
 	ctx->level = 1;
