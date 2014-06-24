@@ -22,12 +22,17 @@
 #define SAVE_OFFSET_X 20
 #define SAVE_OFFSET_Y 30
 
+//! Utility macro for drawing a single line.
+/**
+ * We do this with a macro because we had memory issues when we didn't.
+ */
 #define draw_line(string,offset,line) \
 do { \
   std_tty_gotoxy(offset,line);\
   std_tty_printf(string);\
 } while (0)
 
+//! Draw splash screen
 void app_draw_splash(void) 
 {
 	int line = SPLASH_OFFSET_Y;
@@ -53,6 +58,7 @@ void app_draw_splash(void)
 	draw_line("AAAAAAA                   AAAAAAArrrrrrr           kkkkkkkk    kkkkkkkaaaaaaaaaa  aaaa nnnnnn    nnnnnn   ooooooooooo   iiiiiiii   ddddddddd   ddddd",SPLASH_OFFSET_X,line++);
 }
 
+//! Draw highscore screen
 void app_draw_highscores(void)
 {
 	std_tty_clrscr();
@@ -60,6 +66,7 @@ void app_draw_highscores(void)
 	app_render_highscore();
 }
 
+//! Draw highscore screen
 void app_draw_resume(void)
 {
 	int line = RESUME_OFFSET_Y;
@@ -74,6 +81,11 @@ void app_draw_resume(void)
 	draw_line(" |_| \\_|\\____/  |_____/_/    \\_\\/   |______| |_____/   |_/_/    \\_\\_|  |______|",RESUME_OFFSET_X,line++);
 }
 
+//! Draw difficulties screen
+/**
+ * @param init Boolean for toggling initializing and redrawing the screen.
+ * @param selection A value between 0 and 3 corresponding to easy, normal, hard and very hard.
+ */
 void app_draw_difficulties(char init, char selection)
 {	
 	char line = DIFFICULTY_OFFSET_Y;
@@ -151,6 +163,11 @@ void app_draw_difficulties(char init, char selection)
 	prior_selection = selection;
 }
 
+//! Draw menu screen
+/**
+ * @param init Boolean for toggling initializing and redrawing the screen.
+ * @param selection A value between 0 and 3 corresponding to game, highscore, resume and exit.
+ */
 void app_draw_menu(char init, char selection)
 {	
 	char line = MENU_OFFSET_Y;
@@ -231,6 +248,7 @@ void app_draw_menu(char init, char selection)
 	prior_selection = selection;
 }
 
+//! Draw save animation
 void app_draw_save(void)
 {
 	int line = SAVE_OFFSET_Y;
@@ -255,7 +273,7 @@ void app_draw_save(void)
 
 }
 
-
+//! Draw end game screen
 void app_draw_endgame()
 {
 	std_tty_clrscr();
