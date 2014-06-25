@@ -13,7 +13,6 @@
 
 /* constants to be used when drawing paddle */
 #define PADDLE_HALF_LEN 15
-#define PADDLE_STRING "\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB"
 
 /* constants to be used in collision detection and handling */
 #define COLLISION_NONE 0x0
@@ -34,6 +33,8 @@
 #define BALL_WITHIN_BLOCK_Y (y <= std_fixpt_f2i(ball_pos_y_next) && std_fixpt_f2i(ball_pos_y_next) <= y + (BLOCK_HEIGHT-1))
 
 #define MAPS 3
+
+#define BASE_SPEED (std_fixpt_i2f(1)/3)
 
 
 static void draw_borders(void)
@@ -70,7 +71,6 @@ static void draw_borders(void)
 	std_draw_box(&leftb);
 	std_draw_box(&topb);
 	std_draw_box(&rightb);
-	//std_draw_box(&botb);           // TROELS KIG HER WTF ER DET?
 }
 
 
@@ -205,11 +205,6 @@ static void draw_paddle(struct app_map_paddle *paddle)
 		std_tty_gotoxy(1, HEIGHT);
 		std_tty_set_fcolor(STD_TTY_FCOLOR_WHITE);
 		std_tty_puts(paddle_str);
-		/*
-		/* draw paddle at new position
-		std_tty_gotoxy(x-PADDLE_HALF_LEN, HEIGHT);
-		std_tty_set_fcolor(STD_TTY_FCOLOR_WHITE);
-		std_tty_printf(paddle_str);*/
 		x_old = x;
 	}
 }
@@ -309,6 +304,9 @@ static void handle_paddle_collision(struct app_map_ball *ball,
 		ball->vel.x = ball->speed*std_fixpt_cos(32);
 		ball->vel.y = -(ball->speed*std_fixpt_sin(32));
 	}
+
+	ball->vel.x = std_fixpt_mul(ball->vel.x, BASE_SPEED);
+	ball->vel.y = std_fixpt_mul(ball->vel.y, BASE_SPEED);
 }
 		
 
@@ -326,7 +324,7 @@ static void handle_collision(struct app_map_context *ctx, char coll_type)
 		break;
 	case COLLISION_BOTTOM:
 		ctx->ball.vel.x = ctx->ball.speed*0;
-		ctx->ball.vel.y = ctx->ball.speed*std_fixpt_i2f(1);
+		ctx->ball.vel.y = -(ctx->ball.speed*BASE_SPEED);
 		ctx->ball.pos.x = std_fixpt_i2f(WIDTH/2);
 		ctx->ball.pos.y = std_fixpt_i2f(HEIGHT/2);
 		ctx->lives--;
@@ -366,9 +364,8 @@ void app_map_reset(struct app_map_context *ctx)
 			ctx->resumed_game = 0;
 			return;
 		}
-		ctx->ball.speed = 1;
-		ctx->ball.vel.x = ctx->ball.speed*0;
-		ctx->ball.vel.y = ctx->ball.speed*std_fixpt_i2f(1);
+		ctx->ball.vel.x = 0;
+		ctx->ball.vel.y = ctx->ball.speed*BASE_SPEED;
 		ctx->paddle.vel = std_fixpt_i2f(3)/1;
 		ctx->ball.pos.x = std_fixpt_i2f(WIDTH/2);
 		ctx->ball.pos.y = std_fixpt_i2f(HEIGHT/2);

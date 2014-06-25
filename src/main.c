@@ -34,6 +34,7 @@ static void enter_diff_select_screen(struct app_map_context *ctx, char *next_scr
 			break;
 		case STD_BUTTON_MIDDLE:
 			ctx->difficulty = cur_diff_selection + 1;  // Allows difficulty to be used as a multiplier
+			ctx->ball.speed = ctx->difficulty;
 			*next_screen = APP_SCREEN_GAME;
 			return;
 			break;
