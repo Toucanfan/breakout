@@ -2,134 +2,28 @@
 
 #include "app/draw.h"
 #include "app/highscore.h"
+#include "app/game.h"
+#include "app/menu.h"
+#include "app/screen.h"
+
 #include "std/draw.h"
-#include "std/text_input.h"
+#include "std/ti.h"
 #include "std/button.h"
 #include "std/fixpt.h"
 #include "std/timer.h"
 #include "std/led.h"
-#include "app/game.h"
-#include "app/state.h"
 #include "std/rom.h"
 
 
-void init_splash(void);
-void init_menu(void);
-void init_diff_select(void);
-void diff_select_screen(void);
-void init_highscores(void);
-void menu_screen(struct app_map_context *ctx);
-void highscores_screen(void);
-void init_resume(struct app_map_context *ctx);
-void init_splash(void);
-void splash_screen(void);
-void resume_screen(void);
-void init_endgame(struct app_map_context *ctx);
-
-char game_state;
-
-void main(void)
-{
-	struct app_map_context ctx;
-	
-	std_tty_init();
-	std_tty_clrscr();
-	std_timer_configure(STD_TIMER_0, 100);
-	std_timer_start(STD_TIMER_0);
-	std_led_init();
-	app_highscore_init(); // related to setting up highscores, not game_state
-	init_splash();
-	while (1) {
-		switch(game_state){
-			case IN_SPLASH:
-				splash_screen();
-				break;
-			case IN_GAME:
-				std_timer_stop(STD_TIMER_1);
-				if (std_timer_read(STD_TIMER_0))
-					app_game_tick(&ctx);
-				break;
-			case IN_MENU:
-				std_timer_start(STD_TIMER_1);
-				menu_screen(&ctx);
-				break;
-			case IN_RESUME_SCREEN:
-				resume_screen();
-				break;
-			case IN_HIGHSCORE_SCREEN:
-				highscores_screen();
-				break;
-			case IN_DIFFICULTY_SELECT:
-				diff_select_screen(&ctx);
-				break;
-			default:
-				init_splash();
-		}
-	}
-}
-
-void init_menu(void)
-{
-	app_draw_menu(1,GAME);
-	game_state = IN_MENU;
-}
-	
-void menu_screen(struct app_map_context *ctx)
-{
-	static unsigned char menu_selection = GAME;
-	static char hstring[32];
-
-	struct app_highscore *highscore = app_highscore_get_topscore();
-	sprintf(hstring, "Topscore: %s:%d    ", highscore->name, highscore->score);
-	std_led_set_string(hstring);
-	while (std_button_new_press() == STD_BUTTON_NONE) {
-		std_led_refresh();
-	}
-	switch(std_button_pressed()) {
-		case STD_BUTTON_LEFT:
-			menu_selection = --menu_selection & 0x03;
-			app_draw_menu(0,menu_selection);
-			break;
-		case STD_BUTTON_RIGHT:
-			menu_selection = ++menu_selection & 0x03;
-			app_draw_menu(0,menu_selection);
-			break;
-		case STD_BUTTON_MIDDLE:
-			switch (menu_selection) {
-				case GAME: 
-					init_diff_select(); 
-					break;
-				case RESUME:
-					init_resume(ctx);
-					break;
-				case HIGHSCORES:
-					init_highscores();
-					break;
-				case EXIT:
-					init_splash(); 
-					break;
-				default:
-					break;
-			}
-			menu_selection = GAME; // default selection for next time
-	    	break;
-	 	default:
-			break;
-	}
-}	
-	
-void init_diff_select(void)
-{
-app_draw_difficulties(1,MEDIUM);
-game_state = IN_DIFFICULTY_SELECT;
-}
-
-void diff_select_screen(struct app_map_context *ctx)
+static void enter_diff_select_screen(struct app_map_context *ctx, char *next_screen)
 {
 	static char cur_diff_selection = MEDIUM;
+
+	app_draw_difficulties(1,MEDIUM);
 	
-	while (std_button_new_press() == STD_BUTTON_NONE) {}
-	switch(std_button_pressed()) {
+	while (1) {
+		while (std_button_new_press() == STD_BUTTON_NONE) {}
+		switch(std_button_pressed()) {
 		case STD_BUTTON_LEFT:
 			cur_diff_selection = --cur_diff_selection & 0x03;
 			app_draw_difficulties(0,cur_diff_selection);
@@ -140,85 +34,107 @@ void diff_select_screen(struct app_map_context *ctx)
 			break;
 		case STD_BUTTON_MIDDLE:
 			ctx->difficulty = cur_diff_selection + 1;  // Allows difficulty to be used as a multiplier
-			app_game_init(ctx);
+			*next_screen = APP_SCREEN_GAME;
+			return;
 			break;
 		default:
 			break;
-	}	
-}
-
-void init_highscores(void) 
-{
-	app_draw_highscores();
-	game_state = IN_HIGHSCORE_SCREEN;
-}
-	
-void highscores_screen(void) 
-{
-	while (std_button_new_press() == STD_BUTTON_NONE) {}
-	init_menu();
-}
-
-void init_resume(struct app_map_context *ctx) 
-{
- 	std_rom_read(STD_ROM_PAGE1, ctx, sizeof(*ctx));
-	if (ctx->resumed_game == 1) {    // 99% of the time, this will not be the case if no save is present
-		app_map_reset(ctx);
-		game_state = IN_GAME;
-	} else {
-		app_draw_resume();
-		game_state = IN_RESUME_SCREEN;
+		}	
 	}
 }
 
-void init_splash(void) 
+	
+static void enter_highscores_screen(char *next_screen) 
 {
-	app_draw_splash();
-	game_state = IN_SPLASH;
+	app_draw_highscores();
+	while (std_button_new_press() == STD_BUTTON_NONE) {}
+	*next_screen = APP_SCREEN_MENU;
 }
 
-void splash_screen(void)
+
+
+static void enter_splash_screen(char *next_screen)
 {
+	app_draw_splash();
 	std_led_set_string("Arkanoid    ");
 	while (std_button_new_press() == STD_BUTTON_NONE) {
 		std_led_refresh();
 		}
-	init_menu();
+	*next_screen = APP_SCREEN_MENU;
 }
 
-void resume_screen(void) 
+static void enter_resume_screen(struct app_map_context *ctx, char *next_screen) 
 {
-	while (std_button_new_press() == STD_BUTTON_NONE) {}
-	init_menu();
-}
-
-void app_game_end(struct app_map_context *ctx)
-{
-	struct app_highscore new_highscore;
-	struct std_draw_point point;
-	char name[4];
-	name[0] = ' ';
-	name[1] = ' ';
-	name[2] = ' ';
-	name[3] = '\0';
-	if(app_highscore_test(ctx->score)) {
-		app_draw_endgame();
-		new_highscore.score = ctx->score;
-		point.x = 9;
-		point.y = 3;
-
-		std_tty_gotoxy(3, 3);
-		std_tty_printf("Name:");
-
-		std_text_input_create(&point, name, 4, &std_ti_letters_test);
-
-		new_highscore.name[0] = name[0];
-		new_highscore.name[1] = name[1];
-		new_highscore.name[2] = name[2];
-		new_highscore.name[3] = name[3];
-
-		app_add_highscore(new_highscore);
+ 	std_rom_read(STD_ROM_PAGE1, ctx, sizeof(*ctx));
+	if (ctx->resumed_game == 1) {    // 99% of the time, this will not be the case if no save is present
+		*next_screen = APP_SCREEN_GAME;
+		return;
 	}
-	init_highscores();
+
+	app_draw_resume();
+	while (std_button_new_press() == STD_BUTTON_NONE) {}
+	*next_screen = APP_SCREEN_MENU;
+}
+
+static void enter_menu_screen(struct app_map_context *ctx, char *next_screen)
+{
+	app_menu_loop(ctx, next_screen);
+}
+
+static void enter_game_screen(struct app_map_context *ctx, char *next_screen)
+{
+	char next_screen_save = *next_screen;
+
+	if (!ctx->resumed_game) {
+		ctx->level = 1;
+		ctx->score = 0;
+		ctx->lives = 3;
+	}
+	
+	app_map_reset(ctx);
+
+	while (*next_screen == next_screen_save) {
+		if (std_timer_read(STD_TIMER_0))
+			app_game_tick(ctx, next_screen);
+	}
+}
+
+
+
+void main(void)
+{
+	struct app_map_context ctx;
+	char next_screen = APP_SCREEN_SPLASH;
+	
+	ctx.resumed_game = 0;
+	std_tty_init();
+	std_tty_clrscr();
+	std_timer_configure(STD_TIMER_0, 100);
+	std_timer_start(STD_TIMER_0);
+	std_led_init();
+	app_highscore_init(); // related to setting up highscores, not game_state
+	while (1) {
+		switch(next_screen) {
+			case APP_SCREEN_GAME:
+				enter_game_screen(&ctx, &next_screen);
+				break;
+			case APP_SCREEN_MENU:
+				enter_menu_screen(&ctx, &next_screen);
+				break;
+			case APP_SCREEN_RESUME:
+				enter_resume_screen(&ctx, &next_screen);
+				break;
+			case APP_SCREEN_HIGHSCORE:
+				enter_highscores_screen(&next_screen);
+				break;
+			case APP_SCREEN_DIFFICULTY_SELECT:
+				enter_diff_select_screen(&ctx, &next_screen);
+				break;
+			default:
+			case APP_SCREEN_SPLASH:
+				enter_splash_screen(&next_screen);
+				break;
+		}
+	}
 }
 

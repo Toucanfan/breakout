@@ -49,16 +49,16 @@ void std_ti_create(struct std_draw_point *point, char *str, char str_length, cha
 		std_tty_printf("%s", str);
 		std_tty_gotoxy(point->x + i, point->y);
 
-		key = get_char();
+		key = std_kb_get_char();
 		if(test_func(key) && i < str_length - 1) {
 			str[i] = key;
 			i++;
-		} else if(key == BACKSPACE && i > 0) {
+		} else if(key == STD_KB_BACKSPACE && i > 0) {
 			i--;
 			str[i] = ' ';
-		} else if(key == ENTER && i > 0) {
+		} else if(key == STD_KB_ENTER && i > 0) {
 			input_loop = 0;
-		} else if(key == ESC27 || key == ESC7) {
+		} else if(key == STD_KB_ESC27 || key == STD_KB_ESC7) {
 			for(i = 0; i < str_length - 1; i++) {
 				str[i] = ' ';
 			}

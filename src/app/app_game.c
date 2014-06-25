@@ -1,10 +1,13 @@
 #include "std/draw.h"
 #include "std/tty.h"
-#include "app/draw.h"
 #include "std/fixpt.h"
+#include "std/ti.h"
+
+#include "app/draw.h"
 #include "app/game.h"
 #include "app/map.h"
-#include "app/state.h"
+#include "app/screen.h"
+#include "app/highscore.h"
 
 //! Updates game states
 /**
@@ -12,7 +15,7 @@
  *
  * @param ctx The game context
  */
-void app_game_tick(struct app_map_context *ctx)
+void app_game_tick(struct app_map_context *ctx, char *next_screen)
 {
 	app_map_refresh(ctx);
 	
@@ -23,21 +26,38 @@ void app_game_tick(struct app_map_context *ctx)
 	}
 	
 	if (ctx->lives == 0) {
-		app_game_end(ctx); //  HENRIKS FUNKTION OM HIGHSCORE
+		app_game_end(ctx, next_screen); //  HENRIKS FUNKTION OM HIGHSCORE
 	}
 }
 
-//! Initializes game
-/**
- * @param ctx The game context
- */
-void app_game_init(struct app_map_context *ctx) {
-	ctx->level = 1;
-	ctx->score = 0;
-	ctx->lives = 3;
-	ctx->resumed_game = 0;
-	
-	app_map_reset(ctx);
-	game_state = IN_GAME;
-}
 
+
+void app_game_end(struct app_map_context *ctx, char *next_screen)
+{
+	struct app_highscore new_highscore;
+	struct std_draw_point point;
+	char name[4];
+	name[0] = ' ';
+	name[1] = ' ';
+	name[2] = ' ';
+	name[3] = '\0';
+	if(app_highscore_test(ctx->score)) {
+		app_draw_endgame();
+		new_highscore.score = ctx->score;
+		point.x = 9;
+		point.y = 3;
+
+		std_tty_gotoxy(3, 3);
+		std_tty_printf("Name:");
+
+		std_ti_create(&point, name, 4, &std_ti_letters_test);
+
+		new_highscore.name[0] = name[0];
+		new_highscore.name[1] = name[1];
+		new_highscore.name[2] = name[2];
+		new_highscore.name[3] = name[3];
+
+		app_highscore_add(new_highscore);
+	}
+	*next_screen = APP_SCREEN_HIGHSCORE;
+}
