@@ -1,3 +1,31 @@
+/**
+ * @file
+ * @author Troels Folke
+ * @version 1.1
+ * @section hal_timer-description Description
+ * 
+ * Abstracted implementation of timer configuration and usage
+ *
+ * HAL_TIMER_1 is twice as fast as 0, 2 and 3.
+ *
+ * @section hal_timer_usage Usage
+ *
+ * Setup af timer
+ *
+ *     hal_timer_configure(HAL_TIMER_1, 100);
+ *
+ * Start the timer
+ *
+ *     hal_timer_start(HAL_TIMER_1);
+ *
+ * Poll the timer
+ *
+ *     while(!hal_timer_read(HAL_TIMER_1);) {1}
+ *     printf("Timer fired!");
+ *
+ * The subcount value can be used to control the "speed" of the timer.
+ */
+
 #include <ez8.h>
 #include "hal/timer.h"
 
@@ -62,6 +90,11 @@ void timer3_irq_handler(void)
 	}
 }
 
+//! Configures a timer
+/**
+ * @param timer The timer to configure
+ * @param subcount_max The number the timer/counter should count to before "firing"
+ */
 void hal_timer_configure(char timer, int subcount_max)
 {
 	DI(); // Disable interrupts globally
@@ -125,6 +158,10 @@ void hal_timer_configure(char timer, int subcount_max)
 	EI(); // Enable interrupts globally
 }
 
+//! Starts a timer
+/**
+ * @param timer The timer to start
+ */
 void hal_timer_start(char timer)
 {
 	DI();
@@ -151,6 +188,10 @@ void hal_timer_start(char timer)
 	EI();
 }
 
+//! Stops a timer
+/**
+ * @param timer The timer to stop
+ */
 void hal_timer_stop(char timer)
 {
 	DI();
@@ -176,7 +217,10 @@ void hal_timer_stop(char timer)
 	}
 	EI();
 }
-
+//! Read if a timer has fired
+/**
+ * @param timer The timer to read
+ */
 int hal_timer_read(char timer)
 {
 	int r = 0;

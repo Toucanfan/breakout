@@ -5,14 +5,6 @@
  * @section app_highscore-description Description
  * 
  * This file implements the functions needed for handling the highscore list.
- * 
- * @section app_highscore-usage Usage
- * 
- * This 
- * 
- *     int i;
- * 
- * This is 
  */
 
 #include <ez8.h>
