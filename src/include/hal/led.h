@@ -10,6 +10,5 @@
 extern void hal_led_init(void);
 extern void hal_led_refresh(void);
 extern void hal_led_set_string(char *str);
-extern void hal_led_set_mode(char mode);
 
 #endif /* hal/led.h */

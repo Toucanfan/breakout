@@ -268,12 +268,6 @@ void hal_led_set_string(char *str)
 	STRING_ID += 1;
 }
 
-//! Set the mode for the display (not implemented)
-void hal_led_set_mode(char m)
-{
-	mode = m;
-}
-
 //! Refresh the states for the LED display
 void hal_led_refresh(void)
 {

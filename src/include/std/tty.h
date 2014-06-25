@@ -36,14 +36,14 @@
 #define std_tty_init() hal_uart_init()
 
 /* function prototypes */
-void std_tty_clrscr(void);
-void std_tty_clreol(void);
-void std_tty_gotoxy(int x, int y);
-void std_tty_underline(char boolean);
-void std_tty_reverse(char boolean);
-void std_tty_blink(char boolean);
-void std_tty_set_bcolor(char bcolor);
-void std_tty_set_fcolor(char fcolor);
+extern void std_tty_clrscr(void);
+extern void std_tty_clreol(void);
+extern void std_tty_gotoxy(int x, int y);
+extern void std_tty_underline(char boolean);
+extern void std_tty_reverse(char boolean);
+extern void std_tty_blink(char boolean);
+extern void std_tty_set_bcolor(char bcolor);
+extern void std_tty_set_fcolor(char fcolor);
 
 
 #endif /* std/tty.h */
