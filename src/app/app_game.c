@@ -14,6 +14,7 @@
  * Calls app_map_refresh to update map state and moves to next level or ends game.
  *
  * @param ctx The game context
+ * @param next_screen The next state/screen
  */
 void app_game_tick(struct app_map_context *ctx, char *next_screen)
 {
@@ -30,8 +31,11 @@ void app_game_tick(struct app_map_context *ctx, char *next_screen)
 	}
 }
 
-
-
+//! End Game
+/**
+ * @param ctx The game context
+ * @param next_screen The next state/screen
+ */
 void app_game_end(struct app_map_context *ctx, char *next_screen)
 {
 	struct app_highscore new_highscore;
