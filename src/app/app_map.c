@@ -13,7 +13,7 @@
 
 /* constants to be used when drawing paddle */
 #define PADDLE_HALF_LEN 15
-#define PADDLE_STRING "                               "
+#define PADDLE_STRING "\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB"
 
 /* constants to be used in collision detection and handling */
 #define COLLISION_NONE 0x0
@@ -24,20 +24,18 @@
 
 /* constants to be used when drawing blocks */
 #define BLOCK_PADDING_TOP 4
-#define BLOCK_COLUMNS 32 //!<size of long
+#define BLOCK_COLUMNS 32 //size of long
 #define BLOCK_LENGTH 4
 #define BLOCK_HEIGHT 3
 #define BLOCK_INTERDIST_X 1
 #define BLOCK_INTERDIST_Y 1
 #define PRECISION 128
-//! Expression testing if the ball is within the x-components of the block
 #define BALL_WITHIN_BLOCK_X (x <= std_fixpt_f2i(ball_pos_x_next) && std_fixpt_f2i(ball_pos_x_next) <= x + (BLOCK_LENGTH-1))
-//! Expression testing if the ball is within the y-components of the block
 #define BALL_WITHIN_BLOCK_Y (y <= std_fixpt_f2i(ball_pos_y_next) && std_fixpt_f2i(ball_pos_y_next) <= y + (BLOCK_HEIGHT-1))
 
 #define MAPS 3
 
-//! Draws the borders of the map
+
 static void draw_borders(void)
 {
 	struct std_draw_box topb;
@@ -75,12 +73,7 @@ static void draw_borders(void)
 	//std_draw_box(&botb);           // TROELS KIG HER WTF ER DET?
 }
 
-//! Counts the number of blocks left
-/**
- * @param blocks The map (a pointer to longs)
- *
- * @return The number of blocks
- */
+
 static int count_blocks(long *blocks)
 {
 	char i;
@@ -96,12 +89,6 @@ static int count_blocks(long *blocks)
 	return count;
 }
 
-//! Draws or erases a block
-/**
- * @param row The row to draw on
- * @param column The column to draw on
- * @param draw Boolean char for drawing or erasing
- */
 void draw_block(char row, char column, char draw)
 {
 	int x = WIDTH / 2 - BLOCK_COLUMNS * (BLOCK_LENGTH+BLOCK_INTERDIST_X) / 2 + column * (BLOCK_LENGTH+BLOCK_INTERDIST_X); // start position
@@ -122,14 +109,6 @@ void draw_block(char row, char column, char draw)
 	std_tty_set_bcolor(STD_TTY_BCOLOR_BLACK);
 }
 
-//! Tests if the ball collides with a block
-/**
- * @param row The row to check
- * @param column The column to check
- * @param ctx The game context
- *
- * @return Collision type
- */
 char test_block(char row, char column, struct app_map_context *ctx)
 {	
 	int x = WIDTH / 2 - BLOCK_COLUMNS * (BLOCK_LENGTH+BLOCK_INTERDIST_X) / 2 + column * (BLOCK_LENGTH+BLOCK_INTERDIST_X); // start position
@@ -153,10 +132,7 @@ char test_block(char row, char column, struct app_map_context *ctx)
 	return COLLISION_NONE;
 }
 
-//! Draws all blocks
-/**
- * @param ctx The game context
- */
+
 static void draw_blocks(struct app_map_context *ctx)
 {
 	int i;
@@ -180,10 +156,7 @@ static void draw_blocks(struct app_map_context *ctx)
 				draw_block(i,j,1);
 }
 
-//! Draws a ball
-/**
- * @param ball The ball struct
- */
+
 static void draw_ball(struct app_map_ball *ball)
 {
 	static int x_old = 6;
@@ -210,83 +183,37 @@ static void draw_ball(struct app_map_ball *ball)
 	}
 }
 
-//! Resets the paddle
-/**
- * @param paddle The paddle struct
- */
-static void reset_paddle(struct app_map_paddle *paddle)
-{
-	int x = WIDTH/2;
-
-	std_tty_gotoxy(x-PADDLE_HALF_LEN, HEIGHT);
-	std_tty_set_bcolor(STD_TTY_FCOLOR_GRAY);
-	std_tty_printf(PADDLE_STRING);
-
-	std_tty_set_bcolor(STD_TTY_BCOLOR_BLACK);
-	paddle->x = std_fixpt_i2f(x);
-
-}
-
-//! Draws the paddle
-/**
- * @param paddle The paddle struct
- */
 static void draw_paddle(struct app_map_paddle *paddle)
 {
-	static int x_old = WIDTH/2;
+	static int x_old = 30;
 	int x;
-	int delta_x;
+	char paddle_str[WIDTH+1];
 	int i;
-	char spaces[8];
 
-	for (i = 0; i < sizeof(spaces)-1; i++)
-		spaces[i] = ' ';
-	spaces[sizeof(spaces)-1] = '\0';
+	for (i = 0; i < WIDTH; i++) {
+		paddle_str[i] = ' ';
+	}
+	paddle_str[WIDTH] = '\0';
 
 	x = std_fixpt_f2i(paddle->x);
-	delta_x = x-x_old;
-	spaces[delta_x] = '\0';
 
-	/* do nothing if paddle has not moved since last time called */
-	if (delta_x == 0)
-		return;
 
-	else if (delta_x > 0) {
-		/* remove drawing of last paddle */
-		std_tty_set_bcolor(STD_TTY_BCOLOR_BLACK);
-		std_tty_gotoxy(x_old-PADDLE_HALF_LEN, HEIGHT);
-		std_tty_puts(spaces);
-	
-		/* draw paddle at new position */
-		std_tty_set_bcolor(STD_TTY_BCOLOR_GRAY);
-		std_tty_gotoxy(x+PADDLE_HALF_LEN-delta_x+1, HEIGHT);
-		std_tty_puts(spaces);
-
-	} else if (delta_x < 0) {
-		delta_x = -delta_x;
-		/* remove drawing of last paddle */
-		std_tty_set_bcolor(STD_TTY_BCOLOR_BLACK);
-		std_tty_gotoxy(x_old+PADDLE_HALF_LEN-delta_x+1, HEIGHT);
-		std_tty_puts(spaces);
-
-		/* draw paddle at new position */
-		std_tty_set_bcolor(STD_TTY_BCOLOR_GRAY);
+	if (x != x_old) {
+		for (i = 0; i < (PADDLE_HALF_LEN*2+1); i++) {
+			paddle_str[x-PADDLE_HALF_LEN+i-1] = 0xDB;
+		}
+		std_tty_gotoxy(1, HEIGHT);
+		std_tty_set_fcolor(STD_TTY_FCOLOR_WHITE);
+		std_tty_puts(paddle_str);
+		/*
+		/* draw paddle at new position
 		std_tty_gotoxy(x-PADDLE_HALF_LEN, HEIGHT);
-		std_tty_puts(spaces);
+		std_tty_set_fcolor(STD_TTY_FCOLOR_WHITE);
+		std_tty_printf(paddle_str);*/
+		x_old = x;
 	}
-		
-	/* remember new position for next time */
-	x_old = x;
-	std_tty_set_bcolor(STD_TTY_BCOLOR_BLACK);
 }
 
-//! Tests for paddle collision
-/**
- * @param ball The ball struct
- * @param paddle The paddle struct
- *
- * @return Collision type
- */
 static char test_paddle_collision(struct app_map_ball *ball, 
 				struct app_map_paddle *paddle)
 {
@@ -302,12 +229,7 @@ static char test_paddle_collision(struct app_map_ball *ball,
 
 }
 
-//! Tests for block collisions
-/**
- * @param ctx The game context
- *
- * @return Collision type
- */
+
 static char test_block_collision(struct app_map_context *ctx)
 {
 	int i;
@@ -329,14 +251,6 @@ static char test_block_collision(struct app_map_context *ctx)
 	return COLLISION_NONE;
 }
 
-//! Tests for collisions
-/**
- * Tests for collisions between ball and blocks and paddle.
- *
- * @param ctx The game context
- *
- * @return Collision type
- */
 static char test_collision(struct app_map_context *ctx)
 {
 	char r;
@@ -365,11 +279,6 @@ static char test_collision(struct app_map_context *ctx)
 		return COLLISION_NONE;
 }
 
-//! Handle paddle collision
-/**
- * @param ball The ball struct
- * @param paddle The paddle struct
- */
 static void handle_paddle_collision(struct app_map_ball *ball, 
 				struct app_map_paddle *paddle)
 {
@@ -401,12 +310,8 @@ static void handle_paddle_collision(struct app_map_ball *ball,
 		ball->vel.y = -(ball->speed*std_fixpt_sin(32));
 	}
 }
+		
 
-//! Handle collisions
-/**
- * @param ctx The game context
- * @param coll_type The type of collision
- */
 static void handle_collision(struct app_map_context *ctx, char coll_type)
 {
 	switch(coll_type) {
@@ -430,10 +335,6 @@ static void handle_collision(struct app_map_context *ctx, char coll_type)
 	}
 }
 
-//! Save the game state
-/**
- * @param ctx The game context
- */
 void save_game(struct app_map_context *ctx)
 {	
 	app_draw_save();
@@ -471,40 +372,25 @@ void app_map_reset(struct app_map_context *ctx)
 		ctx->paddle.vel = std_fixpt_i2f(3)/1;
 		ctx->ball.pos.x = std_fixpt_i2f(WIDTH/2);
 		ctx->ball.pos.y = std_fixpt_i2f(HEIGHT/2);
-
-		reset_paddle(&ctx->paddle);
+		ctx->paddle.x = std_fixpt_i2f(WIDTH/2);
 }
 
-//! Refresh the ball and paddle
-/**
- * @param ctx The game context 
- */
 void app_map_refresh(struct app_map_context *ctx)
 {
 	char collision;
-
-	/* handle eventual collissions that may occur if we add 'vel' to it */
 	if (collision = test_collision(ctx))
 		handle_collision(ctx, collision);
-
-	/* add 'vel' to position to get new position */
 	ctx->ball.pos.x += ctx->ball.vel.x;
 	ctx->ball.pos.y += ctx->ball.vel.y;
 	draw_ball(&ctx->ball);
-
-	/* handle eventual button press */
 	switch (std_button_pressed()) {
 		case STD_BUTTON_LEFT:
-			/* if paddle is to move out of bounds, reset it to
-			 * leftmost position */
 			if (std_fixpt_f2i(ctx->paddle.x-ctx->paddle.vel)-PADDLE_HALF_LEN <= 1)
 				ctx->paddle.x = std_fixpt_i2f(1+PADDLE_HALF_LEN);
 			else
 				ctx->paddle.x -= ctx->paddle.vel;
 			break;
 		case STD_BUTTON_RIGHT:
-			/* if paddle is to move out of bounds, reset it to
-			 * rightmost position */
 			if (std_fixpt_f2i(ctx->paddle.x+ctx->paddle.vel)+PADDLE_HALF_LEN >= WIDTH)
 				ctx->paddle.x = std_fixpt_i2f(WIDTH-PADDLE_HALF_LEN);
 			else

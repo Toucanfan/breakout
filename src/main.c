@@ -85,7 +85,7 @@ static void enter_game_screen(struct app_map_context *ctx, char *next_screen)
 {
 	char next_screen_save = *next_screen;
 
-	if (!ctx->resumed_game) {
+	if (ctx->resumed_game != 1) {
 		ctx->level = 1;
 		ctx->score = 0;
 		ctx->lives = 3;
@@ -109,7 +109,7 @@ void main(void)
 	ctx.resumed_game = 0;
 	std_tty_init();
 	std_tty_clrscr();
-	std_timer_configure(STD_TIMER_0, 100);
+	std_timer_configure(STD_TIMER_0, 75);
 	std_timer_start(STD_TIMER_0);
 	std_led_init();
 	app_highscore_init(); // related to setting up highscores, not game_state

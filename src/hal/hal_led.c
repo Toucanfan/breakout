@@ -1,6 +1,6 @@
 #include <ez8.h>
 #include "hal/led.h"
-#include "std/timer.h"
+#include "hal/timer.h"
 
 #define COLUMNS 5
 #define ROWS 7
@@ -114,7 +114,6 @@ static const char character_data[95][5] = {
 
 static char string[STRING_SIZE+2];
 static char mode = 0;
-static volatile char should_refresh = 1;
 
 static void reset_video_buffer(char *video_buffer)
 {
@@ -211,8 +210,8 @@ void hal_led_init(void)
 	PEDD = 0x0;
 	PGDD = 0x0;
 
-	std_timer_configure(STD_TIMER_1, 1);
-	std_timer_start(STD_TIMER_1);
+	hal_timer_configure(HAL_TIMER_1, 1);
+	hal_timer_start(HAL_TIMER_1);
 }
 
 void hal_led_set_string(char *str)
@@ -238,7 +237,7 @@ void hal_led_refresh(void)
 	static char next_ch = 0; /* index of next char to load if scrolling */
 	static char offset = 0;
 
-	if (!std_timer_read(STD_TIMER_1))
+	if (!hal_timer_read(HAL_TIMER_1))
 		return;
 
 	if (string_id_old != STRING_ID) { 
